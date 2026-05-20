@@ -150,28 +150,32 @@ export default function RegisterPage() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#FAF3E8', display: 'flex', flexDirection: 'column' }}
-      className="lg:flex-row">
+    <div className="flex flex-col lg:flex-row min-h-screen">
+      <style>{`
+        @keyframes goldFlow {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+        .gold-panel {
+          background: linear-gradient(135deg, #3D1A00, #8B3A0F, #C4531A, #E8763A, #F59E0B, #C4531A, #8B3A0F, #3D1A00);
+          background-size: 400% 400%;
+          animation: goldFlow 8s ease infinite;
+        }
+      `}</style>
 
-      {/* Panel ardoise — bannière mobile, colonne desktop */}
-      <div style={{
-          position: 'relative', overflow: 'hidden', flexShrink: 0,
-          background: 'linear-gradient(145deg, #2a2a2a 0%, #1a1a1a 50%, #222 100%)',
-          boxShadow: 'inset 0 0 60px rgba(0,0,0,0.5)',
-        }}
-        className="w-full h-56 lg:h-auto lg:w-1/2 lg:min-h-screen">
-        {/* Texture ardoise */}
-        <div style={{ position: 'absolute', inset: 0, backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'4\' height=\'4\' viewBox=\'0 0 4 4\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M1 3h1v1H1V3zm2-2h1v1H3V1z\' fill=\'%23ffffff\' fill-opacity=\'0.03\'/%3E%3C/svg%3E")', opacity: 0.6 }} />
-        {/* Cadre bois */}
-        <div style={{ position: 'absolute', inset: 10, border: '6px solid #5C3A1E', borderRadius: 8, boxShadow: '0 0 0 2px #3B2410, inset 0 0 0 1px rgba(255,255,255,0.05)', pointerEvents: 'none' }} />
-        <div style={{ position: 'relative', zIndex: 1, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', padding: '28px 40px' }}>
+      {/* Panel doré animé — bannière mobile, colonne desktop */}
+      <div className="gold-panel w-full lg:w-1/2 lg:min-h-screen"
+        style={{ position: 'relative', overflow: 'hidden', flexShrink: 0, minHeight: 220 }}>
+        <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.18)' }} />
+        <div style={{ position: 'relative', zIndex: 1, height: '100%', minHeight: 220, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', padding: '32px 40px' }}>
           <img
             src="/images/wenam-logo.png" alt="Wenam"
-            style={{ width: 90, height: 90, objectFit: 'contain', marginBottom: 14, filter: 'brightness(0) invert(1)', opacity: 0.95 }}
-            className="lg:w-40 lg:h-40 lg:mb-6"
+            style={{ width: 100, height: 100, objectFit: 'contain', marginBottom: 16, filter: 'brightness(0) invert(1)', opacity: 1 }}
+            className="lg:w-44 lg:h-44 lg:mb-8"
           />
-          <h1 className="font-display" style={{ fontSize: 'clamp(26px,6vw,44px)', fontWeight: 700, color: '#fff', margin: '0 0 8px', letterSpacing: '0.02em' }}>wênam</h1>
-          <p className="font-display" style={{ fontSize: 'clamp(11px,1.8vw,16px)', fontStyle: 'italic', color: 'rgba(255,255,255,0.7)', margin: 0, letterSpacing: '0.05em' }}>
+          <h1 className="font-display" style={{ fontSize: 'clamp(28px,6vw,48px)', fontWeight: 700, color: '#fff', margin: '0 0 10px', letterSpacing: '0.02em', textShadow: '0 2px 12px rgba(0,0,0,0.3)' }}>wênam</h1>
+          <p className="font-display" style={{ fontSize: 'clamp(12px,1.8vw,17px)', fontStyle: 'italic', color: 'rgba(255,255,255,0.9)', margin: 0, letterSpacing: '0.06em', textShadow: '0 1px 6px rgba(0,0,0,0.3)' }}>
             Better Food, Better Mood
           </p>
         </div>
