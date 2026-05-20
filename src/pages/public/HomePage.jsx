@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import api from '../../api/axios'
 import Footer from '../../components/common/Footer'
 import Navbar from '../../components/common/Navbar'
+import { useAuthStore } from '../../store'
 
 const OPENING_PHOTOS = [
   '/images/opening1.jpeg',
@@ -49,6 +50,7 @@ const css = `
 `
 
 export default function HomePage() {
+  const { user } = useAuthStore()
   const [featured, setFeatured] = useState([])
   const [promo, setPromo] = useState(null)
   const [openingIdx, setOpeningIdx] = useState(0)
@@ -99,9 +101,11 @@ export default function HomePage() {
                 <Link to="/menu" style={{ background: '#C4531A', color: '#fff', padding: '13px 28px', borderRadius: 10, textDecoration: 'none', fontWeight: 700, fontSize: 13, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
                   Voir le Menu
                 </Link>
-                <Link to="/register" style={{ border: '2px solid #C4531A', color: '#C4531A', padding: '11px 24px', borderRadius: 10, textDecoration: 'none', fontWeight: 700, fontSize: 13, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-                  Créer un compte
-                </Link>
+                {!user && (
+                  <Link to="/register" style={{ border: '2px solid #C4531A', color: '#C4531A', padding: '11px 24px', borderRadius: 10, textDecoration: 'none', fontWeight: 700, fontSize: 13, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                    Créer un compte
+                  </Link>
+                )}
               </div>
               <div className="hero-stats" style={{ display: 'flex', gap: 32, flexWrap: 'wrap' }}>
                 {[
