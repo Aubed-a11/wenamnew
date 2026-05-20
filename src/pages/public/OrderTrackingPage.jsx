@@ -152,7 +152,7 @@ export default function OrderTrackingPage() {
         {isDelivered && (
           <div style={{ background:'#fff', borderRadius:20, padding:'24px 20px', border:'1px solid #e5e7eb', boxShadow:'0 2px 12px rgba(0,0,0,0.06)', textAlign:'center' }}>
             <p className="font-display" style={{ fontSize:16, fontWeight:600, marginBottom:16 }}>Vous avez apprécié votre repas ?</p>
-            <Link to="/profile" className="btn-primary">Laisser un avis ⭐</Link>
+            <Link to="/profile" className="btn-primary">Laisser un avis</Link>
           </div>
         )}
       </div>

@@ -48,7 +48,6 @@ export default function GalleryPage() {
         </div>
       ) : items.length === 0 ? (
         <div style={{ textAlign: 'center', padding: '60px 20px', color: '#8B6B3D' }}>
-          <div style={{ fontSize: 40, marginBottom: 12 }}>📷</div>
           <p style={{ fontSize: 15, margin: '0 0 16px' }}>Aucune photo dans la galerie</p>
           <button onClick={() => setModal(true)} style={{ background: '#C4531A', color: '#fff', border: 'none', borderRadius: 8, padding: '10px 20px', cursor: 'pointer', fontSize: 13, fontWeight: 700 }}>Ajouter une photo</button>
         </div>

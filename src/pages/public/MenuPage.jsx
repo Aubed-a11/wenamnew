@@ -108,7 +108,6 @@ export default function MenuPage() {
           {loading ? Array.from({ length: 8 }).map((_, i) => <SkeletonCard key={i} />) : (
             items.length === 0 ? (
               <div className="col-span-full text-center py-20">
-                <div className="text-6xl mb-4">🍽️</div>
                 <p className="font-display text-xl text-text-dark mb-2">Aucun plat trouvé</p>
                 <p className="text-text-light text-sm font-body">Essayez d'autres filtres</p>
               </div>

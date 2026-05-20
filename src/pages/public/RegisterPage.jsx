@@ -126,7 +126,7 @@ export default function RegisterPage() {
     setLoading(true)
     try {
       await register(form.name, form.email, form.password, form.phone)
-      toast.success('Compte créé ! Bienvenue chez Wênam 🎉')
+      toast.success('Compte créé ! Bienvenue chez Wênam')
       navigate('/')
     } catch (err) {
       toast.error(err.response?.data?.message || "Erreur lors de l'inscription")

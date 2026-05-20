@@ -143,10 +143,6 @@ export default function HomePage() {
       {/* CATEGORIES */}
       <section style={{ background: '#F5ECD7', padding: '72px 20px' }}>
         <div style={{ maxWidth: 1280, margin: '0 auto' }}>
-          <motion.h2 variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}
-            style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(22px,4vw,32px)', fontWeight: 600, color: '#1A0F00', marginBottom: 32 }}>
-            Explorez Notre Menu —
-          </motion.h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 16 }}>
             {CATEGORIES.map((cat, i) => (
               <motion.div key={cat.key} variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} transition={{ delay: i * 0.1 }}
@@ -200,7 +196,6 @@ export default function HomePage() {
       {featured.length > 0 && (
         <section style={{ background: '#FAF3E8', padding: '72px 20px' }}>
           <div style={{ maxWidth: 1280, margin: '0 auto' }}>
-            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(22px,4vw,32px)', fontWeight: 600, color: '#1A0F00', marginBottom: 32 }}>Nos Spécialités —</h2>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 20 }}>
               {featured.map((item, i) => (
                 <motion.div key={item._id} variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} transition={{ delay: i * 0.07 }}
@@ -215,7 +210,7 @@ export default function HomePage() {
                     <h3 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 600, fontSize: 16, color: '#1A0F00', margin: '0 0 6px' }}>{item.name}</h3>
                     <p style={{ fontSize: 13, color: '#8B6B3D', margin: '0 0 12px', lineHeight: 1.5 }}>{item.description}</p>
                     <div style={{ display: 'flex', gap: 12, fontSize: 12, color: '#8B6B3D', marginBottom: 14 }}>
-                      <span>⭐ {item.rating}</span>
+                      <span>★ {item.rating}</span>
                       <span>⏱ {item.preparationTime} min</span>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -267,7 +262,6 @@ export default function HomePage() {
       {/* INFOS PRATIQUES */}
       <section style={{ background: '#F5ECD7', padding: '64px 20px' }}>
         <div style={{ maxWidth: 1280, margin: '0 auto' }}>
-          <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(22px,4vw,32px)', fontWeight: 600, color: '#1A0F00', marginBottom: 32, textAlign: 'center' }}>Infos Pratiques —</h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 16 }}>
             {[
               { icon: Clock, title: 'Horaires', lines: ['Ouverture: 09h00', 'Arrêt livraisons: 20h00'] },
@@ -291,7 +285,6 @@ export default function HomePage() {
       {/* REVIEWS */}
       <section style={{ background: '#FAF3E8', padding: '72px 20px' }}>
         <div style={{ maxWidth: 1280, margin: '0 auto' }}>
-          <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(22px,4vw,32px)', fontWeight: 600, color: '#1A0F00', marginBottom: 32 }}>Ce que Disent Nos Clients —</h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 16 }}>
             {REVIEWS.map((r, i) => (
               <motion.div key={i} variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} transition={{ delay: i * 0.1 }}

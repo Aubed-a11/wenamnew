@@ -46,7 +46,6 @@ export function CartPage() {
 
         {items.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '80px 16px' }}>
-            <div style={{ fontSize: 64, marginBottom: 16 }}>🛒</div>
             <p className="font-display" style={{ fontSize: 'clamp(18px, 4vw, 24px)', fontWeight: 700, marginBottom: 8 }}>Votre panier est vide</p>
             <p className="text-text-light font-body" style={{ marginBottom: 32 }}>Découvrez nos délicieux plats</p>
             <Link to="/menu" className="btn-primary">Découvrir le menu</Link>

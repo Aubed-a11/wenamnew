@@ -336,21 +336,21 @@ function generateOrderPDF(order, user) {
 // ── WhatsApp ──────────────────────────────────────────────────────────────────
 function sendWhatsApp(order, user) {
   const items = order.items.map(i => `  • ${i.name} x${i.quantity} — ${(i.price * i.quantity).toFixed(2)} MAD`).join('\n')
-  const msg = `🍽️ *Nouvelle commande Wênam* ${order.orderNumber}
+  const msg = `*Nouvelle commande Wênam* ${order.orderNumber}
 
-👤 *Client:* ${user?.name}
-📱 *Tél:* ${user?.phone || 'Non renseigné'}
-📍 *Adresse:* ${order.deliveryAddress?.street}, ${order.deliveryAddress?.city}
+*Client:* ${user?.name}
+*Tél:* ${user?.phone || 'Non renseigné'}
+*Adresse:* ${order.deliveryAddress?.street}, ${order.deliveryAddress?.city}
 
-📋 *Commande:*
+*Commande:*
 ${items}
 
-💰 *Sous-total:* ${Number(order.subtotal).toFixed(2)} MAD
-🚚 *Livraison:* ${Number(order.deliveryFee).toFixed(2)} MAD
-✅ *TOTAL: ${Number(order.total).toFixed(2)} MAD*
+*Sous-total:* ${Number(order.subtotal).toFixed(2)} MAD
+*Livraison:* ${Number(order.deliveryFee).toFixed(2)} MAD
+*TOTAL: ${Number(order.total).toFixed(2)} MAD*
 
-💳 *Paiement:* ${order.paymentMethod === 'card' ? 'Carte bancaire' : 'Espèces à la livraison'}
-${order.notes ? `📝 *Note:* ${order.notes}` : ''}
+*Paiement:* ${order.paymentMethod === 'card' ? 'Carte bancaire' : 'Espèces à la livraison'}
+${order.notes ? `*Note:* ${order.notes}` : ''}
 
 _Commande passée le ${new Date().toLocaleString('fr-FR')}_`
 

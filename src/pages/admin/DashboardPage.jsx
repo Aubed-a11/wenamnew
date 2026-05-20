@@ -117,7 +117,7 @@ export default function DashboardPage() {
       {/* Header */}
       <div style={{ marginBottom:24 }}>
         <h1 style={{ fontFamily:"'Playfair Display',serif", fontSize:'clamp(20px,4vw,28px)', fontWeight:700, color:'#1A0F00', margin:'0 0 4px' }}>
-          Bienvenue, {user?.name?.split(' ')[0]} 👋
+          Bienvenue, {user?.name?.split(' ')[0]}
         </h1>
         <p style={{ color:'#8B6B3D', fontSize:14, margin:0 }}>Activité récente · Avenue Al Majd 2, Rabat</p>
       </div>

@@ -226,7 +226,7 @@ export default function MenuManagePage() {
               <div className="menu-card-img" style={{ position:'relative' }}>
                 <img src={item.image||'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=300'} alt={item.name} style={{ width:'100%', height:'100%', objectFit:'cover' }} />
                 <div style={{ position:'absolute', top:6, right:6, display:'flex', gap:4 }}>
-                  {item.featured && <span style={{ background:'#F59E0B', color:'#fff', fontSize:9, fontWeight:700, padding:'2px 6px', borderRadius:10 }}>⭐</span>}
+                  {item.featured && <span style={{ background:'#F59E0B', color:'#fff', fontSize:9, fontWeight:700, padding:'2px 6px', borderRadius:10 }}>TOP</span>}
                   <button onClick={() => handleToggle(item._id)} style={{ background: item.isAvailable?'#166534':'#6B7280', border:'none', borderRadius:6, cursor:'pointer', padding:4, display:'flex' }}>
                     {item.isAvailable ? <ToggleRight size={13} color="#fff"/> : <ToggleLeft size={13} color="#fff"/>}
                   </button>
@@ -256,7 +256,6 @@ export default function MenuManagePage() {
           ))}
           {items.length === 0 && !loading && (
             <div style={{ gridColumn:'1/-1', textAlign:'center', padding:'60px 20px', color:'#8B6B3D' }}>
-              <div style={{ fontSize:40, marginBottom:12 }}>🍽️</div>
               <p>Aucun plat trouvé</p>
             </div>
           )}
@@ -303,11 +302,11 @@ export default function MenuManagePage() {
                           <div style={{ display:'flex', gap:8 }}>
                             <button type="button" onClick={e => { e.stopPropagation(); fileInputRef.current?.click() }}
                               style={{ padding:'7px 14px', background:'#fff', color:'#1A0F00', border:'none', borderRadius:8, fontSize:12, fontWeight:700, cursor:'pointer' }}>
-                              📁 Fichier
+                              Fichier
                             </button>
                             <button type="button" onClick={e => { e.stopPropagation(); cameraInputRef.current?.click() }}
                               style={{ padding:'7px 14px', background:'#C4531A', color:'#fff', border:'none', borderRadius:8, fontSize:12, fontWeight:700, cursor:'pointer' }}>
-                              📷 Photo
+                              Photo
                             </button>
                           </div>
                         </div>
@@ -321,11 +320,11 @@ export default function MenuManagePage() {
                         <div style={{ display:'flex', gap:8, flexWrap:'wrap', justifyContent:'center' }}>
                           <button type="button" onClick={() => fileInputRef.current?.click()}
                             style={{ padding:'8px 16px', background:'#C4531A', color:'#fff', border:'none', borderRadius:8, fontSize:12, fontWeight:700, cursor:'pointer', fontFamily:'Lato,sans-serif' }}>
-                            📁 Fichier
+                            Fichier
                           </button>
                           <button type="button" onClick={() => cameraInputRef.current?.click()}
                             style={{ padding:'8px 16px', background:'#1A0F00', color:'#fff', border:'none', borderRadius:8, fontSize:12, fontWeight:700, cursor:'pointer', fontFamily:'Lato,sans-serif' }}>
-                            📷 Photo / Galerie
+                            Photo / Galerie
                           </button>
                         </div>
                         <p style={{ fontSize:11, color:'#8B6B3D', margin:0 }}>JPG, PNG, HEIC · max 15MB</p>
@@ -361,7 +360,7 @@ export default function MenuManagePage() {
 
                 <div style={{ background:'#FFFBF0', border:'1px solid #FDE68A', borderRadius:10, padding:'12px 14px' }}>
                   <label style={{ display:'block', fontSize:11, fontWeight:700, color:'#92400E', textTransform:'uppercase', letterSpacing:'0.08em', marginBottom:4 }}>
-                    🍚 Accompagnements (séparés par virgule)
+                    Accompagnements (séparés par virgule)
                   </label>
                   <p style={{ fontSize:11, color:'#B45309', margin:'0 0 8px' }}>Ex : riz, frites, salade verte, pain</p>
                   <input value={form.accompagnements} onChange={e => setForm({...form, accompagnements:e.target.value})} placeholder="riz, frites, salade..." style={{ ...inputStyle, background:'#fff', borderColor:'#FDE68A' }} />

@@ -52,7 +52,6 @@ export default function ReviewsPage() {
         <div style={{ textAlign: 'center', padding: 40, color: '#8B6B3D' }}>Chargement...</div>
       ) : reviews.length === 0 ? (
         <div style={{ textAlign: 'center', padding: '60px 20px', color: '#8B6B3D' }}>
-          <div style={{ fontSize: 48, marginBottom: 12 }}>⭐</div>
           <p>Aucun avis dans cette catégorie</p>
         </div>
       ) : (

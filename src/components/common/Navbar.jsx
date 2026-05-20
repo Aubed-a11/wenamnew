@@ -108,7 +108,7 @@ export default function Navbar() {
                       style={{ position: 'absolute', right: 0, top: 'calc(100% + 8px)', width: 200, background: '#fff', borderRadius: 12, border: '1px solid #D4B896', boxShadow: '0 8px 24px rgba(139,58,15,0.15)', zIndex: 50, overflow: 'hidden' }}>
                       <div style={{ padding: '12px 16px', background: '#FAF3E8', borderBottom: '1px solid #EDE0C4' }}>
                         <p style={{ fontWeight: 700, fontSize: 13, color: '#1A0F00', margin: 0 }}>{user.name}</p>
-                        <p style={{ fontSize: 11, color: '#8B6B3D', margin: 0 }}>{isAdmin ? '👑 Administrateur' : user.email}</p>
+                        <p style={{ fontSize: 11, color: '#8B6B3D', margin: 0 }}>{isAdmin ? 'Administrateur' : user.email}</p>
                       </div>
                       {isAdmin ? (
                         <Link to="/admin" onClick={() => setUserOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px 16px', fontSize: 13, color: '#1A0F00', textDecoration: 'none' }}>
