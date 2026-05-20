@@ -157,7 +157,7 @@ export default function RegisterPage() {
       <div style={{ position: 'relative', overflow: 'hidden', background: '#1A0F00', flexShrink: 0 }}
         className="w-full h-52 lg:h-auto lg:w-1/2 lg:min-h-screen">
         <img
-          src="https://images.unsplash.com/photo-1544025162-d76694265947?w=800"
+          src="https://images.unsplash.com/photo-1603496987674-79600a000f55?w=800"
           alt="Cuisine"
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.35 }}
         />
