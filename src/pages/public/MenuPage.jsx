@@ -114,7 +114,7 @@ export default function MenuPage() {
             ) : (
               items.map((item, i) => (
                 <motion.div key={item._id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.04 }}
-                  whileHover={{ y: -4 }} className={`bg-white rounded-2xl overflow-hidden shadow-card border border-border ${!item.isAvailable ? 'opacity-60' : ''}`}>
+                  whileHover={{ y: -4 }} className={`bg-white rounded-2xl shadow-card border border-border flex flex-col ${!item.isAvailable ? 'opacity-60' : ''}`}>
                   <div className="h-44 sm:h-48 relative overflow-hidden">
                     <img src={item.image || 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400'} alt={item.name}
                       className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />

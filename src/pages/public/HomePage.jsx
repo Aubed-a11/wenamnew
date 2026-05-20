@@ -204,7 +204,7 @@ export default function HomePage() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 20 }}>
               {featured.map((item, i) => (
                 <motion.div key={item._id} variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} transition={{ delay: i * 0.07 }}
-                  whileHover={{ y: -4 }} style={{ background: '#fff', borderRadius: 20, overflow: 'hidden', border: '1px solid #D4B896', boxShadow: '0 2px 12px rgba(139,58,15,0.1)' }}>
+                  whileHover={{ y: -4 }} style={{ background: '#fff', borderRadius: 20, border: '1px solid #D4B896', boxShadow: '0 2px 12px rgba(139,58,15,0.1)', display: 'flex', flexDirection: 'column' }}>
                   <div style={{ height: 190, overflow: 'hidden', position: 'relative' }}>
                     <img src={item.image || '/images/opening3.jpeg'} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     <span style={{ position: 'absolute', top: 10, left: 10, background: '#C4531A', color: '#fff', fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 20, textTransform: 'capitalize' }}>
