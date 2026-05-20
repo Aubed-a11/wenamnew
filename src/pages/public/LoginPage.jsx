@@ -48,7 +48,7 @@ export default function LoginPage() {
         <div style={{ position: 'relative', zIndex: 1, height: '100%', minHeight: 220, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', padding: '32px 40px' }}>
           <img
             src="/images/wenam-logo.png" alt="Wenam"
-            style={{ width: 100, height: 100, objectFit: 'contain', marginBottom: 16, filter: 'brightness(0) invert(1)', opacity: 1 }}
+            style={{ width: 100, height: 100, objectFit: 'contain', marginBottom: 16 }}
             className="lg:w-44 lg:h-44 lg:mb-8"
           />
           <h1 className="font-display" style={{ fontSize: 'clamp(28px,6vw,48px)', fontWeight: 700, color: '#fff', margin: '0 0 10px', letterSpacing: '0.02em', textShadow: '0 2px 12px rgba(0,0,0,0.3)' }}>wênam</h1>
