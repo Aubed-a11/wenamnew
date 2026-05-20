@@ -27,50 +27,39 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-cream flex">
+    <div style={{ minHeight: '100vh', background: '#FAF3E8', display: 'flex', flexDirection: 'column' }}
+      className="lg:flex-row">
 
-      {/* Left panel — desktop only */}
-      <div className="hidden lg:flex lg:w-1/2 bg-primary-dark relative overflow-hidden">
+      {/* Panel image — bannière mobile, colonne desktop */}
+      <div style={{ position: 'relative', overflow: 'hidden', background: '#1A0F00', flexShrink: 0 }}
+        className="w-full h-52 lg:h-auto lg:w-1/2 lg:min-h-screen">
         <img
           src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800"
           alt="Restaurant"
-          className="absolute inset-0 w-full h-full object-cover opacity-30"
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.35 }}
         />
-        <div className="relative z-10 flex flex-col justify-center items-center px-16 text-center">
+        <div style={{ position: 'relative', zIndex: 1, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', padding: '20px 32px' }}>
           <img
-            src="/images/wenam-logo.png" alt="Wenam" style={{ width: 140, height: 140, objectFit: 'contain', marginBottom: 24, display: 'block', margin: '0 auto 24px', mixBlendMode: 'screen' }}
+            src="/images/wenam-logo.png" alt="Wenam"
+            style={{ width: 80, height: 80, objectFit: 'contain', marginBottom: 12, mixBlendMode: 'screen' }}
+            className="lg:w-36 lg:h-36 lg:mb-6"
           />
-          <h1 className="font-display text-5xl font-bold text-white mb-4">Wênam</h1>
-          <p className="font-display text-xl italic" style={{ color: 'rgba(255,255,255,0.8)' }}>
+          <h1 className="font-display" style={{ fontSize: 'clamp(26px,6vw,48px)', fontWeight: 700, color: '#fff', margin: '0 0 6px' }}>Wênam</h1>
+          <p className="font-display" style={{ fontSize: 'clamp(12px,2vw,18px)', fontStyle: 'italic', color: 'rgba(255,255,255,0.8)', margin: 0 }}>
             Cuisine africaine façon Bénin : du cœur à l'assiette
           </p>
         </div>
       </div>
 
-      {/* Right panel */}
+      {/* Formulaire */}
       <div className="flex-1 flex items-center justify-center px-5 py-10 sm:px-10 sm:py-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           style={{ width: '100%', maxWidth: 420 }}
         >
-          {/* Logo mobile */}
-          <div style={{ textAlign: 'center', marginBottom: 24 }}>
-            <img
-              src="/images/wenam-logo.png" alt="Wenam" style={{ width: 90, height: 90, objectFit: 'contain', display: 'block', margin: '0 auto 12px', mixBlendMode: 'multiply' }}
-            />
-            <h2
-              className="font-display lg:hidden"
-              style={{ fontSize: 22, fontWeight: 700, color: '#C4531A', marginBottom: 4 }}
-            >
-              Wênam
-            </h2>
-            <p style={{ fontSize: 11, color: '#C4531A', fontStyle: 'italic' }}>
-              Cuisine africaine façon Bénin
-            </p>
-          </div>
 
-          <div style={{ textAlign: 'center', marginBottom: 28 }}>
+          <div style={{ textAlign: 'center', marginBottom: 28, marginTop: 8 }}>
             <h1 className="font-display" style={{ fontSize: 'clamp(22px,5vw,30px)', fontWeight: 700, marginBottom: 6 }}>
               Bon retour !
             </h1>
