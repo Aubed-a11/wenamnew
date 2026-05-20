@@ -153,23 +153,26 @@ export default function RegisterPage() {
     <div style={{ minHeight: '100vh', background: '#FAF3E8', display: 'flex', flexDirection: 'column' }}
       className="lg:flex-row">
 
-      {/* Panel image — bannière mobile, colonne desktop */}
-      <div style={{ position: 'relative', overflow: 'hidden', background: '#1A0F00', flexShrink: 0 }}
-        className="w-full h-52 lg:h-auto lg:w-1/2 lg:min-h-screen">
-        <img
-          src="https://images.unsplash.com/photo-1603496987674-79600a000f55?w=800"
-          alt="Cuisine"
-          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.35 }}
-        />
-        <div style={{ position: 'relative', zIndex: 1, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', padding: '20px 32px' }}>
+      {/* Panel ardoise — bannière mobile, colonne desktop */}
+      <div style={{
+          position: 'relative', overflow: 'hidden', flexShrink: 0,
+          background: 'linear-gradient(145deg, #2a2a2a 0%, #1a1a1a 50%, #222 100%)',
+          boxShadow: 'inset 0 0 60px rgba(0,0,0,0.5)',
+        }}
+        className="w-full h-56 lg:h-auto lg:w-1/2 lg:min-h-screen">
+        {/* Texture ardoise */}
+        <div style={{ position: 'absolute', inset: 0, backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'4\' height=\'4\' viewBox=\'0 0 4 4\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M1 3h1v1H1V3zm2-2h1v1H3V1z\' fill=\'%23ffffff\' fill-opacity=\'0.03\'/%3E%3C/svg%3E")', opacity: 0.6 }} />
+        {/* Cadre bois */}
+        <div style={{ position: 'absolute', inset: 10, border: '6px solid #5C3A1E', borderRadius: 8, boxShadow: '0 0 0 2px #3B2410, inset 0 0 0 1px rgba(255,255,255,0.05)', pointerEvents: 'none' }} />
+        <div style={{ position: 'relative', zIndex: 1, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', padding: '28px 40px' }}>
           <img
             src="/images/wenam-logo.png" alt="Wenam"
-            style={{ width: 80, height: 80, objectFit: 'contain', marginBottom: 12, mixBlendMode: 'screen' }}
-            className="lg:w-36 lg:h-36 lg:mb-6"
+            style={{ width: 90, height: 90, objectFit: 'contain', marginBottom: 14, filter: 'brightness(0) invert(1)', opacity: 0.95 }}
+            className="lg:w-40 lg:h-40 lg:mb-6"
           />
-          <h1 className="font-display" style={{ fontSize: 'clamp(26px,6vw,48px)', fontWeight: 700, color: '#fff', margin: '0 0 6px' }}>Wênam</h1>
-          <p className="font-display" style={{ fontSize: 'clamp(12px,2vw,18px)', fontStyle: 'italic', color: 'rgba(255,255,255,0.8)', margin: 0 }}>
-            Cuisine africaine façon Bénin : du cœur à l'assiette
+          <h1 className="font-display" style={{ fontSize: 'clamp(26px,6vw,44px)', fontWeight: 700, color: '#fff', margin: '0 0 8px', letterSpacing: '0.02em' }}>wênam</h1>
+          <p className="font-display" style={{ fontSize: 'clamp(11px,1.8vw,16px)', fontStyle: 'italic', color: 'rgba(255,255,255,0.7)', margin: 0, letterSpacing: '0.05em' }}>
+            Better Food, Better Mood
           </p>
         </div>
       </div>
