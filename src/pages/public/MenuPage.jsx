@@ -129,7 +129,7 @@ export default function MenuPage() {
                   </div>
                   <div className="p-3 sm:p-4">
                     <h3 className="font-display font-semibold text-text-dark text-base mb-1 line-clamp-1">{item.name}</h3>
-                    <p className="text-text-light text-xs font-body mb-3 leading-relaxed">{item.description}</p>
+                    <p className="text-text-light font-body mb-3 leading-relaxed" style={{ fontSize: 13 }}>{item.description}</p>
                     <div className="flex items-center gap-3 mb-3 text-xs text-text-light">
                       <span className="flex items-center gap-1"><Star size={11} className="text-amber-400 fill-amber-400" />{item.rating} ({item.reviewCount})</span>
                       <span className="flex items-center gap-1"><Clock size={11} />{item.preparationTime} min</span>

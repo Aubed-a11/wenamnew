@@ -1,8 +1,9 @@
-﻿import { motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { Eye, EyeOff, Lock, Mail, Phone, User } from 'lucide-react'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { Link, useNavigate } from 'react-router-dom'
+import api from '../../api/axios'
 import { useAuthStore } from '../../store'
 
 const COUNTRIES = [
@@ -110,7 +111,9 @@ function PhoneInput({ onChange }) {
 }
 
 export default function RegisterPage() {
+  const [step, setStep] = useState(1)
   const [form, setForm] = useState({ name: '', email: '', password: '', phone: '' })
+  const [code, setCode] = useState('')
   const [showPw, setShowPw] = useState(false)
   const [loading, setLoading] = useState(false)
   const { register } = useAuthStore()
@@ -120,16 +123,29 @@ export default function RegisterPage() {
   const strengthLabel = ['', 'Faible', 'Moyen', 'Fort'][pwStrength]
   const strengthColor = ['', '#f87171', '#fbbf24', '#22c55e'][pwStrength]
 
-  const handleSubmit = async (e) => {
+  const handleSendCode = async (e) => {
     e.preventDefault()
     if (form.password.length < 6) { toast.error('Mot de passe trop court (min. 6 caractères)'); return }
     setLoading(true)
     try {
-      await register(form.name, form.email, form.password, form.phone)
+      await api.post('/auth/send-verification', { email: form.email })
+      toast.success('Code envoyé à ' + form.email)
+      setStep(2)
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Erreur lors de l'envoi du code")
+    } finally { setLoading(false) }
+  }
+
+  const handleVerifyAndRegister = async (e) => {
+    e.preventDefault()
+    if (code.length !== 6) { toast.error('Le code doit contenir 6 chiffres'); return }
+    setLoading(true)
+    try {
+      await register(form.name, form.email, form.password, form.phone, code)
       toast.success('Compte créé ! Bienvenue chez Wênam')
       navigate('/')
     } catch (err) {
-      toast.error(err.response?.data?.message || "Erreur lors de l'inscription")
+      toast.error(err.response?.data?.message || 'Code invalide ou expiré')
     } finally { setLoading(false) }
   }
 
@@ -176,103 +192,157 @@ export default function RegisterPage() {
             <h1 className="font-display" style={{ fontSize: 'clamp(22px,5vw,30px)', fontWeight: 700, marginBottom: 6 }}>
               Créer un compte
             </h1>
-            <p style={{ fontSize: 13, color: '#8B6B3D' }}>Rejoignez la famille Wênam</p>
+            <p style={{ fontSize: 13, color: '#8B6B3D' }}>
+              {step === 1 ? 'Rejoignez la famille Wênam' : `Code envoyé à ${form.email}`}
+            </p>
           </div>
 
-          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          {/* Indicateur d'étape */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 28 }}>
+            {[1, 2].map((s) => (
+              <div key={s} style={{ flex: 1, height: 4, borderRadius: 99, background: s <= step ? '#C4531A' : '#F5ECD7', transition: 'background 0.3s' }} />
+            ))}
+          </div>
 
-            {/* Nom */}
-            <div>
-              <label style={{ display: 'block', fontSize: 11, fontWeight: 600, color: '#8B6B3D', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                Nom complet
-              </label>
-              <div style={{ position: 'relative' }}>
-                <User size={15} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: '#8B6B3D' }} />
+          {step === 1 ? (
+            <form onSubmit={handleSendCode} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+
+              {/* Nom */}
+              <div>
+                <label style={{ display: 'block', fontSize: 11, fontWeight: 600, color: '#8B6B3D', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  Nom complet
+                </label>
+                <div style={{ position: 'relative' }}>
+                  <User size={15} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: '#8B6B3D' }} />
+                  <input
+                    type="text"
+                    value={form.name}
+                    onChange={e => setForm({ ...form, name: e.target.value })}
+                    placeholder="Sophie Martel"
+                    required
+                    className="input"
+                    style={{ paddingLeft: 36, width: '100%', boxSizing: 'border-box' }}
+                  />
+                </div>
+              </div>
+
+              {/* Email */}
+              <div>
+                <label style={{ display: 'block', fontSize: 11, fontWeight: 600, color: '#8B6B3D', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  Email
+                </label>
+                <div style={{ position: 'relative' }}>
+                  <Mail size={15} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: '#8B6B3D' }} />
+                  <input
+                    type="email"
+                    value={form.email}
+                    onChange={e => setForm({ ...form, email: e.target.value })}
+                    placeholder="votre@email.com"
+                    required
+                    className="input"
+                    style={{ paddingLeft: 36, width: '100%', boxSizing: 'border-box' }}
+                  />
+                </div>
+              </div>
+
+              {/* Téléphone */}
+              <div>
+                <label style={{ display: 'block', fontSize: 11, fontWeight: 600, color: '#8B6B3D', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  Téléphone
+                </label>
+                <PhoneInput onChange={phone => setForm({ ...form, phone })} />
+              </div>
+
+              {/* Mot de passe */}
+              <div>
+                <label style={{ display: 'block', fontSize: 11, fontWeight: 600, color: '#8B6B3D', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  Mot de passe
+                </label>
+                <div style={{ position: 'relative' }}>
+                  <Lock size={15} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: '#8B6B3D' }} />
+                  <input
+                    type={showPw ? 'text' : 'password'}
+                    value={form.password}
+                    onChange={e => setForm({ ...form, password: e.target.value })}
+                    placeholder="Min. 6 caractères"
+                    required
+                    className="input"
+                    style={{ paddingLeft: 36, paddingRight: 40, width: '100%', boxSizing: 'border-box' }}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPw(!showPw)}
+                    style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: '#8B6B3D', padding: 0 }}
+                  >
+                    {showPw ? <EyeOff size={15} /> : <Eye size={15} />}
+                  </button>
+                </div>
+                {form.password && (
+                  <div style={{ marginTop: 8, display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <div style={{ flex: 1, height: 5, background: '#F5ECD7', borderRadius: 99, overflow: 'hidden' }}>
+                      <div style={{ height: '100%', borderRadius: 99, background: strengthColor, width: `${(pwStrength / 3) * 100}%`, transition: 'width 0.3s, background 0.3s' }} />
+                    </div>
+                    <span style={{ fontSize: 11, color: '#8B6B3D' }}>{strengthLabel}</span>
+                  </div>
+                )}
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="btn-primary"
+                style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, padding: '12px 20px', marginTop: 4 }}
+              >
+                {loading && (
+                  <span style={{ width: 14, height: 14, border: '2px solid rgba(255,255,255,0.3)', borderTopColor: '#fff', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+                )}
+                {loading ? 'Envoi...' : 'Envoyer le code de vérification'}
+              </button>
+            </form>
+          ) : (
+            <form onSubmit={handleVerifyAndRegister} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+              <div style={{ background: '#FFF7ED', border: '1px solid #FDE68A', borderRadius: 12, padding: '14px 16px', fontSize: 13, color: '#92400E' }}>
+                Un code à 6 chiffres a été envoyé à <strong>{form.email}</strong>. Vérifiez votre boîte mail.
+              </div>
+
+              <div>
+                <label style={{ display: 'block', fontSize: 11, fontWeight: 600, color: '#8B6B3D', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  Code de vérification
+                </label>
                 <input
                   type="text"
-                  value={form.name}
-                  onChange={e => setForm({ ...form, name: e.target.value })}
-                  placeholder="Sophie Martel"
+                  inputMode="numeric"
+                  maxLength={6}
+                  value={code}
+                  onChange={e => setCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                  placeholder="123456"
                   required
                   className="input"
-                  style={{ paddingLeft: 36, width: '100%', boxSizing: 'border-box' }}
+                  style={{ width: '100%', boxSizing: 'border-box', textAlign: 'center', fontSize: 24, letterSpacing: '0.3em', fontWeight: 700 }}
                 />
               </div>
-            </div>
 
-            {/* Email */}
-            <div>
-              <label style={{ display: 'block', fontSize: 11, fontWeight: 600, color: '#8B6B3D', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                Email
-              </label>
-              <div style={{ position: 'relative' }}>
-                <Mail size={15} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: '#8B6B3D' }} />
-                <input
-                  type="email"
-                  value={form.email}
-                  onChange={e => setForm({ ...form, email: e.target.value })}
-                  placeholder="votre@email.com"
-                  required
-                  className="input"
-                  style={{ paddingLeft: 36, width: '100%', boxSizing: 'border-box' }}
-                />
-              </div>
-            </div>
+              <button
+                type="submit"
+                disabled={loading || code.length !== 6}
+                className="btn-primary"
+                style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, padding: '12px 20px' }}
+              >
+                {loading && (
+                  <span style={{ width: 14, height: 14, border: '2px solid rgba(255,255,255,0.3)', borderTopColor: '#fff', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+                )}
+                {loading ? 'Création...' : 'Créer mon compte'}
+              </button>
 
-            {/* Téléphone */}
-            <div>
-              <label style={{ display: 'block', fontSize: 11, fontWeight: 600, color: '#8B6B3D', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                Téléphone
-              </label>
-              <PhoneInput onChange={phone => setForm({ ...form, phone })} />
-            </div>
-
-            {/* Mot de passe */}
-            <div>
-              <label style={{ display: 'block', fontSize: 11, fontWeight: 600, color: '#8B6B3D', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                Mot de passe
-              </label>
-              <div style={{ position: 'relative' }}>
-                <Lock size={15} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: '#8B6B3D' }} />
-                <input
-                  type={showPw ? 'text' : 'password'}
-                  value={form.password}
-                  onChange={e => setForm({ ...form, password: e.target.value })}
-                  placeholder="Min. 6 caractères"
-                  required
-                  className="input"
-                  style={{ paddingLeft: 36, paddingRight: 40, width: '100%', boxSizing: 'border-box' }}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPw(!showPw)}
-                  style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: '#8B6B3D', padding: 0 }}
-                >
-                  {showPw ? <EyeOff size={15} /> : <Eye size={15} />}
-                </button>
-              </div>
-              {form.password && (
-                <div style={{ marginTop: 8, display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <div style={{ flex: 1, height: 5, background: '#F5ECD7', borderRadius: 99, overflow: 'hidden' }}>
-                    <div style={{ height: '100%', borderRadius: 99, background: strengthColor, width: `${(pwStrength / 3) * 100}%`, transition: 'width 0.3s, background 0.3s' }} />
-                  </div>
-                  <span style={{ fontSize: 11, color: '#8B6B3D' }}>{strengthLabel}</span>
-                </div>
-              )}
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="btn-primary"
-              style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, padding: '12px 20px', marginTop: 4 }}
-            >
-              {loading && (
-                <span style={{ width: 14, height: 14, border: '2px solid rgba(255,255,255,0.3)', borderTopColor: '#fff', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
-              )}
-              {loading ? 'Création...' : 'Créer mon compte'}
-            </button>
-          </form>
+              <button
+                type="button"
+                onClick={() => setStep(1)}
+                style={{ background: 'none', border: 'none', color: '#8B6B3D', fontSize: 13, cursor: 'pointer', textDecoration: 'underline' }}
+              >
+                Modifier mes informations
+              </button>
+            </form>
+          )}
 
           <p style={{ textAlign: 'center', marginTop: 24, fontSize: 13, color: '#8B6B3D' }}>
             Déjà un compte ?{' '}

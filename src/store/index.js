@@ -37,10 +37,10 @@ export const useAuthStore = create(
       },
 
       // Inscription client
-      register: async (name, email, password, phone) => {
+      register: async (name, email, password, phone, verificationCode) => {
         set({ isLoading: true })
         try {
-          const { data } = await api.post('/auth/register', { name, email, password, phone })
+          const { data } = await api.post('/auth/register', { name, email, password, phone, verificationCode })
           localStorage.setItem('accessToken', data.accessToken)
           set({ user: data.user, accessToken: data.accessToken })
           return data.user
@@ -76,7 +76,7 @@ export const useAuthStore = create(
       },
     }),
     {
-      name: 'Wênam-auth',
+      name: 'Wï¿½nam-auth',
       // Ne persiste que user et accessToken (pas les fonctions)
       partialize: (s) => ({ user: s.user, accessToken: s.accessToken }),
     }
@@ -112,7 +112,7 @@ export const useCartStore = create(
       subtotal: () => get().items.reduce((s, i) => s + i.price * i.quantity, 0),
       count: () => get().items.reduce((s, i) => s + i.quantity, 0),
     }),
-    { name: 'Wênam-cart' }
+    { name: 'Wï¿½nam-cart' }
   )
 )
 
