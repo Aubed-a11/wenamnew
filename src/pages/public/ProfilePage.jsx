@@ -11,26 +11,25 @@ const STATUS_LABELS = { pending:'En attente', confirmed:'Confirmée', preparing:
 const STATUS_COLORS = { pending:'bg-amber-100 text-amber-700', confirmed:'bg-blue-100 text-blue-700', preparing:'bg-orange-100 text-orange-700', out_for_delivery:'bg-purple-100 text-purple-700', delivered:'bg-green-100 text-green-700', cancelled:'bg-red-100 text-red-700' }
 
 const css = `
-  .profile-layout { display: flex; flex-direction: column; gap: 20px; }
-  @media (min-width: 640px) { .profile-layout { flex-direction: row; gap: 24px; } }
-  .profile-sidebar { width: 100%; }
-  @media (min-width: 640px) { .profile-sidebar { width: 220px; flex-shrink: 0; } }
+  /* Desktop layout */
+  .profile-layout { display: flex; gap: 24px; }
+  .profile-sidebar { width: 220px; flex-shrink: 0; }
+  .mobile-header { display: none; }
 
-  /* Tabs: horizontal scroll on mobile */
-  .tab-list { display: flex; flex-direction: column; gap: 4px; }
+  /* Mobile layout */
   @media (max-width: 639px) {
-    .tab-list { flex-direction: row; overflow-x: auto; gap: 8px; padding-bottom: 4px; scrollbar-width: none; }
-    .tab-btn { white-space: nowrap; flex-shrink: 0; padding: 8px 14px !important; }
-    .sidebar-user { display: none; }
+    .profile-layout { display: block; }
+    .profile-sidebar { display: none; }
+    .mobile-header { display: block; margin-bottom: 16px; }
+    .mobile-tabs { display: flex; gap: 0; background: #fff; border-radius: 14px; border: 1px solid #e5e7eb; overflow: hidden; margin-bottom: 16px; }
+    .mobile-tab-btn { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 12px 4px; border: none; cursor: pointer; font-size: 10px; font-weight: 600; font-family: Lato, sans-serif; border-right: 1px solid #f0e8dd; }
+    .mobile-tab-btn:last-child { border-right: none; }
   }
 
-  /* Orders: stack on mobile */
+  /* Orders */
   .order-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; border-radius: 12px; border: 1px solid #e5e7eb; gap: 8px; flex-wrap: wrap; }
   .order-meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-  @media (max-width: 480px) {
-    .order-meta { gap: 8px; }
-    .order-track { font-size: 11px !important; }
-  }
+  @media (max-width: 480px) { .order-meta { gap: 8px; } .order-track { font-size: 11px !important; } }
 
   .profile-card { background: #fff; border-radius: 20px; border: 1px solid #e5e7eb; box-shadow: 0 2px 12px rgba(0,0,0,0.06); padding: 20px; }
   @media (min-width: 640px) { .profile-card { padding: 24px; } }
@@ -82,26 +81,50 @@ export default function ProfilePage() {
     <div className="min-h-screen bg-cream">
       <style>{css}</style>
       <Navbar />
-      <div style={{ maxWidth: 900, margin: '0 auto', padding: '32px 16px' }}>
+      <div style={{ maxWidth: 900, margin: '0 auto', padding: '24px 16px' }}>
+
+        {/* Header mobile : nom + déconnexion */}
+        <div className="mobile-header">
+          <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:12 }}>
+            <div style={{ display:'flex', alignItems:'center', gap:10 }}>
+              <div style={{ width:38, height:38, borderRadius:'50%', background:'rgba(196,83,26,0.15)', display:'flex', alignItems:'center', justifyContent:'center', color:'#C4531A', fontWeight:700, fontSize:16 }}>{user?.name?.[0]}</div>
+              <div>
+                <p style={{ fontWeight:700, fontSize:13, margin:0, color:'#1A0F00' }}>{user?.name}</p>
+                <p style={{ fontSize:11, color:'#8B6B3D', margin:0 }}>{user?.email}</p>
+              </div>
+            </div>
+            <button onClick={handleLogout} style={{ display:'flex', alignItems:'center', gap:6, background:'none', border:'1px solid #fca5a5', borderRadius:8, padding:'6px 12px', color:'#ef4444', fontSize:12, fontWeight:600, cursor:'pointer' }}>
+              <LogOut size={13} />Déconnexion
+            </button>
+          </div>
+
+          {/* Onglets mobiles */}
+          <div className="mobile-tabs">
+            {TABS.map(([key,label,Icon])=>(
+              <button key={key} onClick={()=>setTab(key)} className="mobile-tab-btn"
+                style={{ background: tab===key ? '#C4531A' : '#fff', color: tab===key ? '#fff' : '#5C3D11' }}>
+                <Icon size={18} />
+                {label}
+              </button>
+            ))}
+          </div>
+        </div>
+
         <div className="profile-layout">
 
-          {/* Sidebar */}
+          {/* Sidebar desktop */}
           <div className="profile-sidebar">
             <div className="profile-card">
-              {/* User info — hidden on mobile */}
-              <div className="sidebar-user" style={{ display:'flex', alignItems:'center', gap:12, marginBottom:20, padding:'4px 4px' }}>
-                <div style={{ width:44, height:44, borderRadius:'50%', background:'rgba(196,83,26,0.15)', display:'flex', alignItems:'center', justifyContent:'center', color:'#C4531A', fontWeight:700, fontSize:18, flexShrink:0 }}>
-                  {user?.name?.[0]}
-                </div>
+              <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:20 }}>
+                <div style={{ width:44, height:44, borderRadius:'50%', background:'rgba(196,83,26,0.15)', display:'flex', alignItems:'center', justifyContent:'center', color:'#C4531A', fontWeight:700, fontSize:18, flexShrink:0 }}>{user?.name?.[0]}</div>
                 <div style={{ minWidth:0 }}>
                   <p style={{ fontWeight:600, fontSize:13, margin:0, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{user?.name}</p>
                   <p style={{ fontSize:11, color:'#8B6B3D', margin:0, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{user?.email}</p>
                 </div>
               </div>
-
-              <div className="tab-list">
+              <div style={{ display:'flex', flexDirection:'column', gap:4 }}>
                 {TABS.map(([key,label,Icon])=>(
-                  <button key={key} onClick={()=>setTab(key)} className="tab-btn"
+                  <button key={key} onClick={()=>setTab(key)}
                     style={{ display:'flex', alignItems:'center', gap:10, padding:'10px 12px', borderRadius:10, fontSize:13, fontWeight:600, border:'none', cursor:'pointer', transition:'all 0.2s', background: tab===key ? '#C4531A' : 'transparent', color: tab===key ? '#fff' : '#5C3D11', width:'100%', textAlign:'left' }}>
                     <Icon size={15} />{label}
                   </button>
