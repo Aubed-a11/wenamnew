@@ -10,16 +10,10 @@ const S_COLOR = { pending:'#B7791F', confirmed:'#2563EB', preparing:'#C4531A', o
 const S_BG    = { pending:'#FEFCE8', confirmed:'#EFF6FF', preparing:'#FFF7ED', out_for_delivery:'#F5F3FF', delivered:'#F0FDF4', cancelled:'#FEF2F2' }
 
 const css = `
-  .orders-filters { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
-  .orders-search { flex: 1; min-width: 140px; }
-  .orders-select { max-width: 160px; min-width: 0; }
+  .orders-filters { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
+  .orders-search { flex: 1; min-width: 180px; }
   .drawer { width: 420px; }
-  @media (max-width: 640px) { .drawer { width: min(420px, 100vw); } }
-  @media (max-width: 480px) {
-    .drawer { width: 100vw; }
-    .orders-filters { gap: 6px; }
-    .orders-select { max-width: 130px; font-size: 12px !important; }
-  }
+  @media (max-width: 480px) { .drawer { width: 100vw; } }
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
 `
 
@@ -71,7 +65,6 @@ export default function OrdersPage() {
             style={{ width:'100%', padding:'9px 12px 9px 34px', border:'1px solid #D4B896', borderRadius:10, fontSize:13, boxSizing:'border-box', outline:'none', background:'#fff' }} />
         </div>
         <select value={statusFilter} onChange={e => setStatusFilter(e.target.value)}
-          className="orders-select"
           style={{ padding:'9px 12px', border:'1px solid #D4B896', borderRadius:10, fontSize:13, background:'#fff', outline:'none' }}>
           <option value="">Tous les statuts</option>
           {Object.entries(S_LABEL).map(([k,v]) => <option key={k} value={k}>{v}</option>)}
@@ -84,7 +77,7 @@ export default function OrdersPage() {
       </div>
 
       <div style={{ background:'#fff', borderRadius:16, border:'1px solid #D4B896', overflow:'hidden' }}>
-        <div style={{ overflowX:'auto', WebkitOverflowScrolling:'touch' }}>
+        <div style={{ overflowX:'auto' }}>
           <table style={{ width:'100%', borderCollapse:'collapse', fontSize:13, minWidth:600 }}>
             <thead>
               <tr style={{ background:'#FAF3E8', borderBottom:'1px solid #D4B896' }}>

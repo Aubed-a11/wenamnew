@@ -1,8 +1,9 @@
 import { motion } from 'framer-motion'
 import { Eye, EyeOff, Lock, Mail, Phone, User } from 'lucide-react'
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { Link, useNavigate } from 'react-router-dom'
+import api from '../../api/axios'
 import { useAuthStore } from '../../store'
 
 const COUNTRIES = [
@@ -36,6 +37,10 @@ const COUNTRIES = [
   { code: '+250', flag: '🇷🇼', name: 'Rwanda' },
   { code: '+27',  flag: '🇿🇦', name: 'Afrique du Sud' },
   { code: '+251', flag: '🇪🇹', name: 'Éthiopie' },
+  { code: '+252', flag: '🇸🇴', name: 'Somalie' },
+  { code: '+258', flag: '🇲🇿', name: 'Mozambique' },
+  { code: '+260', flag: '🇿🇲', name: 'Zambie' },
+  { code: '+263', flag: '🇿🇼', name: 'Zimbabwe' },
   { code: '+33',  flag: '🇫🇷', name: 'France' },
   { code: '+32',  flag: '🇧🇪', name: 'Belgique' },
   { code: '+41',  flag: '🇨🇭', name: 'Suisse' },
@@ -54,31 +59,6 @@ const COUNTRIES = [
   { code: '+55',  flag: '🇧🇷', name: 'Brésil' },
 ]
 
-// ── Vérification silencieuse que le domaine email accepte des mails ────────────
-// Utilise l'API publique gratuite mailcheck.ai
-// Retourne true si l'email semble valide/livrable, false sinon
-async function checkEmailExists(email) {
-  try {
-    // Format de base d'abord
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return false
-
-    const res = await fetch(
-      `https://api.mailcheck.ai/email/${encodeURIComponent(email)}`,
-      { signal: AbortSignal.timeout(4000) }
-    )
-    if (!res.ok) return true // si l'API est down, on laisse passer
-
-    const data = await res.json()
-    // data.status: "valid" | "invalid" | "disposable" | "unknown"
-    // data.disposable: true si adresse jetable (yopmail, etc.)
-    if (data.disposable === true) return 'disposable'
-    if (data.status === 'invalid') return false
-    return true
-  } catch {
-    return true // timeout ou erreur réseau → on ne bloque pas
-  }
-}
-
 function PhoneInput({ onChange }) {
   const [dialCode, setDialCode] = useState('+212')
   const [number, setNumber] = useState('')
@@ -88,6 +68,7 @@ function PhoneInput({ onChange }) {
     setNumber(val)
     onChange(`${dialCode}${val}`)
   }
+
   const handleDial = (e) => {
     const code = e.target.value
     setDialCode(code)
@@ -97,40 +78,44 @@ function PhoneInput({ onChange }) {
   return (
     <div style={{ display: 'flex', gap: 8 }}>
       <div style={{ position: 'relative', flexShrink: 0 }}>
-        <select value={dialCode} onChange={handleDial}
-          style={{ height: 44, padding: '0 28px 0 10px', border: '1px solid #D4B896', borderRadius: 8, fontSize: 13, fontFamily: 'Lato,sans-serif', background: '#FAF3E8', color: '#1A0F00', cursor: 'pointer', appearance: 'none', outline: 'none', minWidth: 95 }}>
-          {COUNTRIES.map((c, i) => <option key={i} value={c.code}>{c.flag} {c.code}</option>)}
+        <select
+          value={dialCode}
+          onChange={handleDial}
+          style={{
+            height: '100%', padding: '0 28px 0 10px',
+            border: '1px solid #D4B896', borderRadius: 8, fontSize: 13,
+            fontFamily: 'Lato,sans-serif', background: '#FAF3E8', color: '#1A0F00',
+            cursor: 'pointer', appearance: 'none', outline: 'none', minWidth: 95,
+          }}
+        >
+          {COUNTRIES.map((c, i) => (
+            <option key={i} value={c.code}>{c.flag} {c.code}</option>
+          ))}
         </select>
         <span style={{ position: 'absolute', right: 8, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', fontSize: 10, color: '#8B6B3D' }}>▼</span>
       </div>
       <div style={{ position: 'relative', flex: 1 }}>
         <Phone size={15} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: '#8B6B3D' }} />
-        <input type="text" inputMode="numeric" value={number} onChange={handleNumber}
-          placeholder="612345678" className="input"
-          style={{ paddingLeft: 36, width: '100%', boxSizing: 'border-box' }} />
+        <input
+          type="text"
+          inputMode="numeric"
+          value={number}
+          onChange={handleNumber}
+          placeholder="612345678"
+          className="input"
+          style={{ paddingLeft: 36, width: '100%', boxSizing: 'border-box' }}
+        />
       </div>
     </div>
   )
 }
 
-// États possibles pour l'indicateur email
-// idle | checking | valid | invalid | disposable
-const EMAIL_STATUS = {
-  idle:        { color: '#D4B896', icon: null,  tip: null },
-  checking:    { color: '#D4B896', icon: 'spin', tip: 'Vérification...' },
-  valid:       { color: '#22c55e', icon: '✓',   tip: 'Email valide' },
-  invalid:     { color: '#ef4444', icon: '✗',   tip: 'Adresse email introuvable' },
-  disposable:  { color: '#f59e0b', icon: '!',   tip: 'Adresse temporaire non acceptée' },
-}
-
-const css = `@keyframes spin { to { transform: rotate(360deg); } }`
-
 export default function RegisterPage() {
+  const [step, setStep] = useState(1)
   const [form, setForm] = useState({ name: '', email: '', password: '', phone: '' })
+  const [code, setCode] = useState('')
   const [showPw, setShowPw] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [emailStatus, setEmailStatus] = useState('idle')
-  const debounceRef = useRef(null)
   const { register } = useAuthStore()
   const navigate = useNavigate()
 
@@ -138,196 +123,232 @@ export default function RegisterPage() {
   const strengthLabel = ['', 'Faible', 'Moyen', 'Fort'][pwStrength]
   const strengthColor = ['', '#f87171', '#fbbf24', '#22c55e'][pwStrength]
 
-  // Vérification déclenchée dès que l'email change — debounce 800ms
-  const handleEmailChange = (e) => {
-    const email = e.target.value
-    setForm({ ...form, email })
-    setEmailStatus('idle')
-
-    clearTimeout(debounceRef.current)
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return
-
-    setEmailStatus('checking')
-    debounceRef.current = setTimeout(async () => {
-      const result = await checkEmailExists(email)
-      if (result === 'disposable') setEmailStatus('disposable')
-      else if (result === false) setEmailStatus('invalid')
-      else setEmailStatus('valid')
-    }, 800)
-  }
-
-  const handleSubmit = async (e) => {
+  const handleSendCode = async (e) => {
     e.preventDefault()
     if (form.password.length < 6) { toast.error('Mot de passe trop court (min. 6 caractères)'); return }
-
-    // Si la vérif est encore en cours, on attend
-    if (emailStatus === 'checking') {
-      toast.error('Vérification de l\'email en cours, veuillez patienter...')
-      return
-    }
-    // Bloquer les adresses invalides ou jetables
-    if (emailStatus === 'invalid') {
-      toast.error('Cette adresse email semble invalide ou inexistante')
-      return
-    }
-    if (emailStatus === 'disposable') {
-      toast.error('Les adresses email temporaires ne sont pas acceptées')
-      return
-    }
-
     setLoading(true)
     try {
-      await register(form.name, form.email, form.password, form.phone)
-      toast.success('Compte créé ! Bienvenue chez Wênam !')
-      navigate('/')
+      await api.post('/auth/send-verification', { email: form.email })
+      toast.success('Code envoyé à ' + form.email)
+      setStep(2)
     } catch (err) {
-      toast.error(err.response?.data?.message || "Erreur lors de l'inscription")
-    } finally {
-      setLoading(false)
-    }
+      toast.error(err.response?.data?.message || "Erreur lors de l'envoi du code")
+    } finally { setLoading(false) }
   }
 
-  const st = EMAIL_STATUS[emailStatus]
+  const handleVerifyAndRegister = async (e) => {
+    e.preventDefault()
+    if (code.length !== 6) { toast.error('Le code doit contenir 6 chiffres'); return }
+    setLoading(true)
+    try {
+      await register(form.name, form.email, form.password, form.phone, code)
+      toast.success('Compte créé ! Bienvenue chez Wênam')
+      navigate('/')
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Code invalide ou expiré')
+    } finally { setLoading(false) }
+  }
 
   return (
-    <div className="min-h-screen bg-cream flex">
-      <style>{css}</style>
+    <div className="flex flex-col lg:flex-row min-h-screen">
+      <style>{`
+        @keyframes goldFlow {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+        .gold-panel {
+          background: linear-gradient(135deg, #3D1A00, #8B3A0F, #C4531A, #E8763A, #F59E0B, #C4531A, #8B3A0F, #3D1A00);
+          background-size: 400% 400%;
+          animation: goldFlow 8s ease infinite;
+        }
+      `}</style>
 
-      {/* Left panel desktop */}
-      <div className="hidden lg:flex lg:w-1/2 bg-primary-dark relative overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=800" alt="Cuisine"
-          className="absolute inset-0 w-full h-full object-cover opacity-30" />
-        <div className="relative z-10 flex flex-col justify-center items-center px-8 lg:px-16 text-center">
-          <img src="/images/wenam-logo.png" alt="Wenam"
-            style={{ width: 'clamp(80px,10vw,140px)', height: 'clamp(80px,10vw,140px)', objectFit: 'contain', display: 'block', margin: '0 auto 24px', mixBlendMode: 'screen' }} />
-          <h1 className="font-display text-3xl lg:text-5xl font-bold text-white mb-4">Wênam</h1>
-          <p className="font-display text-xl italic" style={{ color: 'rgba(255,255,255,0.8)' }}>
-            Cuisine africaine façon Bénin : du cœur à l'assiette
+      {/* Panel doré animé — bannière mobile, colonne desktop */}
+      <div className="gold-panel w-full lg:w-1/2 lg:min-h-screen"
+        style={{ position: 'relative', overflow: 'hidden', flexShrink: 0, minHeight: 220 }}>
+        <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.18)' }} />
+        <div style={{ position: 'relative', zIndex: 1, height: '100%', minHeight: 220, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', padding: '32px 40px' }}>
+          <img
+            src="/images/wenam-logo.png" alt="Wenam"
+            style={{ width: 100, height: 100, objectFit: 'contain', marginBottom: 16 }}
+            className="lg:w-44 lg:h-44 lg:mb-8"
+          />
+          <h1 className="font-display" style={{ fontSize: 'clamp(28px,6vw,48px)', fontWeight: 700, color: '#fff', margin: '0 0 10px', letterSpacing: '0.02em', textShadow: '0 2px 12px rgba(0,0,0,0.3)' }}>wênam</h1>
+          <p className="font-display" style={{ fontSize: 'clamp(12px,1.8vw,17px)', fontStyle: 'italic', color: 'rgba(255,255,255,0.9)', margin: 0, letterSpacing: '0.06em', textShadow: '0 1px 6px rgba(0,0,0,0.3)' }}>
+            Better Food, Better Mood
           </p>
         </div>
       </div>
 
-      {/* Right panel */}
+      {/* Formulaire */}
       <div className="flex-1 flex items-center justify-center px-5 py-10 sm:px-10 sm:py-16">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-          style={{ width: '100%', maxWidth: 420 }}>
-
-          {/* Logo mobile */}
-          <div style={{ textAlign: 'center', marginBottom: 24 }}>
-            <img src="/images/wenam-logo.png" alt="Wenam"
-              style={{ width: 90, height: 90, objectFit: 'contain', display: 'block', margin: '0 auto 12px', mixBlendMode: 'multiply' }} />
-            <h2 className="font-display lg:hidden" style={{ fontSize: 22, fontWeight: 700, color: '#C4531A', marginBottom: 4 }}>Wênam</h2>
-            <p style={{ fontSize: 11, color: '#C4531A', fontStyle: 'italic' }}>Cuisine africaine façon Bénin</p>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          style={{ width: '100%', maxWidth: 420 }}
+        >
+          <div style={{ textAlign: 'center', marginBottom: 28, marginTop: 8 }}>
+            <h1 className="font-display" style={{ fontSize: 'clamp(22px,5vw,30px)', fontWeight: 700, marginBottom: 6 }}>
+              Créer un compte
+            </h1>
+            <p style={{ fontSize: 13, color: '#8B6B3D' }}>
+              {step === 1 ? 'Rejoignez la famille Wênam' : `Code envoyé à ${form.email}`}
+            </p>
           </div>
 
-          <div style={{ textAlign: 'center', marginBottom: 28 }}>
-            <h1 className="font-display" style={{ fontSize: 'clamp(22px,5vw,30px)', fontWeight: 700, marginBottom: 6 }}>Créer un compte</h1>
-            <p style={{ fontSize: 13, color: '#8B6B3D' }}>Rejoignez la famille Wênam</p>
+          {/* Indicateur d'étape */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 28 }}>
+            {[1, 2].map((s) => (
+              <div key={s} style={{ flex: 1, height: 4, borderRadius: 99, background: s <= step ? '#C4531A' : '#F5ECD7', transition: 'background 0.3s' }} />
+            ))}
           </div>
 
-          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          {step === 1 ? (
+            <form onSubmit={handleSendCode} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
 
-            {/* Nom */}
-            <div>
-              <label style={{ display: 'block', fontSize: 11, fontWeight: 600, color: '#8B6B3D', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Nom complet</label>
-              <div style={{ position: 'relative' }}>
-                <User size={15} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: '#8B6B3D' }} />
-                <input type="text" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })}
-                  placeholder="Sophie Martel" required className="input"
-                  style={{ paddingLeft: 36, width: '100%', boxSizing: 'border-box' }} />
-              </div>
-            </div>
-
-            {/* Email avec indicateur */}
-            <div>
-              <label style={{ display: 'block', fontSize: 11, fontWeight: 600, color: '#8B6B3D', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Email</label>
-              <div style={{ position: 'relative' }}>
-                <Mail size={15} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: '#8B6B3D' }} />
-                <input type="email" value={form.email} onChange={handleEmailChange}
-                  placeholder="votre@email.com" required className="input"
-                  style={{
-                    paddingLeft: 36, paddingRight: 36, width: '100%', boxSizing: 'border-box',
-                    borderColor: emailStatus === 'invalid' || emailStatus === 'disposable' ? st.color
-                      : emailStatus === 'valid' ? st.color : undefined,
-                    transition: 'border-color 0.2s',
-                  }} />
-
-                {/* Indicateur à droite */}
-                <div style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', display: 'flex', alignItems: 'center' }}>
-                  {emailStatus === 'checking' && (
-                    <span style={{ width: 14, height: 14, border: `2px solid #D4B896`, borderTopColor: '#C4531A', borderRadius: '50%', animation: 'spin 0.7s linear infinite', display: 'inline-block' }} />
-                  )}
-                  {emailStatus === 'valid' && (
-                    <span style={{ color: '#22c55e', fontWeight: 700, fontSize: 15 }}>✓</span>
-                  )}
-                  {(emailStatus === 'invalid' || emailStatus === 'disposable') && (
-                    <span style={{ color: st.color, fontWeight: 700, fontSize: 15 }}>✗</span>
-                  )}
+              {/* Nom */}
+              <div>
+                <label style={{ display: 'block', fontSize: 11, fontWeight: 600, color: '#8B6B3D', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  Nom complet
+                </label>
+                <div style={{ position: 'relative' }}>
+                  <User size={15} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: '#8B6B3D' }} />
+                  <input
+                    type="text"
+                    value={form.name}
+                    onChange={e => setForm({ ...form, name: e.target.value })}
+                    placeholder="Sophie Martel"
+                    required
+                    className="input"
+                    style={{ paddingLeft: 36, width: '100%', boxSizing: 'border-box' }}
+                  />
                 </div>
               </div>
 
-              {/* Message sous le champ */}
-              {emailStatus === 'invalid' && (
-                <p style={{ fontSize: 11, color: '#ef4444', marginTop: 5, display: 'flex', alignItems: 'center', gap: 4 }}>
-                  Adresse email introuvable ou invalide
-                </p>
-              )}
-              {emailStatus === 'disposable' && (
-                <p style={{ fontSize: 11, color: '#f59e0b', marginTop: 5 }}>
-                  Les adresses temporaires (Yopmail, etc.) ne sont pas acceptées
-                </p>
-              )}
-              {emailStatus === 'valid' && (
-                <p style={{ fontSize: 11, color: '#22c55e', marginTop: 5 }}>
-                  Email vérifié
-                </p>
-              )}
-            </div>
-
-            {/* Téléphone */}
-            <div>
-              <label style={{ display: 'block', fontSize: 11, fontWeight: 600, color: '#8B6B3D', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Téléphone</label>
-              <PhoneInput onChange={phone => setForm({ ...form, phone })} />
-            </div>
-
-            {/* Mot de passe */}
-            <div>
-              <label style={{ display: 'block', fontSize: 11, fontWeight: 600, color: '#8B6B3D', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Mot de passe</label>
-              <div style={{ position: 'relative' }}>
-                <Lock size={15} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: '#8B6B3D' }} />
-                <input type={showPw ? 'text' : 'password'} value={form.password}
-                  onChange={e => setForm({ ...form, password: e.target.value })}
-                  placeholder="Min. 6 caractères" required className="input"
-                  style={{ paddingLeft: 36, paddingRight: 40, width: '100%', boxSizing: 'border-box' }} />
-                <button type="button" onClick={() => setShowPw(!showPw)}
-                  style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: '#8B6B3D', padding: 0 }}>
-                  {showPw ? <EyeOff size={15} /> : <Eye size={15} />}
-                </button>
+              {/* Email */}
+              <div>
+                <label style={{ display: 'block', fontSize: 11, fontWeight: 600, color: '#8B6B3D', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  Email
+                </label>
+                <div style={{ position: 'relative' }}>
+                  <Mail size={15} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: '#8B6B3D' }} />
+                  <input
+                    type="email"
+                    value={form.email}
+                    onChange={e => setForm({ ...form, email: e.target.value })}
+                    placeholder="votre@email.com"
+                    required
+                    className="input"
+                    style={{ paddingLeft: 36, width: '100%', boxSizing: 'border-box' }}
+                  />
+                </div>
               </div>
-              {form.password && (
-                <div style={{ marginTop: 8, display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <div style={{ flex: 1, height: 5, background: '#F5ECD7', borderRadius: 99, overflow: 'hidden' }}>
-                    <div style={{ height: '100%', borderRadius: 99, background: strengthColor, width: `${(pwStrength / 3) * 100}%`, transition: 'width 0.3s, background 0.3s' }} />
+
+              {/* Téléphone */}
+              <div>
+                <label style={{ display: 'block', fontSize: 11, fontWeight: 600, color: '#8B6B3D', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  Téléphone
+                </label>
+                <PhoneInput onChange={phone => setForm({ ...form, phone })} />
+              </div>
+
+              {/* Mot de passe */}
+              <div>
+                <label style={{ display: 'block', fontSize: 11, fontWeight: 600, color: '#8B6B3D', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  Mot de passe
+                </label>
+                <div style={{ position: 'relative' }}>
+                  <Lock size={15} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: '#8B6B3D' }} />
+                  <input
+                    type={showPw ? 'text' : 'password'}
+                    value={form.password}
+                    onChange={e => setForm({ ...form, password: e.target.value })}
+                    placeholder="Min. 6 caractères"
+                    required
+                    className="input"
+                    style={{ paddingLeft: 36, paddingRight: 40, width: '100%', boxSizing: 'border-box' }}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPw(!showPw)}
+                    style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: '#8B6B3D', padding: 0 }}
+                  >
+                    {showPw ? <EyeOff size={15} /> : <Eye size={15} />}
+                  </button>
+                </div>
+                {form.password && (
+                  <div style={{ marginTop: 8, display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <div style={{ flex: 1, height: 5, background: '#F5ECD7', borderRadius: 99, overflow: 'hidden' }}>
+                      <div style={{ height: '100%', borderRadius: 99, background: strengthColor, width: `${(pwStrength / 3) * 100}%`, transition: 'width 0.3s, background 0.3s' }} />
+                    </div>
+                    <span style={{ fontSize: 11, color: '#8B6B3D' }}>{strengthLabel}</span>
                   </div>
-                  <span style={{ fontSize: 11, color: '#8B6B3D' }}>{strengthLabel}</span>
-                </div>
-              )}
-            </div>
+                )}
+              </div>
 
-            <button type="submit" disabled={loading || emailStatus === 'checking' || emailStatus === 'invalid' || emailStatus === 'disposable'}
-              className="btn-primary"
-              style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, padding: '12px 20px', marginTop: 4,
-                opacity: (emailStatus === 'invalid' || emailStatus === 'disposable') ? 0.5 : 1,
-                cursor: (emailStatus === 'invalid' || emailStatus === 'disposable') ? 'not-allowed' : 'pointer',
-              }}>
-              {loading && <span style={{ width: 14, height: 14, border: '2px solid rgba(255,255,255,0.3)', borderTopColor: '#fff', borderRadius: '50%', animation: 'spin 0.8s linear infinite', display: 'inline-block' }} />}
-              {loading ? 'Création...' : 'Créer mon compte'}
-            </button>
-          </form>
+              <button
+                type="submit"
+                disabled={loading}
+                className="btn-primary"
+                style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, padding: '12px 20px', marginTop: 4 }}
+              >
+                {loading && (
+                  <span style={{ width: 14, height: 14, border: '2px solid rgba(255,255,255,0.3)', borderTopColor: '#fff', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+                )}
+                {loading ? 'Envoi...' : 'Envoyer le code de vérification'}
+              </button>
+            </form>
+          ) : (
+            <form onSubmit={handleVerifyAndRegister} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+              <div style={{ background: '#FFF7ED', border: '1px solid #FDE68A', borderRadius: 12, padding: '14px 16px', fontSize: 13, color: '#92400E' }}>
+                Un code à 6 chiffres a été envoyé à <strong>{form.email}</strong>. Vérifiez votre boîte mail.
+              </div>
+
+              <div>
+                <label style={{ display: 'block', fontSize: 11, fontWeight: 600, color: '#8B6B3D', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  Code de vérification
+                </label>
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  maxLength={6}
+                  value={code}
+                  onChange={e => setCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                  placeholder="123456"
+                  required
+                  className="input"
+                  style={{ width: '100%', boxSizing: 'border-box', textAlign: 'center', fontSize: 24, letterSpacing: '0.3em', fontWeight: 700 }}
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading || code.length !== 6}
+                className="btn-primary"
+                style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, padding: '12px 20px' }}
+              >
+                {loading && (
+                  <span style={{ width: 14, height: 14, border: '2px solid rgba(255,255,255,0.3)', borderTopColor: '#fff', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+                )}
+                {loading ? 'Création...' : 'Créer mon compte'}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setStep(1)}
+                style={{ background: 'none', border: 'none', color: '#8B6B3D', fontSize: 13, cursor: 'pointer', textDecoration: 'underline' }}
+              >
+                Modifier mes informations
+              </button>
+            </form>
+          )}
 
           <p style={{ textAlign: 'center', marginTop: 24, fontSize: 13, color: '#8B6B3D' }}>
             Déjà un compte ?{' '}
-            <Link to="/login" style={{ color: '#C4531A', fontWeight: 600, textDecoration: 'none' }}>Se connecter</Link>
+            <Link to="/login" style={{ color: '#C4531A', fontWeight: 600, textDecoration: 'none' }}>
+              Se connecter
+            </Link>
           </p>
         </motion.div>
       </div>

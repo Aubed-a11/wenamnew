@@ -38,11 +38,9 @@ const css = `
   .search-wrap { flex-shrink: 0; margin-left: auto; }
   .search-wrap input { width: 130px !important; font-size: 12px; }
   @media (min-width: 480px) { .search-wrap input { width: 160px !important; } }
-  @media (max-width: 380px) { .search-wrap { display: none; } }
 
   /* ── Grid ── */
   .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-  @media (max-width: 360px) { .menu-grid { grid-template-columns: 1fr; gap: 10px; } }
   @media (min-width: 480px) { .menu-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; } }
   @media (min-width: 640px) { .menu-grid { grid-template-columns: repeat(3, 1fr); gap: 14px; } }
   @media (min-width: 900px) { .menu-grid { grid-template-columns: repeat(4, 1fr); gap: 16px; } }
@@ -93,8 +91,6 @@ export default function MenuManagePage() {
   const [items, setItems] = useState([])
   const [cat, setCat] = useState('')
   const [search, setSearch] = useState('')
-  const [searchDebounced, setSearchDebounced] = useState('')
-  const searchTimer = useRef(null)
   const [modal, setModal] = useState(null)
   const [form, setForm] = useState(EMPTY)
   const [saving, setSaving] = useState(false)
@@ -109,10 +105,10 @@ export default function MenuManagePage() {
     setLoading(true)
     const p = new URLSearchParams()
     if (cat) p.set('category', cat)
-    if (searchDebounced) p.set('search', searchDebounced)
+    if (search) p.set('search', search)
     api.get(`/menu?limit=100&${p}`).then(({ data }) => setItems(data.items || [])).finally(() => setLoading(false))
   }
-  useEffect(fetchItems, [cat, searchDebounced])
+  useEffect(fetchItems, [cat, search])
 
   const openAdd = () => { setForm(EMPTY); setPreview(''); setModal('add') }
   const openEdit = (item) => {
@@ -213,8 +209,8 @@ export default function MenuManagePage() {
         ))}
         <div className="search-wrap" style={{ position:'relative', marginLeft:'auto', flexShrink:0 }}>
           <Search size={13} style={{ position:'absolute', left:9, top:'50%', transform:'translateY(-50%)', color:'#8B6B3D' }} />
-          <input value={search} onChange={e => { const v = e.target.value; setSearch(v); clearTimeout(searchTimer.current); searchTimer.current = setTimeout(() => setSearchDebounced(v), 500) }} placeholder="Rechercher..."
-            style={{ padding:'7px 12px 7px 30px', border:'1px solid #D4B896', borderRadius:10, fontSize:13, outline:'none', width:'clamp(100px,30vw,160px)' }} />
+          <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Rechercher..."
+            style={{ padding:'7px 12px 7px 30px', border:'1px solid #D4B896', borderRadius:10, fontSize:13, outline:'none', width:160 }} />
         </div>
       </div>
 
@@ -230,7 +226,7 @@ export default function MenuManagePage() {
               <div className="menu-card-img" style={{ position:'relative' }}>
                 <img src={item.image||'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=300'} alt={item.name} style={{ width:'100%', height:'100%', objectFit:'cover' }} />
                 <div style={{ position:'absolute', top:6, right:6, display:'flex', gap:4 }}>
-                  {item.featured && <span style={{ background:'#F59E0B', color:'#fff', fontSize:9, fontWeight:700, padding:'2px 6px', borderRadius:10 }}>Top</span>}
+                  {item.featured && <span style={{ background:'#F59E0B', color:'#fff', fontSize:9, fontWeight:700, padding:'2px 6px', borderRadius:10 }}>TOP</span>}
                   <button onClick={() => handleToggle(item._id)} style={{ background: item.isAvailable?'#166534':'#6B7280', border:'none', borderRadius:6, cursor:'pointer', padding:4, display:'flex' }}>
                     {item.isAvailable ? <ToggleRight size={13} color="#fff"/> : <ToggleLeft size={13} color="#fff"/>}
                   </button>
@@ -240,8 +236,8 @@ export default function MenuManagePage() {
                 </span>
               </div>
               <div style={{ padding:'10px 12px' }}>
-                <p className="menu-card-title" style={{ fontFamily:"'Playfair Display',serif", fontWeight:600, fontSize:13, color:'#1A0F00', margin:'0 0 2px', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }} title={item.name}>{item.name}</p>
-                <p className="menu-card-desc" title={item.description} style={{ fontSize:11, color:'#8B6B3D', margin:'0 0 6px', display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical', overflow:'hidden', lineHeight:'1.4', minHeight:'2.8em' }}>{item.description}</p>
+                <p className="menu-card-title" style={{ fontFamily:"'Playfair Display',serif", fontWeight:600, fontSize:13, color:'#1A0F00', margin:'0 0 2px', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{item.name}</p>
+                <p className="menu-card-desc" style={{ fontSize:11, color:'#8B6B3D', margin:'0 0 6px', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{item.description}</p>
                 {item.accompagnements?.length > 0 && (
                   <div className="accomp-section">
                     <p className="accomp-label">Accompagnements</p>
@@ -260,7 +256,6 @@ export default function MenuManagePage() {
           ))}
           {items.length === 0 && !loading && (
             <div style={{ gridColumn:'1/-1', textAlign:'center', padding:'60px 20px', color:'#8B6B3D' }}>
-              <div style={{ fontSize:40, marginBottom:12 }}></div>
               <p>Aucun plat trouvé</p>
             </div>
           )}

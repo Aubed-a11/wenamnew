@@ -6,7 +6,7 @@ const INSTAGRAM = 'https://www.instagram.com/itswenam?igsh=cjNsN294M2RzNHBl&utm_
 export default function Footer() {
   return (
     <footer className="bg-primary-dark text-cream pt-12 pb-6">
-      <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+      <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
         <div>
           <div className="flex items-center gap-2 mb-1">
             <img src="/images/wenam-logo.png" alt="Wênam" style={{ width: 36, height: 36, objectFit: 'contain', mixBlendMode: 'screen' }} />
@@ -30,7 +30,7 @@ export default function Footer() {
           <h4 className="font-display text-lg text-white mb-4">Navigation</h4>
           <ul className="space-y-2">
             {[['Accueil', '/'], ['Menu', '/menu'], ['Mon panier', '/cart'], ['Mon profil', '/profile']].map(([label, to]) => (
-              <li key={to}><Link to={to} className="text-cream/70 text-sm hover:text-white transition-colors font-body" style={{ display:"inline-block", paddingTop:4, paddingBottom:4 }}>{label}</Link></li>
+              <li key={to}><Link to={to} className="text-cream/70 text-sm hover:text-white transition-colors font-body">{label}</Link></li>
             ))}
           </ul>
         </div>

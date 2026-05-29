@@ -6,10 +6,6 @@ import toast from 'react-hot-toast'
 const css = `
   .users-search { width: 100%; max-width: 320px; }
   @media (max-width: 480px) { .users-search { max-width: 100%; } }
-  /* Cacher colonnes moins importantes sur mobile */
-  .col-phone, .col-role { display: table-cell; }
-  @media (max-width: 560px) { .col-phone { display: none; } }
-  @media (max-width: 440px) { .col-role { display: none; } }
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
 `
 
@@ -74,12 +70,12 @@ export default function UsersPage() {
       </div>
 
       <div style={{ background: '#fff', borderRadius: 14, border: '1px solid #D4B896', overflow: 'hidden' }}>
-        <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13, minWidth: 380 }}>
+        <div style={{ overflowX: 'auto' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13, minWidth: 560 }}>
             <thead>
               <tr style={{ background: '#FAF3E8', borderBottom: '1px solid #D4B896' }}>
                 {['Avatar', 'Nom', 'Email', 'Téléphone', 'Rôle', 'Statut', 'Action'].map(h => (
-                  <th key={h} className={h === 'Téléphone' ? 'col-phone' : h === 'Rôle' ? 'col-role' : ''} style={{ padding: '11px 14px', textAlign: 'left', fontSize: 11, color: '#8B6B3D', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', whiteSpace: 'nowrap' }}>{h}</th>
+                  <th key={h} style={{ padding: '11px 14px', textAlign: 'left', fontSize: 11, color: '#8B6B3D', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', whiteSpace: 'nowrap' }}>{h}</th>
                 ))}
               </tr>
             </thead>
@@ -103,8 +99,8 @@ export default function UsersPage() {
                       </td>
                       <td style={{ padding: '11px 14px', fontWeight: 700, color: '#1A0F00', whiteSpace: 'nowrap' }}>{u.name}</td>
                       <td style={{ padding: '11px 14px', color: '#5C3D11', maxWidth: 160, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{u.email}</td>
-                      <td className="col-phone" style={{ padding: '11px 14px', color: '#8B6B3D', whiteSpace: 'nowrap' }}>{u.phone || '—'}</td>
-                      <td className="col-role" style={{ padding: '11px 14px' }}>
+                      <td style={{ padding: '11px 14px', color: '#8B6B3D', whiteSpace: 'nowrap' }}>{u.phone || '—'}</td>
+                      <td style={{ padding: '11px 14px' }}>
                         <span style={{ fontSize: 11, fontWeight: 700, padding: '2px 10px', borderRadius: 12, background: u.role === 'admin' ? '#F5F3FF' : '#EFF6FF', color: u.role === 'admin' ? '#7C3AED' : '#2563EB' }}>
                           {u.role}
                         </span>

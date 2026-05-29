@@ -5,15 +5,12 @@ import toast from 'react-hot-toast'
 
 const css = `
   .review-tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+  .review-card { background: #fff; borderRadius: 14px; border: 1px solid #D4B896; padding: 14px; display: flex; gap: 12px; align-items: flex-start; }
   .review-actions { display: flex; gap: 6px; flex-shrink: 0; }
   @media (max-width: 480px) {
-    .review-tabs { gap: 6px; }
-    .review-tabs button { font-size: 12px !important; padding: 6px 12px !important; }
     .review-card-inner { flex-wrap: wrap; }
     .review-actions { width: 100%; justify-content: flex-end; margin-top: 8px; }
   }
-  .respond-modal { padding: 20px; }
-  @media (max-width: 480px) { .respond-modal { padding: 16px; } }
 `
 
 export default function ReviewsPage() {
@@ -54,8 +51,7 @@ export default function ReviewsPage() {
       {loading ? (
         <div style={{ textAlign: 'center', padding: 40, color: '#8B6B3D' }}>Chargement...</div>
       ) : reviews.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: 'clamp(32px,8vw,60px) 20px', color: '#8B6B3D' }}>
-          <div style={{ fontSize: 48, marginBottom: 12 }}></div>
+        <div style={{ textAlign: 'center', padding: '60px 20px', color: '#8B6B3D' }}>
           <p>Aucun avis dans cette catégorie</p>
         </div>
       ) : (
@@ -89,13 +85,13 @@ export default function ReviewsPage() {
 
       {responding && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}>
-          <div className="respond-modal" style={{ background: '#fff', borderRadius: 16, width: '100%', maxWidth: 420, boxShadow: '0 20px 60px rgba(0,0,0,0.2)' }}>
+          <div style={{ background: '#fff', borderRadius: 16, padding: 24, width: '100%', maxWidth: 420, boxShadow: '0 20px 60px rgba(0,0,0,0.2)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
               <h2 style={{ fontFamily:"'Playfair Display', serif", fontSize: 17, fontWeight: 700, color: '#1A0F00', margin: 0 }}>Répondre à l'avis</h2>
               <button onClick={() => setResponding(null)} style={{ background: 'none', border: 'none', cursor: 'pointer' }}><X size={18} /></button>
             </div>
             <textarea value={response} onChange={e => setResponse(e.target.value)} rows={4} placeholder="Votre réponse..."
-              style={{ width: '100%', padding: '10px 12px', border: '1px solid #D4B896', borderRadius: 8, fontSize: 13, resize: 'none', boxSizing: 'border-box', marginBottom: 12, outline: 'none', fontFamily: 'Lato, sans-serif' }} />
+              style={{ width: '100%', padding: '10px 12px', border: '1px solid #D4B896', borderRadius: 8, fontSize: 13, resize: 'none', boxSizing: 'border-box', marginBottom: 12, outline: 'none' }} />
             <div style={{ display: 'flex', gap: 10 }}>
               <button onClick={() => setResponding(null)} style={{ flex: 1, padding: 10, border: '1px solid #D4B896', borderRadius: 8, background: 'none', cursor: 'pointer', fontSize: 13, fontWeight: 700 }}>Annuler</button>
               <button onClick={sendResponse} style={{ flex: 1, padding: 10, border: 'none', borderRadius: 8, background: '#C4531A', color: '#fff', cursor: 'pointer', fontSize: 13, fontWeight: 700 }}>Envoyer</button>

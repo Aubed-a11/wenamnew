@@ -8,10 +8,8 @@ import Navbar from '../../components/common/Navbar'
 import { useAuthStore, useCartStore } from '../../store'
 
 const css = `
-  .checkout-wrap { max-width: 640px; margin: 0 auto; padding: 24px 12px; }
-  @media (min-width: 480px) { .checkout-wrap { padding: 40px 16px; } }
-  .steps { display: flex; align-items: center; gap: 6px; margin-bottom: 24px; flex-wrap: nowrap; }
-  @media (max-width: 360px) { .steps { gap: 4px; margin-bottom: 24px; } }
+  .checkout-wrap { max-width: 640px; margin: 0 auto; padding: 40px 16px; }
+  .steps { display: flex; align-items: center; gap: 8px; margin-bottom: 40px; flex-wrap: nowrap; }
   .step-label { display: none; }
   @media (min-width: 480px) { .step-label { display: block; } }
   .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
@@ -121,7 +119,7 @@ function TransferInfo() {
                 <span style={{ fontSize: 10, fontWeight: 700, background: '#dbeafe', color: '#1e40af', padding: '2px 8px', borderRadius: 99 }}>{bank.badge}</span>
               )}
             </div>
-            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 'clamp(10px,2.5vw,12px)', tableLayout: 'fixed' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
               {[
                 ['Titulaire', bank.holder, false],
                 ['RIB',       bank.rib,    true],
@@ -213,7 +211,7 @@ function CardForm({ cardData, setCardData, errors }) {
         </div>
 
         {/* Expiration + CVV */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: 12 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
           <div>
             <label style={{ display: 'block', fontSize: 11, fontWeight: 600, color: '#8B6B3D', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
               Expiration *
@@ -246,7 +244,7 @@ function CardForm({ cardData, setCardData, errors }) {
         {/* Sécurité */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: '#8B6B3D' }}>
           <Lock size={12} color="#C4531A" />
-          Paiement sécurisé, vos données sont chiffrées
+          Paiement sécurisé — vos données sont chiffrées
         </div>
       </div>
     </motion.div>
@@ -322,7 +320,7 @@ function generateOrderPDF(order, user) {
   <div class="footer">
     <p>Merci pour votre commande ! · Wênam, Avenue Al Majd 2, Rabat</p>
     <p>Instagram: @itsWênam · Tél: +212 643 389 585</p>
-    <p style="margin-top:8px;font-size:11px;color:#C4531A;">Wênam, Délicieuse Cuisine en Ligne</p>
+    <p style="margin-top:8px;font-size:11px;color:#C4531A;">Wênam — Délicieuse Cuisine en Ligne</p>
   </div>
 </body></html>`
 
@@ -338,21 +336,21 @@ function generateOrderPDF(order, user) {
 // ── WhatsApp ──────────────────────────────────────────────────────────────────
 function sendWhatsApp(order, user) {
   const items = order.items.map(i => `  • ${i.name} x${i.quantity} — ${(i.price * i.quantity).toFixed(2)} MAD`).join('\n')
-  const msg = `🍽️ *Nouvelle commande Wênam* ${order.orderNumber}
+  const msg = `*Nouvelle commande Wênam* ${order.orderNumber}
 
-👤 *Client:* ${user?.name}
-📱 *Tél:* ${user?.phone || 'Non renseigné'}
-📍 *Adresse:* ${order.deliveryAddress?.street}, ${order.deliveryAddress?.city}
+*Client:* ${user?.name}
+*Tél:* ${user?.phone || 'Non renseigné'}
+*Adresse:* ${order.deliveryAddress?.street}, ${order.deliveryAddress?.city}
 
-📋 *Commande:*
+*Commande:*
 ${items}
 
-💰 *Sous-total:* ${Number(order.subtotal).toFixed(2)} MAD
-🚚 *Livraison:* ${Number(order.deliveryFee).toFixed(2)} MAD
-✅ *TOTAL: ${Number(order.total).toFixed(2)} MAD*
+*Sous-total:* ${Number(order.subtotal).toFixed(2)} MAD
+*Livraison:* ${Number(order.deliveryFee).toFixed(2)} MAD
+*TOTAL: ${Number(order.total).toFixed(2)} MAD*
 
-💳 *Paiement:* ${order.paymentMethod === 'card' ? 'Carte bancaire' : 'Espèces à la livraison'}
-${order.notes ? `📝 *Note:* ${order.notes}` : ''}
+*Paiement:* ${order.paymentMethod === 'card' ? 'Carte bancaire' : 'Espèces à la livraison'}
+${order.notes ? `*Note:* ${order.notes}` : ''}
 
 _Commande passée le ${new Date().toLocaleString('fr-FR')}_`
 
@@ -515,7 +513,7 @@ export default function CheckoutPage() {
               <div style={{ display:'flex', flexDirection:'column', gap:12, marginBottom:24 }}>
                 {[
                   { key:'cash',     icon:Banknote,   label:'Paiement à la livraison', desc:'Payez en espèces à la réception' },
-                  { key:'card',     icon:CreditCard, label:'Carte bancaire',           desc:'Visa, Mastercard, paiement immédiat' },
+                  { key:'card',     icon:CreditCard, label:'Carte bancaire',           desc:'Visa, Mastercard — paiement immédiat' },
                   { key:'transfer', icon:Building2,  label:'Virement bancaire',        desc:'CIH Bank · BMCE Bank' },
                 ].map(({ key, icon:Icon, label, desc }) => (
                   <div key={key}>
@@ -598,7 +596,7 @@ export default function CheckoutPage() {
                 <p style={{ fontSize:12, color:'#16a34a', marginBottom:20, fontWeight:600 }}>✓ Paiement par carte accepté</p>
               )}
               {form.paymentMethod === 'transfer' && (
-                <p style={{ fontSize:12, color:'#d97706', marginBottom:20, fontWeight:600 }}>Pensez à effectuer votre virement bancaire</p>
+                <p style={{ fontSize:12, color:'#d97706', marginBottom:20, fontWeight:600 }}>⏳ Pensez à effectuer votre virement bancaire</p>
               )}
               {form.paymentMethod === 'cash' && (
                 <p style={{ fontSize:12, color:'#8B6B3D', marginBottom:28 }}>Paiement en espèces à la livraison</p>

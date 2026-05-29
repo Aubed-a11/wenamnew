@@ -36,10 +36,6 @@ const css = `
     .nav-logo-sub { display: none; }
     .nav-logo-text { font-size: 18px !important; }
   }
-  @media (max-width: 360px) {
-    .nav-logo-text { font-size: 16px !important; }
-    .nav-inner { padding: 0 10px; }
-  }
 `
 
 export default function Navbar() {
@@ -160,29 +156,29 @@ export default function Navbar() {
             <div style={{ padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 4 }}>
               {[['Accueil', '/'], ['Menu', '/menu']].map(([l, t]) => (
                 <Link key={t} to={t} onClick={() => setMenuOpen(false)}
-                  style={{ fontSize: 15, fontWeight: 600, color: '#1A0F00', textDecoration: 'none', padding: '12px 0', borderBottom: '1px solid #EDE0C4', minHeight: 44, display:'flex', alignItems:'center' }}>{l}</Link>
+                  style={{ fontSize: 15, fontWeight: 600, color: '#1A0F00', textDecoration: 'none', padding: '10px 0', borderBottom: '1px solid #EDE0C4' }}>{l}</Link>
               ))}
               {!isAdmin && (
                 <Link to="/cart" onClick={() => setMenuOpen(false)}
-                  style={{ fontSize: 15, fontWeight: 600, color: '#1A0F00', textDecoration: 'none', padding: '12px 0', borderBottom: '1px solid #EDE0C4', display: 'flex', alignItems: 'center', gap: 8, minHeight: 44 }}>
+                  style={{ fontSize: 15, fontWeight: 600, color: '#1A0F00', textDecoration: 'none', padding: '10px 0', borderBottom: '1px solid #EDE0C4', display: 'flex', alignItems: 'center', gap: 8 }}>
                   <ShoppingCart size={16} /> Panier {count > 0 && `(${count})`}
                 </Link>
               )}
               {user && !isAdmin && (
                 <Link to="/profile" onClick={() => setMenuOpen(false)}
-                  style={{ fontSize: 15, fontWeight: 600, color: '#1A0F00', textDecoration: 'none', padding: '12px 0', borderBottom: '1px solid #EDE0C4', display: 'flex', alignItems: 'center', gap: 8, minHeight: 44 }}>
+                  style={{ fontSize: 15, fontWeight: 600, color: '#1A0F00', textDecoration: 'none', padding: '10px 0', borderBottom: '1px solid #EDE0C4', display: 'flex', alignItems: 'center', gap: 8 }}>
                   <User size={16} /> Mon profil
                 </Link>
               )}
               {isAdmin && (
                 <Link to="/admin" onClick={() => setMenuOpen(false)}
-                  style={{ fontSize: 15, fontWeight: 600, color: '#C4531A', textDecoration: 'none', padding: '12px 0', borderBottom: '1px solid #EDE0C4', display: 'flex', alignItems: 'center', gap: 8, minHeight: 44 }}>
+                  style={{ fontSize: 15, fontWeight: 600, color: '#C4531A', textDecoration: 'none', padding: '10px 0', borderBottom: '1px solid #EDE0C4', display: 'flex', alignItems: 'center', gap: 8 }}>
                   <LayoutDashboard size={16} /> Dashboard Admin
                 </Link>
               )}
               {user ? (
                 <button onClick={() => { setMenuOpen(false); handleLogout() }}
-                  style={{ fontSize: 15, fontWeight: 600, color: '#DC2626', background: 'none', border: 'none', padding: '12px 0', textAlign: 'left', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8, minHeight: 44 }}>
+                  style={{ fontSize: 15, fontWeight: 600, color: '#DC2626', background: 'none', border: 'none', padding: '10px 0', textAlign: 'left', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8 }}>
                   <LogOut size={16} /> Déconnexion
                 </button>
               ) : (

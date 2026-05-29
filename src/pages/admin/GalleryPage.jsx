@@ -47,7 +47,7 @@ export default function GalleryPage() {
           {Array.from({ length: 6 }).map((_, i) => <div key={i} style={{ aspectRatio: '1', background: '#F5ECD7', borderRadius: 12, animation: 'pulse 1.5s infinite' }} />)}
         </div>
       ) : items.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: 'clamp(32px,8vw,60px) 20px', color: '#8B6B3D' }}>
+        <div style={{ textAlign: 'center', padding: '60px 20px', color: '#8B6B3D' }}>
           <p style={{ fontSize: 15, margin: '0 0 16px' }}>Aucune photo dans la galerie</p>
           <button onClick={() => setModal(true)} style={{ background: '#C4531A', color: '#fff', border: 'none', borderRadius: 8, padding: '10px 20px', cursor: 'pointer', fontSize: 13, fontWeight: 700 }}>Ajouter une photo</button>
         </div>
@@ -73,7 +73,7 @@ export default function GalleryPage() {
 
       {modal && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.45)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}>
-          <div style={{ background: '#fff', borderRadius: 18, width: '100%', maxWidth: 440, padding: 'clamp(16px,4vw,24px)', boxShadow: '0 20px 60px rgba(0,0,0,0.25)' }}>
+          <div style={{ background: '#fff', borderRadius: 18, width: '100%', maxWidth: 440, padding: 24, boxShadow: '0 20px 60px rgba(0,0,0,0.25)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
               <h2 style={{ fontFamily:"'Playfair Display', serif", fontSize: 17, fontWeight: 700, color: '#1A0F00', margin: 0 }}>Nouvelle photo</h2>
               <button onClick={() => setModal(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#8B6B3D' }}><X size={18} /></button>
@@ -102,3 +102,5 @@ export default function GalleryPage() {
     </div>
   )
 }
+
+

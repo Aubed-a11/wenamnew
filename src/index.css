@@ -58,28 +58,3 @@ h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
   pointer-events: none;
   opacity: 0.5;
 }
-
-/* ── Responsive global ── */
-img { max-width: 100%; }
-input, textarea, select, button { touch-action: manipulation; }
-table { border-collapse: collapse; }
-@media (max-width: 480px) {
-  .section-title { font-size: 1.25rem !important; }
-}
-/* Prevent horizontal scroll on the whole app */
-html, body { overflow-x: hidden; max-width: 100vw; }
-
-/* Prevent iOS zoom on inputs (font-size must be >= 16px) */
-@media (max-width: 767px) {
-  input[type="text"],
-  input[type="email"],
-  input[type="password"],
-  input[type="number"],
-  input[type="tel"],
-  input[type="search"],
-  input[type="time"],
-  select,
-  textarea {
-    font-size: 16px !important;
-  }
-}

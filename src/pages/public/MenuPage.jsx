@@ -108,14 +108,13 @@ export default function MenuPage() {
           {loading ? Array.from({ length: 8 }).map((_, i) => <SkeletonCard key={i} />) : (
             items.length === 0 ? (
               <div className="col-span-full text-center py-20">
-                <div className="text-6xl mb-4">🍽️</div>
                 <p className="font-display text-xl text-text-dark mb-2">Aucun plat trouvé</p>
                 <p className="text-text-light text-sm font-body">Essayez d'autres filtres</p>
               </div>
             ) : (
               items.map((item, i) => (
                 <motion.div key={item._id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.04 }}
-                  whileHover={{ y: -4 }} className={`bg-white rounded-2xl overflow-hidden shadow-card border border-border ${!item.isAvailable ? 'opacity-60' : ''}`}>
+                  whileHover={{ y: -4 }} className={`bg-white rounded-2xl shadow-card border border-border flex flex-col ${!item.isAvailable ? 'opacity-60' : ''}`}>
                   <div className="h-44 sm:h-48 relative overflow-hidden">
                     <img src={item.image || 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400'} alt={item.name}
                       className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
@@ -130,7 +129,7 @@ export default function MenuPage() {
                   </div>
                   <div className="p-3 sm:p-4">
                     <h3 className="font-display font-semibold text-text-dark text-base mb-1 line-clamp-1">{item.name}</h3>
-                    <p className="text-text-light text-xs font-body mb-3 leading-relaxed">{item.description}</p>
+                    <p className="text-text-light font-body mb-3 leading-relaxed" style={{ fontSize: 13 }}>{item.description}</p>
                     <div className="flex items-center gap-3 mb-3 text-xs text-text-light">
                       <span className="flex items-center gap-1"><Star size={11} className="text-amber-400 fill-amber-400" />{item.rating} ({item.reviewCount})</span>
                       <span className="flex items-center gap-1"><Clock size={11} />{item.preparationTime} min</span>

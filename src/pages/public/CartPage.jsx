@@ -12,17 +12,16 @@ const css = `
   @media (min-width: 1024px) { .cart-grid { grid-template-columns: 1fr 1fr 1fr; } }
   .cart-items { grid-column: span 1; }
   @media (min-width: 1024px) { .cart-items { grid-column: span 2; } }
-  .cart-item { display: flex; gap: 12px; align-items: center; flex-wrap: nowrap; }
+  .cart-item { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
   .cart-item-img { width: 80px; height: 80px; border-radius: 12px; object-fit: cover; flex-shrink: 0; }
   @media (max-width: 480px) {
-    .cart-item-img { width: 56px; height: 56px; }
-    .cart-item { gap: 8px; }
-    .cart-title { font-size: 12px !important; }
-    .cart-qty { gap: 4px !important; }
-    .cart-qty button { width: 28px !important; height: 28px !important; }
+    .cart-item-img { width: 60px; height: 60px; }
+    .cart-item { gap: 10px; }
+    .cart-title { font-size: 13px !important; }
+    .cart-qty { gap: 6px !important; }
   }
   .cart-summary { position: static; }
-  @media (min-width: 1024px) { .cart-summary { position: sticky; top: 80px; } }
+  @media (min-width: 1024px) { .cart-summary { position: sticky; top: 96px; } }
 `
 
 export function CartPage() {
@@ -46,8 +45,7 @@ export function CartPage() {
         <h1 className="font-display" style={{ fontSize: 'clamp(22px, 5vw, 32px)', fontWeight: 700, marginBottom: 32 }}>Mon Panier</h1>
 
         {items.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: 'clamp(40px,10vw,80px) 16px' }}>
-            <div style={{ fontSize: 64, marginBottom: 16 }}></div>
+          <div style={{ textAlign: 'center', padding: '80px 16px' }}>
             <p className="font-display" style={{ fontSize: 'clamp(18px, 4vw, 24px)', fontWeight: 700, marginBottom: 8 }}>Votre panier est vide</p>
             <p className="text-text-light font-body" style={{ marginBottom: 32 }}>Découvrez nos délicieux plats</p>
             <Link to="/menu" className="btn-primary">Découvrir le menu</Link>

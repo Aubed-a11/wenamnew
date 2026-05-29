@@ -25,11 +25,6 @@ const CATEGORIES = [
   { key: 'boissons', label: 'Boissons', img: '/images/opening5.jpeg' },
 ]
 
-const REVIEWS = [
-  { name: 'Astrid', rating: 5, text: "Cuisine raffinée, service impeccable. Better food, better mood — c'est tellement vrai !", city: 'Rabat' },
-  { name: 'Divine', rating: 5, text: 'Les plats sont délicieux et la livraison super rapide. Je recommande vivement !', city: 'Rabat' },
-  { name: 'Nelie', rating: 4, text: "Excellente qualité, présentation soignée. Wênam c'est une vraie découverte.", city: 'Rabat' },
-]
 
 const fadeUp = { hidden: { opacity: 0, y: 28 }, show: { opacity: 1, y: 0 } }
 
@@ -55,14 +50,13 @@ export default function HomePage() {
   const [promo, setPromo] = useState(null)
   const [openingIdx, setOpeningIdx] = useState(0)
   const [ordersCount, setOrdersCount] = useState(100)
+  const [reviews, setReviews] = useState([])
 
   useEffect(() => {
     api.get('/menu?featured=true&limit=6').then(({ data }) => setFeatured(data.items || [])).catch(() => {})
     api.get('/settings/public/promo').then(({ data }) => setPromo(data.promo)).catch(() => {})
-    // Fetch le compteur de plats servis
-    api.get('/settings/public/orders-count')
-      .then(({ data }) => { if (data.count) setOrdersCount(data.count) })
-      .catch(() => {})
+    api.get('/settings/public/orders-count').then(({ data }) => { if (data.count) setOrdersCount(data.count) }).catch(() => {})
+    api.get('/reviews?approved=true&limit=6').then(({ data }) => setReviews(data.reviews || [])).catch(() => {})
     const t = setInterval(() => setOpeningIdx(i => (i + 1) % OPENING_PHOTOS.length), 3200)
     return () => clearInterval(t)
   }, [])
@@ -145,7 +139,7 @@ export default function HomePage() {
         <div style={{ maxWidth: 1280, margin: '0 auto' }}>
           <motion.h2 variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}
             style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(22px,4vw,32px)', fontWeight: 600, color: '#1A0F00', marginBottom: 32 }}>
-            Explorez Notre Menu —
+            Explorez Notre Menu
           </motion.h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 16 }}>
             {CATEGORIES.map((cat, i) => (
@@ -200,11 +194,11 @@ export default function HomePage() {
       {featured.length > 0 && (
         <section style={{ background: '#FAF3E8', padding: '72px 20px' }}>
           <div style={{ maxWidth: 1280, margin: '0 auto' }}>
-            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(22px,4vw,32px)', fontWeight: 600, color: '#1A0F00', marginBottom: 32 }}>Nos Spécialités —</h2>
+            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(22px,4vw,32px)', fontWeight: 600, color: '#1A0F00', marginBottom: 32 }}>Nos Spécialités</h2>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 20 }}>
               {featured.map((item, i) => (
                 <motion.div key={item._id} variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} transition={{ delay: i * 0.07 }}
-                  whileHover={{ y: -4 }} style={{ background: '#fff', borderRadius: 20, overflow: 'hidden', border: '1px solid #D4B896', boxShadow: '0 2px 12px rgba(139,58,15,0.1)' }}>
+                  whileHover={{ y: -4 }} style={{ background: '#fff', borderRadius: 20, border: '1px solid #D4B896', boxShadow: '0 2px 12px rgba(139,58,15,0.1)', display: 'flex', flexDirection: 'column' }}>
                   <div style={{ height: 190, overflow: 'hidden', position: 'relative' }}>
                     <img src={item.image || '/images/opening3.jpeg'} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     <span style={{ position: 'absolute', top: 10, left: 10, background: '#C4531A', color: '#fff', fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 20, textTransform: 'capitalize' }}>
@@ -215,7 +209,7 @@ export default function HomePage() {
                     <h3 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 600, fontSize: 16, color: '#1A0F00', margin: '0 0 6px' }}>{item.name}</h3>
                     <p style={{ fontSize: 13, color: '#8B6B3D', margin: '0 0 12px', lineHeight: 1.5 }}>{item.description}</p>
                     <div style={{ display: 'flex', gap: 12, fontSize: 12, color: '#8B6B3D', marginBottom: 14 }}>
-                      <span>⭐ {item.rating}</span>
+                      <span>★ {item.rating}</span>
                       <span>⏱ {item.preparationTime} min</span>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -267,7 +261,7 @@ export default function HomePage() {
       {/* INFOS PRATIQUES */}
       <section style={{ background: '#F5ECD7', padding: '64px 20px' }}>
         <div style={{ maxWidth: 1280, margin: '0 auto' }}>
-          <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(22px,4vw,32px)', fontWeight: 600, color: '#1A0F00', marginBottom: 32, textAlign: 'center' }}>Infos Pratiques —</h2>
+          <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(22px,4vw,32px)', fontWeight: 600, color: '#1A0F00', marginBottom: 32, textAlign: 'center' }}>Infos Pratiques</h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 16 }}>
             {[
               { icon: Clock, title: 'Horaires', lines: ['Ouverture: 09h00', 'Arrêt livraisons: 20h00'] },
@@ -291,23 +285,27 @@ export default function HomePage() {
       {/* REVIEWS */}
       <section style={{ background: '#FAF3E8', padding: '72px 20px' }}>
         <div style={{ maxWidth: 1280, margin: '0 auto' }}>
-          <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(22px,4vw,32px)', fontWeight: 600, color: '#1A0F00', marginBottom: 32 }}>Ce que Disent Nos Clients —</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 16 }}>
-            {REVIEWS.map((r, i) => (
-              <motion.div key={i} variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} transition={{ delay: i * 0.1 }}
-                style={{ background: '#fff', borderRadius: 20, padding: 22, border: '1px solid #D4B896', boxShadow: '0 2px 12px rgba(139,58,15,0.08)' }}>
-                <div style={{ color: '#F59E0B', fontSize: 18, marginBottom: 12 }}>{'★'.repeat(r.rating)}</div>
-                <p style={{ fontSize: 14, color: '#5C3D11', fontStyle: 'italic', marginBottom: 16, lineHeight: 1.7 }}>"{r.text}"</p>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10, paddingTop: 12, borderTop: '1px solid #EDE0C4' }}>
-                  <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'rgba(196,83,26,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 700, color: '#C4531A' }}>{r.name[0]}</div>
-                  <div>
-                    <p style={{ fontWeight: 700, fontSize: 13, color: '#1A0F00', margin: 0 }}>{r.name}</p>
-                    <p style={{ fontSize: 11, color: '#8B6B3D', margin: 0 }}>{r.city}</p>
+          <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(22px,4vw,32px)', fontWeight: 600, color: '#1A0F00', marginBottom: 32 }}>Ce que Disent Nos Clients</h2>
+          {reviews.length === 0 ? (
+            <p style={{ color: '#8B6B3D', fontSize: 14, textAlign: 'center', padding: '24px 0' }}>Aucun avis pour le moment.</p>
+          ) : (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 16 }}>
+              {reviews.map((r, i) => (
+                <motion.div key={r._id || i} variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} transition={{ delay: i * 0.1 }}
+                  style={{ background: '#fff', borderRadius: 20, padding: 22, border: '1px solid #D4B896', boxShadow: '0 2px 12px rgba(139,58,15,0.08)' }}>
+                  <div style={{ color: '#F59E0B', fontSize: 18, marginBottom: 12 }}>{'★'.repeat(r.rating)}</div>
+                  <p style={{ fontSize: 14, color: '#5C3D11', fontStyle: 'italic', marginBottom: 16, lineHeight: 1.7 }}>"{r.comment}"</p>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10, paddingTop: 12, borderTop: '1px solid #EDE0C4' }}>
+                    <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'rgba(196,83,26,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 700, color: '#C4531A' }}>{r.user?.name?.[0] || '?'}</div>
+                    <div>
+                      <p style={{ fontWeight: 700, fontSize: 13, color: '#1A0F00', margin: 0 }}>{r.user?.name || 'Client'}</p>
+                      <p style={{ fontSize: 11, color: '#8B6B3D', margin: 0 }}>{new Date(r.createdAt).toLocaleDateString('fr-FR')}</p>
+                    </div>
                   </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+                </motion.div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

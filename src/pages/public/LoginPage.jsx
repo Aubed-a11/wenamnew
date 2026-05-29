@@ -27,51 +27,46 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-cream flex">
+    <div className="flex flex-col lg:flex-row min-h-screen">
+      <style>{`
+        @keyframes goldFlow {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+        .gold-panel {
+          background: linear-gradient(135deg, #3D1A00, #8B3A0F, #C4531A, #E8763A, #F59E0B, #C4531A, #8B3A0F, #3D1A00);
+          background-size: 400% 400%;
+          animation: goldFlow 8s ease infinite;
+        }
+      `}</style>
 
-      {/* Left panel — desktop only */}
-      <div className="hidden lg:flex lg:w-1/2 bg-primary-dark relative overflow-hidden">
-        <img
-          src="/images/login-bg.png"
-          alt="Wênam"
-          className="absolute inset-0 w-full h-full object-cover"
-          style={{ objectPosition: 'center' }}
-        />
-        <div className="relative z-10 flex flex-col justify-center items-center px-8 lg:px-16 text-center">
+      {/* Panel doré animé — bannière mobile, colonne desktop */}
+      <div className="gold-panel w-full lg:w-1/2 lg:min-h-screen"
+        style={{ position: 'relative', overflow: 'hidden', flexShrink: 0, minHeight: 220 }}>
+        <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.18)' }} />
+        <div style={{ position: 'relative', zIndex: 1, height: '100%', minHeight: 220, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', padding: '32px 40px' }}>
           <img
-            src="/images/wenam-logo.png" alt="Wenam" style={{ width: 'clamp(80px,10vw,140px)', height: 'clamp(80px,10vw,140px)', objectFit: 'contain', display: 'block', margin: '0 auto 24px', mixBlendMode: 'screen' }}
+            src="/images/wenam-logo.png" alt="Wenam"
+            style={{ width: 100, height: 100, objectFit: 'contain', marginBottom: 16 }}
+            className="lg:w-44 lg:h-44 lg:mb-8"
           />
-          <h1 className="font-display text-3xl lg:text-5xl font-bold text-white mb-4">Wênam</h1>
-          <p className="font-display text-xl italic" style={{ color: 'rgba(255,255,255,0.8)' }}>
-            Cuisine africaine façon Bénin : du cœur à l'assiette
+          <h1 className="font-display" style={{ fontSize: 'clamp(28px,6vw,48px)', fontWeight: 700, color: '#fff', margin: '0 0 10px', letterSpacing: '0.02em', textShadow: '0 2px 12px rgba(0,0,0,0.3)' }}>wênam</h1>
+          <p className="font-display" style={{ fontSize: 'clamp(12px,1.8vw,17px)', fontStyle: 'italic', color: 'rgba(255,255,255,0.9)', margin: 0, letterSpacing: '0.06em', textShadow: '0 1px 6px rgba(0,0,0,0.3)' }}>
+            Better Food, Better Mood
           </p>
         </div>
       </div>
 
-      {/* Right panel */}
+      {/* Formulaire */}
       <div className="flex-1 flex items-center justify-center px-5 py-10 sm:px-10 sm:py-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           style={{ width: '100%', maxWidth: 420 }}
         >
-          {/* Logo mobile */}
-          <div style={{ textAlign: 'center', marginBottom: 24 }}>
-            <img
-              src="/images/wenam-logo.png" alt="Wenam" style={{ width: 90, height: 90, objectFit: 'contain', display: 'block', margin: '0 auto 12px', mixBlendMode: 'multiply' }}
-            />
-            <h2
-              className="font-display lg:hidden"
-              style={{ fontSize: 22, fontWeight: 700, color: '#C4531A', marginBottom: 4 }}
-            >
-              Wênam
-            </h2>
-            <p style={{ fontSize: 11, color: '#C4531A', fontStyle: 'italic' }}>
-              Cuisine africaine façon Bénin
-            </p>
-          </div>
 
-          <div style={{ textAlign: 'center', marginBottom: 28 }}>
+          <div style={{ textAlign: 'center', marginBottom: 28, marginTop: 8 }}>
             <h1 className="font-display" style={{ fontSize: 'clamp(22px,5vw,30px)', fontWeight: 700, marginBottom: 6 }}>
               Bon retour !
             </h1>

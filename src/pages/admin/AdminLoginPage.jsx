@@ -38,7 +38,7 @@ export default function AdminLoginPage() {
         style={{ width: '45%', background: '#8B3A0F', display: 'none', alignItems: 'center', padding: '0 64px', position: 'relative', overflow: 'hidden' }}
         className="admin-left-panel"
       >
-        <style>{`@media(min-width:768px){.admin-left-panel{display:flex!important}} @media(max-width:1024px){.admin-left-panel{padding:0 32px!important}}`}</style>
+        <style>{`@media(min-width:768px){.admin-left-panel{display:flex!important}}`}</style>
         <div style={{ position: 'absolute', inset: 0, opacity: 0.08, backgroundImage: 'repeating-linear-gradient(45deg, #fff 0, #fff 1px, transparent 0, transparent 50%)', backgroundSize: '20px 20px' }} />
         <div style={{ position: 'relative', zIndex: 1 }}>
           <img
@@ -69,7 +69,7 @@ export default function AdminLoginPage() {
       </div>
 
       {/* Right form */}
-      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#FAF3E8', padding: 'clamp(20px,5vw,40px) clamp(14px,4vw,24px)' }}>
+      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#FAF3E8', padding: '40px 24px' }}>
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
@@ -78,12 +78,12 @@ export default function AdminLoginPage() {
         >
           <div style={{ textAlign: 'center', marginBottom: 36 }}>
             <img
-              src="/images/wenam-logo.png" alt="Wenam" style={{ width: 'clamp(72px,15vw,120px)', height: 'clamp(72px,15vw,120px)', objectFit: 'contain', display: 'block', margin: '0 auto 16px', mixBlendMode: 'multiply' }}
+              src="/images/wenam-logo.png" alt="Wenam" style={{ width: 120, height: 120, objectFit: 'contain', display: 'block', margin: '0 auto 16px', mixBlendMode: 'multiply' }}
             />
             <div style={{ width: 60, height: 60, background: 'rgba(196,83,26,0.12)', borderRadius: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
               <ShieldCheck size={28} color="#C4531A" />
             </div>
-            <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(22px,5vw,28px)', fontWeight: 700, color: '#1A0F00', margin: '0 0 6px' }}>
+            <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, fontWeight: 700, color: '#1A0F00', margin: '0 0 6px' }}>
               Connexion Admin
             </h1>
             <p style={{ color: '#8B6B3D', fontSize: 14, margin: 0 }}>Accès réservé au personnel autorisé</p>

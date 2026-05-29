@@ -41,8 +41,8 @@ export default function ForgotPasswordPage() {
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: 32 }}>
           <img src="/images/wenam-logo.png" alt="Wenam"
-            style={{ width: 'clamp(56px,15vw,80px)', height: 'clamp(56px,15vw,80px)', objectFit: 'contain', display: 'block', margin: '0 auto 12px', mixBlendMode: 'multiply' }} />
-          <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(20px,5vw,26px)', fontWeight: 700, color: '#1A0F00', margin: '0 0 6px' }}>
+            style={{ width: 80, height: 80, objectFit: 'contain', display: 'block', margin: '0 auto 12px', mixBlendMode: 'multiply' }} />
+          <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 26, fontWeight: 700, color: '#1A0F00', margin: '0 0 6px' }}>
             Mot de passe oublié
           </h1>
           <p style={{ fontSize: 13, color: '#8B6B3D', margin: 0 }}>
@@ -51,7 +51,7 @@ export default function ForgotPasswordPage() {
         </div>
 
         {!sent ? (
-          <div style={{ background: '#fff', borderRadius: 16, border: '1px solid #D4B896', padding: 'clamp(16px,4vw,28px) clamp(14px,4vw,24px)' }}>
+          <div style={{ background: '#fff', borderRadius: 16, border: '1px solid #D4B896', padding: '28px 24px' }}>
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
               <div>
                 <label style={{ display: 'block', fontSize: 11, fontWeight: 700, color: '#5C3D11', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 6 }}>

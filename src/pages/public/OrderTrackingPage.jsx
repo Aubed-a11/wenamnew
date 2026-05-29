@@ -57,14 +57,14 @@ export default function OrderTrackingPage() {
   return (
     <div className="min-h-screen bg-cream">
       <Navbar />
-      <div style={{ maxWidth: 640, margin: '0 auto', padding: '20px 12px 60px' }}>
+      <div style={{ maxWidth: 640, margin: '0 auto', padding: '28px 16px 48px' }}>
 
         <Link to="/profile" style={{ display:'inline-flex', alignItems:'center', gap:6, fontSize:13, color:'#8B6B3D', textDecoration:'none', marginBottom:24 }}>
           <ArrowLeft size={14} /> Mes commandes
         </Link>
 
         {/* Order header */}
-        <div style={{ background:'#fff', borderRadius:20, padding:'clamp(14px,4vw,20px)', border:'1px solid #e5e7eb', boxShadow:'0 2px 12px rgba(0,0,0,0.06)', marginBottom:16 }}>
+        <div style={{ background:'#fff', borderRadius:20, padding:'20px', border:'1px solid #e5e7eb', boxShadow:'0 2px 12px rgba(0,0,0,0.06)', marginBottom:16 }}>
           <div style={{ display:'flex', alignItems:'flex-start', justifyContent:'space-between', flexWrap:'wrap', gap:12 }}>
             <div>
               <h1 className="font-display" style={{ fontSize:'clamp(18px,5vw,24px)', fontWeight:700, margin:0 }}>{order.orderNumber}</h1>
@@ -84,7 +84,7 @@ export default function OrderTrackingPage() {
         </div>
 
         {/* Tracking */}
-        <div style={{ background:'#fff', borderRadius:20, padding:'clamp(14px,4vw,20px)', border:'1px solid #e5e7eb', boxShadow:'0 2px 12px rgba(0,0,0,0.06)', marginBottom:16 }}>
+        <div style={{ background:'#fff', borderRadius:20, padding:'20px', border:'1px solid #e5e7eb', boxShadow:'0 2px 12px rgba(0,0,0,0.06)', marginBottom:16 }}>
           <h2 className="font-display" style={{ fontSize:17, fontWeight:600, marginBottom:24 }}>Suivi en temps réel</h2>
           {isCancelled ? (
             <div style={{ display:'flex', alignItems:'center', gap:12, padding:'14px 16px', background:'#fef2f2', borderRadius:12, border:'1px solid #fecaca' }}>
@@ -128,7 +128,7 @@ export default function OrderTrackingPage() {
         </div>
 
         {/* Items */}
-        <div style={{ background:'#fff', borderRadius:20, padding:'clamp(14px,4vw,20px)', border:'1px solid #e5e7eb', boxShadow:'0 2px 12px rgba(0,0,0,0.06)', marginBottom:16 }}>
+        <div style={{ background:'#fff', borderRadius:20, padding:'20px', border:'1px solid #e5e7eb', boxShadow:'0 2px 12px rgba(0,0,0,0.06)', marginBottom:16 }}>
           <h2 className="font-display" style={{ fontSize:17, fontWeight:600, marginBottom:16 }}>Articles</h2>
           <div style={{ display:'flex', flexDirection:'column', gap:12 }}>
             {order.items.map((item, i) => (

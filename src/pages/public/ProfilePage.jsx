@@ -178,7 +178,6 @@ export default function ProfilePage() {
                 <h2 className="font-display" style={{ fontSize:'clamp(17px,4vw,20px)', fontWeight:600, marginBottom:24 }}>Mes commandes</h2>
                 {orders.length === 0 ? (
                   <div style={{ textAlign:'center', padding:'60px 16px' }}>
-                    <div style={{ fontSize:48, marginBottom:16 }}>📦</div>
                     <p className="font-display" style={{ fontSize:18, marginBottom:16 }}>Aucune commande</p>
                     <Link to="/menu" className="btn-primary">Commander maintenant</Link>
                   </div>

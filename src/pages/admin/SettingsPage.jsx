@@ -12,8 +12,7 @@ const css = `
     .promo-grid { grid-template-columns: 1fr; gap: 14px; }
     .info-grid-2 { grid-template-columns: 1fr; gap: 14px; }
   }
-  .promo-preview { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
-  @media (max-width: 400px) { .promo-preview { flex-direction: column; align-items: flex-start; } }
+  .promo-preview { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
 `
 
 export default function SettingsPage() {
@@ -145,9 +144,9 @@ export default function SettingsPage() {
             </div>
             <div>
               <label style={labelStyle}>Délai commande à l'avance (heures)</label>
-              <input type="number" value={info.advanceHours} onChange={e => setInfo({ ...info, advanceHours: Number(e.target.value) })} style={{ ...inputStyle, maxWidth: 'clamp(100px,40vw,140px)' }} />
+              <input type="number" value={info.advanceHours} onChange={e => setInfo({ ...info, advanceHours: Number(e.target.value) })} style={{ ...inputStyle, maxWidth:140 }} />
             </div>
-            <button onClick={saveInfo} disabled={saving} style={{ display:'flex', alignItems:'center', gap:8, background:'#C4531A', color:'#fff', border:'none', borderRadius:10, padding:'10px 20px', fontSize:13, fontWeight:700, cursor:'pointer', minWidth: 140 }}>
+            <button onClick={saveInfo} disabled={saving} style={{ display:'flex', alignItems:'center', gap:8, background:'#C4531A', color:'#fff', border:'none', borderRadius:10, padding:'10px 20px', fontSize:13, fontWeight:700, cursor:'pointer', width:'fit-content' }}>
               <Save size={14} />Sauvegarder
             </button>
           </div>

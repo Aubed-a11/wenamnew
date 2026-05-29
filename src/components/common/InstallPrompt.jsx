@@ -48,7 +48,7 @@ export default function InstallPrompt() {
 
   return (
     <div style={{
-      position: 'fixed', bottom: 16, left: '50%', transform: 'translateX(-50%)', width: 'calc(100% - 24px)', maxWidth: 480, zIndex: 9999,
+      position: 'fixed', bottom: 16, left: 12, right: 12, zIndex: 9999,
       background: '#fff', borderRadius: 18,
       boxShadow: '0 8px 32px rgba(26,15,0,0.2)',
       border: '1.5px solid #EDE0C4',
