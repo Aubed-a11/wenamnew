@@ -42,7 +42,7 @@ function AecamGallery() {
     return (
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 12 }}>
         {Array.from({ length: 6 }).map((_, i) => (
-          <div key={i} style={{ borderRadius: 14, aspectRatio: '1', background: 'rgba(255,255,255,0.06)', animation: 'aecamPulse 1.5s infinite' }} />
+          <div key={i} style={{ borderRadius: 14, aspectRatio: '1', background: '#EDE0C4', animation: 'aecamPulse 1.5s infinite' }} />
         ))}
       </div>
     )
@@ -50,11 +50,11 @@ function AecamGallery() {
 
   if (photos.length === 0) {
     return (
-      <div style={{ textAlign: 'center', padding: '40px 20px', border: '1px dashed rgba(196,83,26,0.3)', borderRadius: 16 }}>
+      <div style={{ textAlign: 'center', padding: '40px 20px', border: '1px dashed #D4B896', borderRadius: 16 }}>
         <p style={{ fontSize: 28, marginBottom: 10 }}>📸</p>
-        <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: 14, margin: 0 }}>
+        <p style={{ color: '#8B6B3D', fontSize: 14, margin: 0 }}>
           Les photos du Festi AECAM 2026 apparaîtront ici<br />
-          <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.2)' }}>Ajoute des photos depuis le dashboard admin → Galerie → catégorie AECAM</span>
+          <span style={{ fontSize: 12, color: '#C4B08A' }}>Ajoute des photos depuis le dashboard admin → Galerie → catégorie AECAM</span>
         </p>
       </div>
     )
@@ -70,7 +70,7 @@ function AecamGallery() {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 12, marginBottom: bottom.length ? 12 : 0 }}>
         {top.map((item, i) => (
           <motion.div key={item._id} variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} transition={{ delay: i * 0.08 }}
-            style={{ borderRadius: 14, overflow: 'hidden', aspectRatio: i < 2 ? '4/3' : '1/1', border: '1px solid rgba(196,83,26,0.25)', position: 'relative', background: 'rgba(255,255,255,0.04)' }}>
+            style={{ borderRadius: 14, overflow: 'hidden', aspectRatio: i < 2 ? '4/3' : '1/1', border: '1px solid #D4B896', position: 'relative', background: '#F5ECD7' }}>
             <img src={item.image} alt={item.title}
               style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s' }}
               onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.06)'}
@@ -86,7 +86,7 @@ function AecamGallery() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 12 }}>
           {bottom.map((item, i) => (
             <motion.div key={item._id} variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} transition={{ delay: (i + 4) * 0.06 }}
-              style={{ borderRadius: 14, overflow: 'hidden', aspectRatio: '1/1', border: '1px solid rgba(196,83,26,0.2)', position: 'relative', background: 'rgba(255,255,255,0.04)' }}>
+              style={{ borderRadius: 14, overflow: 'hidden', aspectRatio: '1/1', border: '1px solid #D4B896', position: 'relative', background: '#F5ECD7' }}>
               <img src={item.image} alt={item.title}
                 style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s' }}
                 onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.06)'}
@@ -333,26 +333,26 @@ export default function HomePage() {
       </section>
 
       {/* 2 ANS DE WÊNAM & FESTI AECAM 2026 */}
-      <section style={{ background: '#0D0700', padding: '80px 20px', overflow: 'hidden', position: 'relative' }}>
+      <section style={{ background: '#FDF8F2', padding: '80px 20px', overflow: 'hidden', position: 'relative' }}>
         {/* Motif de fond */}
-        <div style={{ position: 'absolute', inset: 0, opacity: 0.04, backgroundImage: 'radial-gradient(circle, #C4531A 1px, transparent 1px)', backgroundSize: '30px 30px' }} />
+        <div style={{ position: 'absolute', inset: 0, opacity: 0.035, backgroundImage: 'radial-gradient(circle, #C4531A 1px, transparent 1px)', backgroundSize: '30px 30px' }} />
         <div style={{ position: 'absolute', top: -60, right: -60, width: 300, height: 300, borderRadius: '50%', background: 'rgba(196,83,26,0.06)', filter: 'blur(60px)' }} />
         <div style={{ position: 'absolute', bottom: -40, left: -40, width: 200, height: 200, borderRadius: '50%', background: 'rgba(196,83,26,0.05)', filter: 'blur(40px)' }} />
 
         <div style={{ maxWidth: 1280, margin: '0 auto', position: 'relative', zIndex: 1 }}>
           {/* En-tête de section */}
           <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} style={{ textAlign: 'center', marginBottom: 56 }}>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, background: 'rgba(196,83,26,0.15)', border: '1px solid rgba(196,83,26,0.35)', borderRadius: 999, padding: '7px 20px', marginBottom: 20 }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, background: 'rgba(196,83,26,0.1)', border: '1px solid rgba(196,83,26,0.25)', borderRadius: 999, padding: '7px 20px', marginBottom: 20 }}>
               <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#C4531A', display: 'inline-block' }} />
-              <span style={{ color: '#E8763A', fontSize: 11, fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase' }}>Moments inoubliables</span>
+              <span style={{ color: '#C4531A', fontSize: 11, fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase' }}>Moments inoubliables</span>
             </div>
-            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(28px,5vw,48px)', fontWeight: 700, color: '#fff', margin: '0 0 12px', lineHeight: 1.1 }}>
+            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(28px,5vw,48px)', fontWeight: 700, color: '#1A0F00', margin: '0 0 12px', lineHeight: 1.1 }}>
               2 ans de <span style={{ color: '#C4531A', fontStyle: 'italic' }}>Wênam</span>
             </h2>
-            <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(16px,3vw,22px)', fontStyle: 'italic', color: 'rgba(255,255,255,0.45)', margin: '0 0 16px' }}>
+            <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(16px,3vw,22px)', fontStyle: 'italic', color: '#8B6B3D', margin: '0 0 16px' }}>
               & Participation au Festi AECAM 2026
             </p>
-            <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 14, maxWidth: 520, margin: '0 auto', lineHeight: 1.7 }}>
+            <p style={{ color: '#8B6B3D', fontSize: 14, maxWidth: 520, margin: '0 auto', lineHeight: 1.7 }}>
               Deux années d'aventure culinaire, de rencontres et de partage. Découvrez nos meilleurs moments au Festi AECAM 2026.
             </p>
           </motion.div>
@@ -366,13 +366,13 @@ export default function HomePage() {
             ].map(({ day, month }) => (
               <div key={day} style={{ textAlign: 'center', minWidth: 80 }}>
                 <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(40px,7vw,64px)', fontWeight: 700, color: '#C4531A', margin: '0 0 2px', lineHeight: 1 }}>{day}</p>
-                <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '0.18em', margin: 0 }}>{month}</p>
+                <p style={{ fontSize: 12, color: '#8B6B3D', textTransform: 'uppercase', letterSpacing: '0.18em', margin: 0 }}>{month}</p>
               </div>
             ))}
-            <div style={{ width: 1, height: 60, background: 'rgba(196,83,26,0.35)', flexShrink: 0 }} />
+            <div style={{ width: 1, height: 60, background: 'rgba(196,83,26,0.25)', flexShrink: 0 }} />
             <div style={{ textAlign: 'center' }}>
-              <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(18px,3vw,26px)', fontWeight: 700, color: '#fff', margin: '0 0 4px' }}>Pie X</p>
-              <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.15em', margin: 0 }}>Lieu du festival</p>
+              <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(18px,3vw,26px)', fontWeight: 700, color: '#1A0F00', margin: '0 0 4px' }}>Pie X</p>
+              <p style={{ fontSize: 12, color: '#8B6B3D', textTransform: 'uppercase', letterSpacing: '0.15em', margin: 0 }}>Lieu du festival</p>
             </div>
           </motion.div>
 
@@ -381,7 +381,7 @@ export default function HomePage() {
 
           {/* CTA Instagram */}
           <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} style={{ textAlign: 'center', marginTop: 48 }}>
-            <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: 13, marginBottom: 16 }}>
+            <p style={{ color: '#8B6B3D', fontSize: 13, marginBottom: 16 }}>
               Retrouvez tous nos souvenirs du festival sur Instagram
             </p>
             <a href="https://www.instagram.com/itswenam?igsh=cjNsN294M2RzNHBl&utm_source=qr" target="_blank" rel="noopener noreferrer"
