@@ -357,22 +357,23 @@ export default function HomePage() {
             </p>
           </motion.div>
 
-          {/* Compteur anniversaire */}
+          {/* Dates & lieu */}
           <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}
-            style={{ display: 'flex', justifyContent: 'center', gap: 'clamp(12px,3vw,40px)', marginBottom: 60, flexWrap: 'wrap' }}>
+            style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 'clamp(16px,4vw,48px)', marginBottom: 60, flexWrap: 'wrap' }}>
             {[
-              { val: '2', label: 'Années', suffix: '' },
-              { val: '+500', label: 'Plats servis', suffix: '' },
-              { val: '4.9', label: 'Note moyenne', suffix: '★' },
-              { val: 'AECAM', label: 'Festival 2026', suffix: '' },
-            ].map(({ val, label, suffix }) => (
-              <div key={label} style={{ textAlign: 'center', minWidth: 80 }}>
-                <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(28px,5vw,44px)', fontWeight: 700, color: '#C4531A', margin: '0 0 4px', lineHeight: 1 }}>
-                  {val}<span style={{ fontSize: '60%', color: '#E8763A' }}>{suffix}</span>
-                </p>
-                <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.15em', margin: 0 }}>{label}</p>
+              { day: '30', month: 'Mai 2026' },
+              { day: '31', month: 'Mai 2026' },
+            ].map(({ day, month }) => (
+              <div key={day} style={{ textAlign: 'center', minWidth: 80 }}>
+                <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(40px,7vw,64px)', fontWeight: 700, color: '#C4531A', margin: '0 0 2px', lineHeight: 1 }}>{day}</p>
+                <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '0.18em', margin: 0 }}>{month}</p>
               </div>
             ))}
+            <div style={{ width: 1, height: 60, background: 'rgba(196,83,26,0.35)', flexShrink: 0 }} />
+            <div style={{ textAlign: 'center' }}>
+              <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(18px,3vw,26px)', fontWeight: 700, color: '#fff', margin: '0 0 4px' }}>Pie X</p>
+              <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.15em', margin: 0 }}>Lieu du festival</p>
+            </div>
           </motion.div>
 
           {/* Galerie AECAM — défilement horizontal */}
