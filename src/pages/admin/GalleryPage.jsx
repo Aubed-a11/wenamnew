@@ -50,15 +50,7 @@ export default function GalleryPage() {
 
   fetch()
 }
-  await api.post('/gallery', {
-    ...form,
-    title: form.title || 'Photo'
-  })
 
-  toast.success('Photo ajoutée !')
-  setModal(false)
-  setForm({ title: '', image: '', category: 'ambiance' })
-  fetch()
 }
   const remove = async (id) => { if (!confirm('Supprimer ?')) return; await api.delete(`/gallery/${id}`); toast.success('Supprimée'); fetch() }
 
