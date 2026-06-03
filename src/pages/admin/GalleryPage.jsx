@@ -15,18 +15,41 @@ const css = `
 export default function GalleryPage() {
   const [items, setItems] = useState([])
   const [modal, setModal] = useState(false)
-  const [form, setForm] = useState({ title: '', image: '', category: 'ambiance' })
+  const [form, setForm] = useState({ title: '', category: 'ambiance' })
+  const [imageFile, setImageFile] = useState(null)
   const [loading, setLoading] = useState(true)
 
   const fetch = () => { setLoading(true); api.get('/gallery').then(({ data }) => setItems(data.items || [])).finally(() => setLoading(false)) }
   useEffect(fetch, [])
 
   const add = async () => {
-  if (!form.image) {
-    toast.error("URL de l'image requise")
+  if (!imageFile) {
+    toast.error('Veuillez sélectionner une image')
     return
   }
 
+  const data = new FormData()
+  data.append('image', imageFile)
+  data.append('title', form.title || 'Photo')
+  data.append('category', form.category)
+
+  await api.post('/gallery', data, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+
+  toast.success('Photo ajoutée !')
+
+  setModal(false)
+  setImageFile(null)
+  setForm({
+    title: '',
+    category: 'ambiance'
+  })
+
+  fetch()
+}
   await api.post('/gallery', {
     ...form,
     title: form.title || 'Photo'
@@ -89,7 +112,28 @@ export default function GalleryPage() {
               <button onClick={() => setModal(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#8B6B3D' }}><X size={18} /></button>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-              {[['Titre', 'title', 'text', 'Nom de la photo'], ["URL de l'image", 'image', 'text', 'https://...']].map(([label, field, type, ph]) => (
+              {[['Titre', 'title', 'text', 'Nom de la photo'] , <div>
+  <label
+    style={{
+      display: 'block',
+      fontSize: 11,
+      fontWeight: 700,
+      color: '#5C3D11',
+      textTransform: 'uppercase',
+      letterSpacing: '0.08em',
+      marginBottom: 5
+    }}
+  >
+    Image
+  </label>
+
+  <input
+    type="file"
+    accept="image/*"
+    onChange={(e) => setImageFile(e.target.files[0])}
+    style={inputStyle}
+  />
+</div>].map(([label, field, type, ph]) => (
                 <div key={field}>
                   <label style={{ display: 'block', fontSize: 11, fontWeight: 700, color: '#5C3D11', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 5 }}>{label}</label>
                   <input type={type} value={form[field]} onChange={e => setForm({ ...form, [field]: e.target.value })} placeholder={ph} style={inputStyle} />
@@ -111,4 +155,4 @@ export default function GalleryPage() {
       )}
     </div>
   )
-}
+
