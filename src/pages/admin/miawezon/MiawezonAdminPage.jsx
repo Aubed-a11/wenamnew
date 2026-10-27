@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
-  Ban, CheckCircle2, Copy, Download, ExternalLink, Eye, FileDown, Loader2, Mail, MessageCircle, RefreshCw, Save, ScanLine,
-  Search, Send, ShieldCheck, Ticket, TrendingUp, UserCheck, Users, Wallet, X,
+  ArrowDown, ArrowUp, Ban, CheckCircle2, Copy, Download, ExternalLink, Eye, FileDown, Loader2, Mail, MessageCircle, RefreshCw, Save, ScanLine,
+  Plus, Search, Send, ShieldCheck, Ticket, Trash2, TrendingUp, UserCheck, Users, Wallet, X,
 } from 'lucide-react'
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import toast from 'react-hot-toast'
@@ -464,7 +464,7 @@ function SettingsTab({ config, reload }) {
       <Card className="space-y-5">
         <p className="font-display text-lg font-bold text-text-dark">Rubrique et billetterie</p>
         <Toggle checked={f.published} onChange={(v) => setF({ ...f, published: v })} label="Rubrique visible sur le site" hint="Mise en ligne de la phase 1. Les administrateurs voient toujours un aperçu." />
-        <Toggle checked={f.menuFinal} onChange={(v) => setF({ ...f, menuFinal: v })} label="Menu du buffet définitif" hint="Retire la mention « Menu définitif bientôt disponible ». Le menu se modifie dans src/data/miawezon.js." />
+        <Toggle checked={f.menuFinal} onChange={(v) => setF({ ...f, menuFinal: v })} label="Menu du buffet définitif" hint="Retire la mention « Menu définitif bientôt disponible ». Les plats se modifient dans l'onglet Menu du buffet." />
         <L label="Ouverture de la billetterie" hint="Auto : selon la date d'ouverture ci-dessous (phase 2).">
           <select className="input" value={f.salesMode} onChange={set('salesMode')}>
             <option value="auto">Automatique (selon les dates)</option>
@@ -565,8 +565,123 @@ function WaitlistTab({ config }) {
   )
 }
 
+// ═══ MENU DU BUFFET ════════════════════════════════════════════════════════
+const MENU_SECTIONS = [['entrees', 'Entrées'], ['plats', 'Plats'], ['desserts', 'Desserts'], ['boissons', 'Boissons']]
+const emptyDish = (tiers) => ({ name: { fr: '', en: '' }, desc: { fr: '', en: '' }, tiers: [...tiers] })
+
+function MenuTab({ config, reload }) {
+  const tiers = config.categories.map((c) => c.code)
+  const [menu, setMenu] = useState(() => MENU_SECTIONS.map(([key]) => {
+    const s = (config.event.menu || []).find((x) => x.key === key)
+    return { key, items: (s?.items || []).map((i) => ({ name: { fr: i.name?.fr || '', en: i.name?.en || '' }, desc: { fr: i.desc?.fr || '', en: i.desc?.en || '' }, tiers: [...(i.tiers || [])] })) }
+  }))
+  const [menuFinal, setMenuFinal] = useState(config.event.menuFinal)
+  const [busy, setBusy] = useState(false)
+  const [dirty, setDirty] = useState(false)
+
+  const update = (si, fn) => { setDirty(true); setMenu((m) => m.map((s, k) => (k === si ? { ...s, items: fn(s.items) } : s))) }
+  const setField = (si, ii, path, value) => update(si, (items) => items.map((it, k) => {
+    if (k !== ii) return it
+    const [a, b] = path.split('.')
+    return b ? { ...it, [a]: { ...it[a], [b]: value } } : { ...it, [a]: value }
+  }))
+  const toggleTier = (si, ii, code) => update(si, (items) => items.map((it, k) => (k !== ii ? it : { ...it, tiers: it.tiers.includes(code) ? it.tiers.filter((c) => c !== code) : [...it.tiers, code] })))
+  const move = (si, ii, dir) => update(si, (items) => {
+    const j = ii + dir
+    if (j < 0 || j >= items.length) return items
+    const copy = [...items];
+    [copy[ii], copy[j]] = [copy[j], copy[ii]]
+    return copy
+  })
+  const remove = (si, ii) => update(si, (items) => items.filter((_, k) => k !== ii))
+  const add = (si) => update(si, (items) => [...items, emptyDish(tiers)])
+
+  const save = async () => {
+    for (const s of menu) {
+      for (const it of s.items) {
+        if (it.name.fr.trim() && it.tiers.length === 0) { toast.error(`« ${it.name.fr} » doit être servi dans au moins un menu`); return }
+      }
+    }
+    setBusy(true)
+    try {
+      await api.put('/miawezon/admin/menu', { menu, menuFinal })
+      toast.success('Menu enregistré')
+      setDirty(false)
+      reload()
+    } catch (e) { toast.error(errMsg(e)) } finally { setBusy(false) }
+  }
+
+  const count = (code) => menu.reduce((n, s) => n + s.items.filter((i) => i.name.fr.trim() && i.tiers.includes(code)).length, 0)
+
+  return (
+    <div className="space-y-4">
+      <Card className="flex flex-col md:flex-row md:items-center gap-4">
+        <div className="flex-1">
+          <p className="font-display text-lg font-bold text-text-dark">Menu du buffet</p>
+          <p className="text-xs text-text-light mt-0.5">Cochez dans quel menu chaque plat est servi. Un plat coché dans un seul menu s'affiche comme « Exclusif ».</p>
+          <p className="text-xs text-text-medium mt-1">{tiers.map((c) => `${c} : ${count(c)} plat(s)`).join(' · ')}</p>
+        </div>
+        <Toggle checked={menuFinal} onChange={(v) => { setMenuFinal(v); setDirty(true) }} label="Menu définitif" hint="Retire « Menu définitif bientôt disponible »" />
+        <div className="flex gap-2">
+          <a href="/miawezon/menu" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-xs font-semibold text-text-medium hover:border-primary"><ExternalLink size={14} /> Aperçu</a>
+          <button onClick={save} disabled={busy || !dirty} className="rounded-lg bg-primary text-white px-4 py-2 text-sm font-semibold inline-flex items-center gap-2 disabled:opacity-50">
+            {busy ? <Loader2 size={14} className="animate-spin" /> : <Save size={14} />} Enregistrer
+          </button>
+        </div>
+      </Card>
+
+      {menu.map((s, si) => (
+        <Card key={s.key}>
+          <div className="flex items-center justify-between mb-3">
+            <p className="font-display text-lg font-bold text-text-dark">{MENU_SECTIONS[si][1]} <span className="text-xs font-body font-normal text-text-light">({s.items.length})</span></p>
+            <button onClick={() => add(si)} className="inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-semibold text-primary hover:border-primary"><Plus size={14} /> Ajouter un plat</button>
+          </div>
+          {s.items.length === 0 && <p className="text-sm text-text-light py-4 text-center">Aucun plat dans cette rubrique.</p>}
+          <ul className="space-y-3">
+            {s.items.map((it, ii) => (
+              <li key={ii} className="rounded-xl border border-cream-warm p-3">
+                <div className="grid md:grid-cols-2 gap-2">
+                  <input className="input !py-2" placeholder="Nom du plat (FR)" value={it.name.fr} onChange={(e) => setField(si, ii, 'name.fr', e.target.value)} aria-label="Nom du plat en français" />
+                  <input className="input !py-2" placeholder="Nom en anglais (optionnel)" value={it.name.en} onChange={(e) => setField(si, ii, 'name.en', e.target.value)} aria-label="Nom du plat en anglais" />
+                  <input className="input !py-2" placeholder="Description (FR)" value={it.desc.fr} onChange={(e) => setField(si, ii, 'desc.fr', e.target.value)} aria-label="Description en français" />
+                  <input className="input !py-2" placeholder="Description en anglais (optionnel)" value={it.desc.en} onChange={(e) => setField(si, ii, 'desc.en', e.target.value)} aria-label="Description en anglais" />
+                </div>
+                <div className="flex flex-wrap items-center gap-2 mt-2">
+                  <span className="text-xs text-text-light">Servi dans :</span>
+                  {tiers.map((code) => {
+                    const on = it.tiers.includes(code)
+                    return (
+                      <button key={code} type="button" aria-pressed={on} onClick={() => toggleTier(si, ii, code)}
+                        className={`rounded-full px-3 py-1 text-xs font-bold border inline-flex items-center gap-1 ${on ? 'bg-primary text-white border-primary' : 'bg-white text-text-light border-border'}`}>
+                        {on && <CheckCircle2 size={12} />} {code}
+                      </button>
+                    )
+                  })}
+                  <div className="ml-auto flex items-center gap-1">
+                    <button type="button" onClick={() => move(si, ii, -1)} disabled={ii === 0} aria-label="Monter" className="p-1.5 rounded-lg text-text-light hover:text-primary disabled:opacity-30"><ArrowUp size={16} /></button>
+                    <button type="button" onClick={() => move(si, ii, 1)} disabled={ii === s.items.length - 1} aria-label="Descendre" className="p-1.5 rounded-lg text-text-light hover:text-primary disabled:opacity-30"><ArrowDown size={16} /></button>
+                    <button type="button" onClick={() => remove(si, ii)} aria-label="Supprimer" className="p-1.5 rounded-lg text-text-light hover:text-red-600"><Trash2 size={16} /></button>
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </Card>
+      ))}
+
+      {dirty && (
+        <div className="sticky bottom-4 flex justify-end">
+          <button onClick={save} disabled={busy} className="rounded-xl bg-primary text-white px-6 py-3 text-sm font-semibold inline-flex items-center gap-2 shadow-hover disabled:opacity-60">
+            {busy ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />} Enregistrer le menu
+          </button>
+        </div>
+      )}
+    </div>
+  )
+}
+
 // ═══ PAGE ══════════════════════════════════════════════════════════════════
-const TABS = [['dashboard', 'Tableau de bord'], ['orders', 'Commandes'], ['settings', 'Réglages'], ['waitlist', 'Liste d\'attente']]
+const TABS = [['dashboard', 'Tableau de bord'], ['orders', 'Commandes'], ['menu', 'Menu du buffet'], ['settings', 'Réglages'], ['waitlist', 'Liste d\'attente']]
 
 export default function MiawezonAdminPage() {
   const [tab, setTab] = useState('dashboard')
@@ -599,6 +714,7 @@ export default function MiawezonAdminPage() {
           {tab === 'dashboard' && <DashboardTab config={config} />}
           {tab === 'orders' && <OrdersTab />}
           {tab === 'settings' && <SettingsTab key={config.event.salesOpenAt + config.event.published} config={config} reload={reload} />}
+          {tab === 'menu' && <MenuTab key={JSON.stringify(config.event.menu || [])} config={config} reload={reload} />}
           {tab === 'waitlist' && <WaitlistTab config={config} />}
         </>
       )}

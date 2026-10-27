@@ -59,54 +59,50 @@ export const MZ_TICKET_PERKS = {
   ],
 }
 
-// Menus du buffet, presentes sous forme de cartes (sans photos).
-// Chaque plat est servi aux deux menus, sauf s'il porte `only: 'AGBADJA'` (ou 'ZINLI').
-// La mention "Menu définitif bientôt disponible" disparait quand on coche "Menu définitif" dans l'admin.
-const d = (fr, en, dfr = '', den = '', only = null) => ({ name: { fr, en }, desc: { fr: dfr, en: den }, only })
+// Menu du buffet : il se modifie dans l'admin (MIAWEZON > Menu du buffet).
+// La liste ci-dessous ne sert que si le serveur ne renvoie pas encore de menu.
+// tiers : menus ou le plat est servi.
+const d = (fr, en, dfr = '', den = '', tiers = ['ZINLI', 'AGBADJA']) => ({ name: { fr, en }, desc: { fr: dfr, en: den }, tiers })
 
 export const MZ_MENU_TIERS = ['ZINLI', 'AGBADJA']
+export const MZ_MENU_SECTIONS = ['entrees', 'plats', 'desserts', 'boissons']
 
 export const MZ_MENU = [
-  {
-    key: 'entrees',
-    items: [
-      d('Samoussa au bœuf', 'Beef samosa', 'Croustillant et savoureux', 'Crispy and tasty'),
-      d('Accras de morue', 'Cod fritters', 'Recette traditionnelle', 'Traditional recipe'),
-      d('Salade exotique', 'Exotic salad', 'Fraîche et colorée', 'Fresh and colourful'),
-      d('Brochettes de gambas', 'Prawn skewers', 'Marinées aux épices douces', 'Marinated in mild spices', 'AGBADJA'),
-    ],
-  },
-  {
-    key: 'plats',
-    items: [
-      d('Poulet braisé', 'Grilled chicken', 'À la sauce épicée', 'With spicy sauce'),
-      d('Poisson braisé', 'Grilled fish', 'Aux épices douces', 'With mild spices'),
-      d('Riz gras', 'Jollof rice', 'Saveurs authentiques', 'Authentic flavours'),
-      d('Agneau mijoté', 'Slow-cooked lamb', 'Sauce arachide', 'Peanut sauce', 'AGBADJA'),
-    ],
-  },
-  {
-    key: 'desserts',
-    items: [
-      d('Tarte à la mangue', 'Mango tart', 'Fruitée et gourmande', 'Fruity and indulgent'),
-      d('Beignets sucrés', 'Sweet doughnuts', 'Douceur africaine', 'African sweetness'),
-      d('Banane plantain', 'Plantain', 'Caramélisée', 'Caramelised'),
-    ],
-  },
-  {
-    key: 'boissons',
-    items: [
-      d('Jus de bissap', 'Hibiscus juice', 'Naturel', 'Natural'),
-      d('Jus de gingembre', 'Ginger juice', 'Rafraîchissant', 'Refreshing'),
-      d('Eau minérale', 'Mineral water', 'Fraîche et pure', 'Fresh and pure'),
-      d('Cocktail de fruits', 'Fruit cocktail', 'Sans alcool', 'Alcohol free', 'AGBADJA'),
-    ],
-  },
+  { key: 'entrees', items: [
+    d('Samoussa au bœuf', 'Beef samosa', 'Croustillant et savoureux', 'Crispy and tasty'),
+    d('Accras de morue', 'Cod fritters', 'Recette traditionnelle', 'Traditional recipe'),
+    d('Salade exotique', 'Exotic salad', 'Fraîche et colorée', 'Fresh and colourful'),
+    d('Brochettes de gambas', 'Prawn skewers', 'Marinées aux épices douces', 'Marinated in mild spices', ['AGBADJA']),
+  ] },
+  { key: 'plats', items: [
+    d('Poulet braisé', 'Grilled chicken', 'À la sauce épicée', 'With spicy sauce'),
+    d('Poisson braisé', 'Grilled fish', 'Aux épices douces', 'With mild spices'),
+    d('Riz gras', 'Jollof rice', 'Saveurs authentiques', 'Authentic flavours'),
+    d('Agneau mijoté', 'Slow-cooked lamb', 'Sauce arachide', 'Peanut sauce', ['AGBADJA']),
+  ] },
+  { key: 'desserts', items: [
+    d('Tarte à la mangue', 'Mango tart', 'Fruitée et gourmande', 'Fruity and indulgent'),
+    d('Beignets sucrés', 'Sweet doughnuts', 'Douceur africaine', 'African sweetness'),
+    d('Banane plantain', 'Plantain', 'Caramélisée', 'Caramelised'),
+  ] },
+  { key: 'boissons', items: [
+    d('Jus de bissap', 'Hibiscus juice', 'Naturel', 'Natural'),
+    d('Jus de gingembre', 'Ginger juice', 'Rafraîchissant', 'Refreshing'),
+    d('Eau minérale', 'Mineral water', 'Fraîche et pure', 'Fresh and pure'),
+    d('Cocktail de fruits', 'Fruit cocktail', 'Sans alcool', 'Alcohol free', ['AGBADJA']),
+  ] },
 ]
 
-// Plats d'un menu donne (ZINLI ou AGBADJA)
-export const menuFor = (tier) =>
-  MZ_MENU.map((s) => ({ ...s, items: s.items.filter((i) => !i.only || i.only === tier) })).filter((s) => s.items.length)
+// Plats d'un menu donne. `exclusive` = plat absent d'au moins un autre menu.
+export const menuFor = (menu, tier) =>
+  (menu && menu.length ? menu : MZ_MENU)
+    .map((s) => ({
+      ...s,
+      items: (s.items || [])
+        .filter((i) => (i.tiers || []).includes(tier))
+        .map((i) => ({ ...i, exclusive: MZ_MENU_TIERS.some((x) => !(i.tiers || []).includes(x)) })),
+    }))
+    .filter((s) => s.items.length)
 
 // Moyens de paiement affiches (le choix reel se fait dans la fenetre KKiaPay)
 export const MZ_PAYMENT_METHODS = {
