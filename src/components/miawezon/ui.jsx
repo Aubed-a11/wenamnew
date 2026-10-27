@@ -4,7 +4,7 @@ import toast from 'react-hot-toast'
 import api from '../../api/axios'
 import { useT } from '../../i18n'
 import { MZ_ASSETS } from '../../data/miawezon'
-import { fmtShortDate, pad2, useCountdown } from './utils'
+import { pad2, useCountdown } from './utils'
 
 // Icones utilisables dans src/data/miawezon.js (ajoutez-les ici si besoin)
 const ICONS = { UtensilsCrossed, Users, Drama, PartyPopper, ChefHat, Music, HeartHandshake, Landmark, Sparkles }
@@ -58,30 +58,6 @@ export function InfoRow({ info, dark = true, className = '' }) {
           </div>
         </div>
       ))}
-    </div>
-  )
-}
-
-export function PhaseChips({ event, dark = true }) {
-  const { t, lang } = useT()
-  const phase = event?.phase || 1
-  const chips = [
-    [1, t('mz.phase1'), fmtShortDate(event?.phase1At, lang)],
-    [2, t('mz.phase2'), fmtShortDate(event?.salesOpenAt, lang)],
-  ]
-  return (
-    <div className={`inline-flex rounded-full p-1 ${dark ? 'bg-white/10 border border-white/15' : 'bg-white border border-border'}`}>
-      {chips.map(([n, label, date]) => {
-        const active = n === phase
-        return (
-          <span
-            key={n}
-            className={`px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap ${active ? 'bg-primary text-white' : dark ? 'text-white/70' : 'text-text-light'}`}
-          >
-            {label}{date ? ` (${date})` : ''}
-          </span>
-        )
-      })}
     </div>
   )
 }

@@ -8,7 +8,7 @@ import { useT } from '../../../i18n'
 import { useMiawezon, isMiawezonVisible } from '../../../store/miawezon'
 import { MZ_ASSETS, MZ_CONCEPT, MZ_GALLERY, MZ_VALUES, MZ_WHY } from '../../../data/miawezon'
 import {
-  CountdownBoxes, InfoRow, MzIcon, MzLogo, MzTitle, NotifyForm, PhaseChips, PreviewNotice,
+  CountdownBoxes, InfoRow, MzIcon, MzLogo, MzTitle, NotifyForm, PreviewNotice,
 } from '../../../components/miawezon/ui'
 import { eventInfo, useCountdown } from '../../../components/miawezon/utils'
 import { TicketOffer } from '../../../components/miawezon/TicketArt'
@@ -162,7 +162,6 @@ export default function MiawezonPage() {
         <div className="relative max-w-[1280px] mx-auto px-5 py-14">
           <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-5">
             <h2 className="font-display text-3xl md:text-4xl font-bold text-mz-gold">{t('mz.ticketing')}</h2>
-            <PhaseChips event={ev} />
           </div>
           <p className="mt-3 text-white/75 text-sm md:text-base max-w-2xl">
             {state === 'closed' ? t('mz.closedText') : t('mz.ticketingSub')}
