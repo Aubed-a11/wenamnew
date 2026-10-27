@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { CakeSlice, ChevronLeft, ChevronRight, Clock, Crown, Drumstick, GlassWater, Salad, Sparkle } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Clock } from 'lucide-react'
 import Navbar from '../../../components/common/Navbar'
 import Footer from '../../../components/common/Footer'
 import { useT } from '../../../i18n'
@@ -10,8 +10,6 @@ import { MZ_MENU_TIERS, MZ_TICKET_STYLE, menuFor } from '../../../data/miawezon'
 import { MzLogo, PreviewNotice } from '../../../components/miawezon/ui'
 import { fmtPrice } from '../../../components/miawezon/utils'
 import { MzLoading, MzUnavailable } from './MiawezonPage'
-
-const SECTION_ICONS = { entrees: Salad, plats: Drumstick, desserts: CakeSlice, boissons: GlassWater }
 
 // Deux ambiances de carte, reprises des billets
 const THEMES = {
@@ -26,10 +24,6 @@ const THEMES = {
 }
 const themeFor = (code) => (MZ_TICKET_STYLE.dark?.includes(code) ? 'vip' : 'standard')
 
-function Corner({ className, color }) {
-  return <Sparkle size={14} className={`absolute ${className}`} style={{ color }} aria-hidden="true" />
-}
-
 function MenuSheet({ tier, cat, menu }) {
   const { t, pick } = useT()
   const th = THEMES[themeFor(tier)]
@@ -38,10 +32,6 @@ function MenuSheet({ tier, cat, menu }) {
   return (
     <div className="rounded-[22px] p-2 md:p-3 shadow-hover" style={{ background: th.paper, border: `2px solid ${th.frame}` }}>
       <div className="relative rounded-[16px] px-5 py-8 md:px-12 md:py-12" style={{ border: `1px solid ${th.inner}` }}>
-        <Corner className="top-3 left-3" color={th.icon} />
-        <Corner className="top-3 right-3" color={th.icon} />
-        <Corner className="bottom-3 left-3" color={th.icon} />
-        <Corner className="bottom-3 right-3" color={th.icon} />
 
         <header className="text-center">
           <div className="flex justify-center"><MzLogo size={64} /></div>
@@ -57,23 +47,17 @@ function MenuSheet({ tier, cat, menu }) {
 
         <div className="mt-10 grid md:grid-cols-2 gap-x-12 gap-y-10">
           {sections.map((s) => {
-            const Icon = SECTION_ICONS[s.key] || Sparkle
             return (
               <section key={s.key} aria-labelledby={`mz-${tier}-${s.key}`}>
-                <div className="flex flex-col items-center text-center mb-5">
-                  <span className="w-12 h-12 rounded-full flex items-center justify-center" style={{ background: th.iconBg }}>
-                    <Icon size={22} style={{ color: th.icon }} />
-                  </span>
-                  <h3 id={`mz-${tier}-${s.key}`} className="font-display text-2xl font-bold mt-2" style={{ color: th.title }}>{t(`menu.${s.key}`)}</h3>
-                </div>
+                <h3 id={`mz-${tier}-${s.key}`} className="font-display text-2xl font-bold text-center mb-5" style={{ color: th.title }}>{t(`menu.${s.key}`)}</h3>
                 <ul className="space-y-4">
                   {s.items.map((it, i) => (
                     <li key={`${it.name.fr}-${i}`} className="text-center">
                       <p className="font-display text-lg font-semibold leading-snug" style={{ color: th.text }}>{pick(it.name)}</p>
                       {pick(it.desc) && <p className="text-sm italic mt-0.5" style={{ color: th.muted }}>{pick(it.desc)}</p>}
                       {it.exclusive && (
-                        <span className="inline-flex items-center gap-1 mt-1.5 rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider" style={{ background: th.badgeBg, color: th.badgeText }}>
-                          <Crown size={11} /> {t('menu.exclusiveOf', { tier })}
+                        <span className="inline-block mt-1.5 rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider" style={{ background: th.badgeBg, color: th.badgeText }}>
+                          {t('menu.exclusiveOf', { tier })}
                         </span>
                       )}
                     </li>
@@ -169,7 +153,7 @@ export default function BuffetMenuPage() {
         {extras.map((x) => (
           <div key={x.tier} className="mt-6 rounded-2xl bg-white border border-border p-5 md:p-6 flex flex-col md:flex-row md:items-center gap-4">
             <div className="flex-1 min-w-0">
-              <p className="font-display text-lg font-bold text-text-dark flex items-center gap-2"><Crown size={18} className="text-primary" /> {t('menu.moreWith', { tier: x.tier })}</p>
+              <p className="font-display text-lg font-bold text-text-dark">{t('menu.moreWith', { tier: x.tier })}</p>
               <p className="text-sm text-text-medium mt-1">{x.items.map((i) => pick(i.name)).join(', ')}</p>
             </div>
             <button type="button" onClick={() => { choose(x.tier); window.scrollTo({ top: 0, behavior: 'smooth' }) }} className="shrink-0 rounded-xl border border-primary text-primary px-5 py-2.5 text-sm font-semibold hover:bg-primary hover:text-white transition">
