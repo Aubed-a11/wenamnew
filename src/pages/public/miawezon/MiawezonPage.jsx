@@ -8,7 +8,7 @@ import { useT } from '../../../i18n'
 import { useMiawezon, isMiawezonVisible } from '../../../store/miawezon'
 import { MZ_ASSETS, MZ_CONCEPT, MZ_GALLERY, MZ_VALUES, MZ_WHY } from '../../../data/miawezon'
 import {
-  CountdownBoxes, InfoRow, MzIcon, MzLogo, MzTitle, NotifyForm, PatternBand, PhaseChips, PreviewNotice, TicketCategoryCard,
+  CountdownBoxes, InfoRow, MzIcon, MzLogo, MzTitle, NotifyForm, PhaseChips, PreviewNotice, TicketCategoryCard,
 } from '../../../components/miawezon/ui'
 import { eventInfo, useCountdown } from '../../../components/miawezon/utils'
 
@@ -18,7 +18,6 @@ export function SectionTitle({ children, light = false, className = '' }) {
   return (
     <div className={className}>
       <h2 className={`font-display text-2xl md:text-3xl font-bold ${light ? 'text-mz-gold' : 'text-text-dark'}`}>{children}</h2>
-      <span className="block mt-2 h-[3px] w-12 rounded-full bg-primary" />
     </div>
   )
 }
@@ -198,7 +197,6 @@ export default function MiawezonPage() {
         </div>
       </section>
 
-      <PatternBand />
       <Footer />
     </div>
   )

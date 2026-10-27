@@ -13,7 +13,7 @@ import { useMiawezon, isMiawezonVisible } from '../../../store/miawezon'
 import { useAuthStore } from '../../../store'
 import { MZ_PAYMENT_METHODS } from '../../../data/miawezon'
 import { MzLogo, PreviewNotice } from '../../../components/miawezon/ui'
-import { apiError, fmtFcfa, pad2, useCountdown } from '../../../components/miawezon/utils'
+import { apiError, fmtPrice, pad2, useCountdown } from '../../../components/miawezon/utils'
 import { openKkiapay } from '../../../components/miawezon/kkiapay'
 import { MzLoading, MzUnavailable } from './MiawezonPage'
 
@@ -356,7 +356,7 @@ export default function BookingPage() {
                         <div key={c._id} className={`rounded-xl border p-4 flex items-center gap-3 ${n > 0 ? 'border-primary bg-primary/5' : 'border-border'} ${soldOut ? 'opacity-60' : ''}`}>
                           <div className="flex-1 min-w-0">
                             <p className="font-display font-bold text-text-dark">{c.name} <span className="font-body font-normal text-xs text-text-light">· {pick(c.label)}</span></p>
-                            <p className="text-sm text-primary font-bold">{fmtFcfa(c.price)} <span className="text-xs font-normal text-text-light">{t('booking.perTicket')}</span></p>
+                            <p className="text-sm text-primary font-bold">{fmtPrice(c.price)} <span className="text-xs font-normal text-text-light">{t('booking.perTicket')}</span></p>
                             <p className="text-[11px] text-text-light mt-0.5">{soldOut ? t('mz.soldOut') : t('booking.left', { n: c.available })}</p>
                           </div>
                           <div className="flex items-center gap-2">
@@ -374,7 +374,7 @@ export default function BookingPage() {
                   </div>
                   <div className="flex items-center justify-between mt-5 pt-4 border-t border-border">
                     <span className="text-sm text-text-medium">{t('booking.total')}</span>
-                    <span className="font-display text-xl font-bold text-text-dark">{fmtFcfa(total)}</span>
+                    <span className="font-display text-xl font-bold text-text-dark">{fmtPrice(total)}</span>
                   </div>
                   <button
                     onClick={() => (count ? setStep(2) : toast.error(t('booking.chooseOne')))}
@@ -423,7 +423,7 @@ export default function BookingPage() {
 
                   <div className="flex items-center justify-between mt-5 pt-4 border-t border-border">
                     <span className="text-sm text-text-medium">{t('booking.total')} · {count} x</span>
-                    <span className="font-display text-xl font-bold text-text-dark">{fmtFcfa(total)}</span>
+                    <span className="font-display text-xl font-bold text-text-dark">{fmtPrice(total)}</span>
                   </div>
                   <div className="flex gap-3 mt-5">
                     <button type="button" onClick={() => setStep(1)} className="px-5 rounded-xl border border-border text-text-medium font-semibold hover:border-primary">{t('booking.back')}</button>
@@ -454,12 +454,12 @@ export default function BookingPage() {
                     <p className="text-xs font-bold uppercase tracking-wide text-text-light">{order.orderNumber}</p>
                     {order.items.map((i) => (
                       <div key={i.code} className="flex justify-between text-text-medium">
-                        <span>{i.name} x {i.quantity}</span><span>{fmtFcfa(i.unitPrice * i.quantity)}</span>
+                        <span>{i.name} x {i.quantity}</span><span>{fmtPrice(i.unitPrice * i.quantity)}</span>
                       </div>
                     ))}
                     <div className="flex justify-between text-text-medium"><span>{t('booking.fees')}</span><span>{t('booking.free')}</span></div>
                     <div className="flex justify-between pt-2 border-t border-border font-bold text-text-dark">
-                      <span>{t('booking.totalToPay')}</span><span className="text-primary">{fmtFcfa(order.total)}</span>
+                      <span>{t('booking.totalToPay')}</span><span className="text-primary">{fmtPrice(order.total)}</span>
                     </div>
                   </div>
 

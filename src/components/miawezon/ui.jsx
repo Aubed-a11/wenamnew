@@ -5,7 +5,7 @@ import toast from 'react-hot-toast'
 import api from '../../api/axios'
 import { useT } from '../../i18n'
 import { MZ_ASSETS, MZ_TICKET_PERKS } from '../../data/miawezon'
-import { fmtFcfa, fmtShortDate, pad2, useCountdown } from './utils'
+import { fmtPrice, fmtShortDate, pad2, useCountdown } from './utils'
 
 // Icones utilisables dans src/data/miawezon.js (ajoutez-les ici si besoin)
 const ICONS = { UtensilsCrossed, Users, Drama, PartyPopper, ChefHat, Music, HeartHandshake, Landmark, Sparkles }
@@ -13,23 +13,6 @@ const ICONS = { UtensilsCrossed, Users, Drama, PartyPopper, ChefHat, Music, Hear
 export function MzIcon({ name, ...props }) {
   const C = ICONS[name] || Sparkles
   return <C {...props} />
-}
-
-// Bande decorative a motif (rappel des tissus, comme sur les maquettes)
-export function PatternBand({ className = '' }) {
-  return (
-    <div
-      aria-hidden="true"
-      className={`h-3 w-full ${className}`}
-      style={{
-        backgroundColor: '#C4531A',
-        backgroundImage:
-          'linear-gradient(135deg, #D9A441 25%, transparent 25%), linear-gradient(225deg, #D9A441 25%, transparent 25%), linear-gradient(45deg, #8B3A0F 25%, transparent 25%), linear-gradient(315deg, #8B3A0F 25%, transparent 25%)',
-        backgroundSize: '16px 12px',
-        backgroundPosition: '8px 0, 8px 0, 0 0, 0 0',
-      }}
-    />
-  )
 }
 
 export function MzLogo({ size = 64, className = '' }) {
@@ -198,7 +181,7 @@ export function TicketCategoryCard({ cat, state }) {
   else if (low) badge = t('mz.onlyLeft', { n: cat.available })
 
   return (
-    <div className="relative overflow-hidden rounded-2xl bg-mz-ivory border border-mz-gold/40 shadow-card p-5 md:p-6 flex flex-col">
+    <div className="relative overflow-hidden rounded-2xl bg-white border border-border shadow-card p-5 md:p-6 flex flex-col">
       <div className="flex items-start justify-between gap-3">
         <div>
           <h3 className="font-display text-2xl font-bold text-text-dark tracking-wide">{cat.name}</h3>
@@ -209,7 +192,7 @@ export function TicketCategoryCard({ cat, state }) {
         )}
       </div>
 
-      <p className="font-display text-3xl font-bold text-text-dark mt-4">{fmtFcfa(cat.price)}</p>
+      <p className="font-display text-3xl font-bold text-text-dark mt-4">{fmtPrice(cat.price)}</p>
 
       {perks.length > 0 && (
         <ul className="mt-4 space-y-1.5">

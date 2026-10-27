@@ -6,7 +6,7 @@ import Navbar from '../../../components/common/Navbar'
 import Footer from '../../../components/common/Footer'
 import { useT } from '../../../i18n'
 import { useMiawezon } from '../../../store/miawezon'
-import { MzLogo, PatternBand } from '../../../components/miawezon/ui'
+import { MzLogo } from '../../../components/miawezon/ui'
 import { eventInfo } from '../../../components/miawezon/utils'
 import { pdfUrl, ticketsUrl, whatsappUrl } from './BookingPage'
 
@@ -119,7 +119,6 @@ export default function TicketsPage() {
           <Link to="/miawezon" className="text-sm text-text-light hover:text-primary">{t('mz.backEvent')}</Link>
         </div>
       </main>
-      <PatternBand />
       <Footer />
     </div>
   )

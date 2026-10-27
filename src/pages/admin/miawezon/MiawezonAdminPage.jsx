@@ -7,7 +7,7 @@ import {
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import toast from 'react-hot-toast'
 import api from '../../../api/axios'
-import { fmtFcfa } from '../../../components/miawezon/utils'
+import { fmtPrice } from '../../../components/miawezon/utils'
 
 const STATUS = {
   paid: ['Payée', 'bg-green-100 text-green-800'],
@@ -93,7 +93,7 @@ function DashboardTab({ config }) {
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        <Stat icon={Wallet} label="Ventes totales" value={fmtFcfa(stats.revenue)} sub={`${stats.paidOrders} commande(s) payée(s)`} />
+        <Stat icon={Wallet} label="Ventes totales" value={fmtPrice(stats.revenue)} sub={`${stats.paidOrders} commande(s) payée(s)`} />
         <Stat icon={Ticket} label="Billets vendus" value={`${stats.ticketsSold} / ${stats.capacity}`} sub={`${Math.max(0, stats.capacity - stats.ticketsSold)} place(s) restante(s)`} />
         <Stat icon={UserCheck} label="Entrées scannées" value={`${stats.checkedIn} / ${stats.ticketsSold}`} />
         <Stat icon={Users} label="Liste d'attente" value={stats.waitlist} sub={stats.statusCounts.refund_needed ? `${stats.statusCounts.refund_needed} à rembourser` : undefined} />
@@ -107,7 +107,7 @@ function DashboardTab({ config }) {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-display text-lg font-bold text-text-dark">{c.name} <span className="font-body text-xs text-text-light font-normal">{c.label?.fr}</span></p>
-                  <p className="text-sm text-primary font-bold">{fmtFcfa(c.price)}</p>
+                  <p className="text-sm text-primary font-bold">{fmtPrice(c.price)}</p>
                 </div>
                 <p className="font-display text-2xl font-bold text-text-dark">{c.sold}<span className="text-sm text-text-light font-body"> / {c.capacity}</span></p>
               </div>
@@ -132,7 +132,7 @@ function DashboardTab({ config }) {
                 <CartesianGrid strokeDasharray="3 3" stroke="#EDE0C4" />
                 <XAxis dataKey="date" tickFormatter={(d) => d.slice(8, 10) + '/' + d.slice(5, 7)} tick={{ fontSize: 11, fill: '#8B6B3D' }} interval={4} />
                 <YAxis tickFormatter={(v) => (v >= 1000 ? `${Math.round(v / 1000)}k` : v)} tick={{ fontSize: 11, fill: '#8B6B3D' }} width={40} />
-                <Tooltip formatter={(v, n) => (n === 'revenue' ? [fmtFcfa(v), 'Ventes'] : [v, 'Billets'])} labelFormatter={(d) => new Date(d).toLocaleDateString('fr-FR')} />
+                <Tooltip formatter={(v, n) => (n === 'revenue' ? [fmtPrice(v), 'Ventes'] : [v, 'Billets'])} labelFormatter={(d) => new Date(d).toLocaleDateString('fr-FR')} />
                 <Line type="monotone" dataKey="revenue" stroke="#C4531A" strokeWidth={2} dot={false} />
               </LineChart>
             </ResponsiveContainer>
@@ -151,7 +151,7 @@ function DashboardTab({ config }) {
                     <p className="text-xs text-text-light truncate">{o.buyer.name} · {o.items.map((i) => `${i.code} x${i.quantity}`).join(', ')}</p>
                   </div>
                   <div className="text-right shrink-0">
-                    <p className="font-bold text-text-dark">{fmtFcfa(o.total)}</p>
+                    <p className="font-bold text-text-dark">{fmtPrice(o.total)}</p>
                     {o.status !== 'paid' ? <Badge status={o.status} /> : <p className="text-[11px] text-text-light">{fmtDT(o.paidAt)}</p>}
                   </div>
                 </li>
@@ -198,9 +198,9 @@ function OrderDrawer({ id, onClose, onChanged }) {
             </div>
             <div>
               {o.items.map((i) => (
-                <div key={i.code} className="flex justify-between py-1"><span>{i.name} x {i.quantity}</span><span>{fmtFcfa(i.unitPrice * i.quantity)}</span></div>
+                <div key={i.code} className="flex justify-between py-1"><span>{i.name} x {i.quantity}</span><span>{fmtPrice(i.unitPrice * i.quantity)}</span></div>
               ))}
-              <div className="flex justify-between py-1 font-bold border-t border-cream-warm mt-1 pt-2"><span>Total</span><span className="text-primary">{fmtFcfa(o.total)}</span></div>
+              <div className="flex justify-between py-1 font-bold border-t border-cream-warm mt-1 pt-2"><span>Total</span><span className="text-primary">{fmtPrice(o.total)}</span></div>
             </div>
             {o.payment?.transactionId && (
               <p className="text-xs text-text-light">Transaction KKiaPay : <span className="font-mono text-text-dark">{o.payment.transactionId}</span>{o.payment.method ? ` (${o.payment.method})` : ''}</p>
@@ -333,7 +333,7 @@ function OrdersTab() {
                     <td className="px-4 py-3 font-bold text-text-dark whitespace-nowrap">{o.orderNumber}</td>
                     <td className="px-4 py-3"><p className="text-text-dark">{o.buyer.name}</p><p className="text-xs text-text-light">{o.buyer.phone}</p></td>
                     <td className="px-4 py-3 text-text-medium whitespace-nowrap">{o.items.map((i) => `${i.code} x${i.quantity}`).join(', ')}</td>
-                    <td className="px-4 py-3 text-right font-bold whitespace-nowrap">{fmtFcfa(o.total)}</td>
+                    <td className="px-4 py-3 text-right font-bold whitespace-nowrap">{fmtPrice(o.total)}</td>
                     <td className="px-4 py-3"><Badge status={o.status} /></td>
                     <td className="px-4 py-3 text-xs text-text-light whitespace-nowrap">{fmtDT(o.paidAt || o.createdAt)}</td>
                     <td className="px-4 py-3"><button onClick={() => setOpenId(o._id)} className="inline-flex items-center gap-1 text-primary font-semibold text-xs"><Eye size={14} /> Détails</button></td>
@@ -399,7 +399,7 @@ function CategoryEditor({ cat, onSaved }) {
         <span className="text-xs text-text-light">{sold} place(s) réservée(s) ou vendue(s)</span>
       </div>
       <div className="grid grid-cols-2 gap-3">
-        <L label="Prix (FCFA)"><input type="number" min="100" step="500" className="input" value={f.price} onChange={(e) => setF({ ...f, price: e.target.value })} /></L>
+        <L label="Prix (MAD)"><input type="number" min="10" step="10" className="input" value={f.price} onChange={(e) => setF({ ...f, price: e.target.value })} /></L>
         <L label="Nombre de places" hint={`Minimum ${sold}`}><input type="number" min={sold} className="input" value={f.capacity} onChange={(e) => setF({ ...f, capacity: e.target.value })} /></L>
         <L label="Libellé (FR)"><input className="input" value={f.labelFr} onChange={(e) => setF({ ...f, labelFr: e.target.value })} /></L>
         <L label="Libellé (EN)"><input className="input" value={f.labelEn} onChange={(e) => setF({ ...f, labelEn: e.target.value })} /></L>

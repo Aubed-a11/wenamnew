@@ -65,7 +65,9 @@ const en = {
   },
   menu: {
     title: 'Buffet menu',
-    subtitle: 'A preview of what awaits you at MIAWÉZON.',
+    subtitle: 'One menu per ticket category. The AGBADJA menu includes a few extra dishes.',
+    menuOf: 'Menu',
+    extra: 'Exclusive',
     soon: 'Final menu coming soon',
     dishes: ({ n }) => `${n} dish${n > 1 ? 'es' : ''}`,
     drinks: ({ n }) => `${n} drink${n > 1 ? 's' : ''}`,

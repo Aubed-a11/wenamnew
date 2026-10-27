@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { locale } from '../../i18n'
 
-export const fmtFcfa = (n) => `${Number(n || 0).toLocaleString('fr-FR').replace(/ | /g, ' ')} FCFA`
+export const fmtPrice = (n) => `${Number(n || 0).toLocaleString('fr-FR').replace(/[\u202f\u00a0]/g, ' ')} MAD`
 
 export const fmtShortDate = (d, lang) =>
   d ? new Date(d).toLocaleDateString(locale(lang), { day: '2-digit', month: '2-digit', year: 'numeric' }) : ''

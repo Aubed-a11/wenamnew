@@ -65,7 +65,9 @@ const fr = {
   },
   menu: {
     title: 'Menu du buffet',
-    subtitle: 'Découvrez un aperçu de ce qui vous attend lors de MIAWÉZON.',
+    subtitle: 'Un menu par catégorie de billet. Le menu AGBADJA comprend quelques plats en plus.',
+    menuOf: 'Menu',
+    extra: 'Exclusif',
     soon: 'Menu définitif bientôt disponible',
     dishes: ({ n }) => `${n} plat${n > 1 ? 's' : ''}`,
     drinks: ({ n }) => `${n} boisson${n > 1 ? 's' : ''}`,

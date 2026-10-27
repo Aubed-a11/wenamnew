@@ -10,7 +10,8 @@ export default {
         text: { dark: '#1A0F00', medium: '#5C3D11', light: '#8B6B3D' },
         border: '#D4B896',
         sidebar: '#8B3A0F',
-        mz: { night: '#1E120A', brown: '#3B2314', gold: '#D9A441', 'gold-light': '#F3E3C3', ivory: '#FBF6EE' },
+        // Palette MIAWEZON alignee sur la charte Wenam (brun, orange, creme)
+        mz: { night: '#8B3A0F', brown: '#6B2C0B', gold: '#FAF3E8', 'gold-light': '#EDE0C4', ivory: '#FAF3E8' },
       },
       fontFamily: {
         display: ['Playfair Display', 'serif'],

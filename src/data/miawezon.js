@@ -59,47 +59,54 @@ export const MZ_TICKET_PERKS = {
   ],
 }
 
-// Menu du buffet (apercu tant que "Menu définitif" n'est pas coche dans l'admin)
-const m = (slug, fr, en, dfr, den) => ({ img: `${IMG}/menu/${slug}.jpg`, name: { fr, en }, desc: { fr: dfr, en: den } })
+// Menus du buffet, presentes sous forme de cartes (sans photos).
+// Chaque plat est servi aux deux menus, sauf s'il porte `only: 'AGBADJA'` (ou 'ZINLI').
+// La mention "Menu définitif bientôt disponible" disparait quand on coche "Menu définitif" dans l'admin.
+const d = (fr, en, dfr = '', den = '', only = null) => ({ name: { fr, en }, desc: { fr: dfr, en: den }, only })
+
+export const MZ_MENU_TIERS = ['ZINLI', 'AGBADJA']
 
 export const MZ_MENU = [
   {
     key: 'entrees',
-    kind: 'dishes',
     items: [
-      m('samoussa', 'Samoussa au bœuf', 'Beef samosa', 'Croustillant et savoureux', 'Crispy and tasty'),
-      m('accras', 'Accras de morue', 'Cod fritters', 'Recette traditionnelle', 'Traditional recipe'),
-      m('salade', 'Salade exotique', 'Exotic salad', 'Fraîche et colorée', 'Fresh and colourful'),
+      d('Samoussa au bœuf', 'Beef samosa', 'Croustillant et savoureux', 'Crispy and tasty'),
+      d('Accras de morue', 'Cod fritters', 'Recette traditionnelle', 'Traditional recipe'),
+      d('Salade exotique', 'Exotic salad', 'Fraîche et colorée', 'Fresh and colourful'),
+      d('Brochettes de gambas', 'Prawn skewers', 'Marinées aux épices douces', 'Marinated in mild spices', 'AGBADJA'),
     ],
   },
   {
     key: 'plats',
-    kind: 'dishes',
     items: [
-      m('poulet-braise', 'Poulet braisé', 'Grilled chicken', 'À la sauce épicée', 'With spicy sauce'),
-      m('poisson-braise', 'Poisson braisé', 'Grilled fish', 'Aux épices douces', 'With mild spices'),
-      m('riz-gras', 'Riz gras', 'Jollof rice', 'Saveurs authentiques', 'Authentic flavours'),
+      d('Poulet braisé', 'Grilled chicken', 'À la sauce épicée', 'With spicy sauce'),
+      d('Poisson braisé', 'Grilled fish', 'Aux épices douces', 'With mild spices'),
+      d('Riz gras', 'Jollof rice', 'Saveurs authentiques', 'Authentic flavours'),
+      d('Agneau mijoté', 'Slow-cooked lamb', 'Sauce arachide', 'Peanut sauce', 'AGBADJA'),
     ],
   },
   {
     key: 'desserts',
-    kind: 'dishes',
     items: [
-      m('tarte-mangue', 'Tarte à la mangue', 'Mango tart', 'Fruitée et gourmande', 'Fruity and indulgent'),
-      m('beignets', 'Beignets sucrés', 'Sweet doughnuts', 'Douceur africaine', 'African sweetness'),
-      m('banane-caramel', 'Banane plantain', 'Plantain', 'Caramélisée', 'Caramelised'),
+      d('Tarte à la mangue', 'Mango tart', 'Fruitée et gourmande', 'Fruity and indulgent'),
+      d('Beignets sucrés', 'Sweet doughnuts', 'Douceur africaine', 'African sweetness'),
+      d('Banane plantain', 'Plantain', 'Caramélisée', 'Caramelised'),
     ],
   },
   {
     key: 'boissons',
-    kind: 'drinks',
     items: [
-      m('bissap', 'Jus de bissap', 'Hibiscus juice', 'Naturel', 'Natural'),
-      m('gingembre', 'Jus de gingembre', 'Ginger juice', 'Rafraîchissant', 'Refreshing'),
-      m('eau', 'Eau minérale', 'Mineral water', 'Fraîche et pure', 'Fresh and pure'),
+      d('Jus de bissap', 'Hibiscus juice', 'Naturel', 'Natural'),
+      d('Jus de gingembre', 'Ginger juice', 'Rafraîchissant', 'Refreshing'),
+      d('Eau minérale', 'Mineral water', 'Fraîche et pure', 'Fresh and pure'),
+      d('Cocktail de fruits', 'Fruit cocktail', 'Sans alcool', 'Alcohol free', 'AGBADJA'),
     ],
   },
 ]
+
+// Plats d'un menu donne (ZINLI ou AGBADJA)
+export const menuFor = (tier) =>
+  MZ_MENU.map((s) => ({ ...s, items: s.items.filter((i) => !i.only || i.only === tier) })).filter((s) => s.items.length)
 
 // Moyens de paiement affiches (le choix reel se fait dans la fenetre KKiaPay)
 export const MZ_PAYMENT_METHODS = {
