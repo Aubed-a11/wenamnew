@@ -109,9 +109,7 @@ export default function MiawezonPage() {
           <div className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-4">
             {MZ_VALUES.map((v) => (
               <div key={v.label.fr} className="flex flex-col items-start gap-2">
-                <span className="w-11 h-11 rounded-full bg-cream-warm flex items-center justify-center">
-                  <MzIcon name={v.icon} size={20} className="text-primary" />
-                </span>
+                <MzIcon name={v.icon} size={24} strokeWidth={1.75} className="text-primary" aria-hidden="true" />
                 <span className="text-xs text-text-medium leading-snug">{pick(v.label)}</span>
               </div>
             ))}
@@ -188,9 +186,7 @@ export default function MiawezonPage() {
         <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-6">
           {MZ_WHY.map((w) => (
             <div key={w.label.fr} className="flex flex-col items-center text-center gap-3">
-              <span className="w-14 h-14 rounded-full bg-cream-warm flex items-center justify-center">
-                <MzIcon name={w.icon} size={24} className="text-primary" />
-              </span>
+              <MzIcon name={w.icon} size={30} strokeWidth={1.75} className="text-primary" aria-hidden="true" />
               <span className="text-sm font-semibold text-text-medium">{pick(w.label)}</span>
             </div>
           ))}
