@@ -13,6 +13,10 @@ import RegisterPage from './pages/public/RegisterPage'
 import ProfilePage from './pages/public/ProfilePage'
 import ForgotPasswordPage from './pages/public/ForgotPasswordPage'
 import ResetPasswordPage from './pages/public/ResetPasswordPage'
+import MiawezonPage from './pages/public/miawezon/MiawezonPage'
+import BuffetMenuPage from './pages/public/miawezon/BuffetMenuPage'
+import BookingPage from './pages/public/miawezon/BookingPage'
+import TicketsPage from './pages/public/miawezon/TicketsPage'
 
 import AdminLoginPage from './pages/admin/AdminLoginPage'
 import DashboardPage from './pages/admin/DashboardPage'
@@ -22,6 +26,8 @@ import ReviewsPage from './pages/admin/ReviewsPage'
 import UsersPage from './pages/admin/UsersPage'
 import GalleryPage from './pages/admin/GalleryPage'
 import SettingsPage from './pages/admin/SettingsPage'
+import MiawezonAdminPage from './pages/admin/miawezon/MiawezonAdminPage'
+import CheckinPage from './pages/admin/miawezon/CheckinPage'
 import AdminLayout from './components/admin/AdminLayout'
 
 export default function App() {
@@ -47,6 +53,12 @@ export default function App() {
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
 
+        {/* ── MIAWÉZON ── */}
+        <Route path="/miawezon" element={<MiawezonPage />} />
+        <Route path="/miawezon/menu" element={<BuffetMenuPage />} />
+        <Route path="/miawezon/reserver" element={<BookingPage />} />
+        <Route path="/miawezon/billets/:id" element={<TicketsPage />} />
+
         {/* ── Admin : login séparé ── */}
         <Route path="/admin/login" element={<AdminPublicRoute><AdminLoginPage /></AdminPublicRoute>} />
 
@@ -67,6 +79,8 @@ export default function App() {
           <Route path="reviews" element={<ReviewsPage />} />
           <Route path="users" element={<UsersPage />} />
           <Route path="settings" element={<SettingsPage />} />
+          <Route path="miawezon" element={<MiawezonAdminPage />} />
+          <Route path="miawezon/controle" element={<CheckinPage />} />
         </Route>
 
         {/* Fallback */}

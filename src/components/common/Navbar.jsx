@@ -1,9 +1,33 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { ShoppingCart, User, LogOut, ChevronDown, Menu, X, LayoutDashboard } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAuthStore, useCartStore } from '../../store'
 import toast from 'react-hot-toast'
+import { useT } from '../../i18n'
+import { useMiawezon, isMiawezonVisible } from '../../store/miawezon'
+
+function NewBadge({ label }) {
+  return (
+    <span style={{ background: '#C4531A', color: '#fff', fontSize: 9, fontWeight: 700, padding: '2px 7px', borderRadius: 999, letterSpacing: '0.02em', lineHeight: 1.4 }}>{label}</span>
+  )
+}
+
+function LangSwitch({ lang, setLang }) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12, fontWeight: 700 }} aria-label="Langue / Language">
+      {['fr', 'en'].map((l, i) => (
+        <span key={l} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+          {i > 0 && <span style={{ color: '#D4B896' }}>|</span>}
+          <button type="button" onClick={() => setLang(l)} aria-pressed={lang === l}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px 2px', color: lang === l ? '#C4531A' : '#8B6B3D', fontWeight: lang === l ? 800 : 600, fontFamily: 'Lato,sans-serif', fontSize: 12 }}>
+            {l.toUpperCase()}
+          </button>
+        </span>
+      ))}
+    </div>
+  )
+}
 
 const css = `
   .nav-inner {
@@ -46,11 +70,23 @@ export default function Navbar() {
   const count = items.reduce((s, i) => s + i.quantity, 0)
   const navigate = useNavigate()
   const isAdmin = user?.role === 'admin'
+  const { t, lang, setLang } = useT()
+  const location = useLocation()
+  const mzData = useMiawezon((s) => s.data)
+  const loadMz = useMiawezon((s) => s.load)
+  useEffect(() => { loadMz() }, [loadMz, user?.role])
+  const showMz = isMiawezonVisible(mzData)
+  const links = [
+    [t('nav.home'), '/'],
+    [t('nav.menu'), '/menu'],
+    ...(showMz ? [[t('nav.miawezon'), '/miawezon', true]] : []),
+  ]
+  const isActive = (to) => (to === '/' ? location.pathname === '/' : location.pathname.startsWith(to))
 
   const handleLogout = async () => {
     setUserOpen(false)
     await logout()
-    toast.success('À bientôt !')
+    toast.success(t('nav.bye'))
     navigate('/')
   }
 
@@ -70,13 +106,16 @@ export default function Navbar() {
 
         {/* Nav links — desktop uniquement */}
         <div className="nav-links">
-          {[['Accueil', '/'], ['Menu', '/menu']].map(([l, t]) => (
-            <Link key={t} to={t} style={{ fontSize: 14, fontWeight: 600, color: '#5C3D11', textDecoration: 'none' }}>{l}</Link>
+          {links.map(([l, to, isNew]) => (
+            <Link key={to} to={to} style={{ fontSize: 14, fontWeight: 600, color: isActive(to) ? '#C4531A' : '#5C3D11', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 6, borderBottom: isActive(to) ? '2px solid #C4531A' : '2px solid transparent', paddingBottom: 2 }}>
+              {l}{isNew && <NewBadge label={t('nav.new')} />}
+            </Link>
           ))}
         </div>
 
         {/* Actions desktop */}
         <div className="nav-desktop-auth">
+          <LangSwitch lang={lang} setLang={setLang} />
           {!isAdmin && (
             <Link to="/cart" style={{ position: 'relative', padding: 8, display: 'flex', borderRadius: 8, color: '#1A0F00', textDecoration: 'none' }}>
               <ShoppingCart size={22} />
@@ -87,7 +126,7 @@ export default function Navbar() {
           )}
           {isAdmin && (
             <Link to="/admin" style={{ display: 'flex', alignItems: 'center', gap: 6, background: '#C4531A', color: '#fff', padding: '7px 14px', borderRadius: 8, textDecoration: 'none', fontSize: 13, fontWeight: 700 }}>
-              <LayoutDashboard size={15} /> Dashboard
+              <LayoutDashboard size={15} /> {t('nav.dashboard')}
             </Link>
           )}
           {user ? (
@@ -108,19 +147,19 @@ export default function Navbar() {
                       style={{ position: 'absolute', right: 0, top: 'calc(100% + 8px)', width: 200, background: '#fff', borderRadius: 12, border: '1px solid #D4B896', boxShadow: '0 8px 24px rgba(139,58,15,0.15)', zIndex: 50, overflow: 'hidden' }}>
                       <div style={{ padding: '12px 16px', background: '#FAF3E8', borderBottom: '1px solid #EDE0C4' }}>
                         <p style={{ fontWeight: 700, fontSize: 13, color: '#1A0F00', margin: 0 }}>{user.name}</p>
-                        <p style={{ fontSize: 11, color: '#8B6B3D', margin: 0 }}>{isAdmin ? 'Administrateur' : user.email}</p>
+                        <p style={{ fontSize: 11, color: '#8B6B3D', margin: 0 }}>{isAdmin ? t('nav.administrator') : user.email}</p>
                       </div>
                       {isAdmin ? (
                         <Link to="/admin" onClick={() => setUserOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px 16px', fontSize: 13, color: '#1A0F00', textDecoration: 'none' }}>
-                          <LayoutDashboard size={14} color="#C4531A" /> Tableau de bord
+                          <LayoutDashboard size={14} color="#C4531A" /> {t('nav.board')}
                         </Link>
                       ) : (
                         <Link to="/profile" onClick={() => setUserOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px 16px', fontSize: 13, color: '#1A0F00', textDecoration: 'none' }}>
-                          <User size={14} color="#C4531A" /> Mon profil
+                          <User size={14} color="#C4531A" /> {t('nav.profile')}
                         </Link>
                       )}
                       <button onClick={handleLogout} style={{ width: '100%', display: 'flex', alignItems: 'center', gap: 8, padding: '12px 16px', fontSize: 13, color: '#DC2626', background: 'none', border: 'none', borderTop: '1px solid #EDE0C4', cursor: 'pointer', fontFamily: 'Lato,sans-serif' }}>
-                        <LogOut size={14} /> Déconnexion
+                        <LogOut size={14} /> {t('nav.logout')}
                       </button>
                     </motion.div>
                   </>
@@ -128,12 +167,13 @@ export default function Navbar() {
               </AnimatePresence>
             </div>
           ) : (
-            <Link to="/login" className="nav-connexion-btn" style={{ background: '#C4531A', color: '#fff', padding: '8px 18px', borderRadius: 8, textDecoration: 'none', fontSize: 13, fontWeight: 700 }}>Connexion</Link>
+            <Link to="/login" className="nav-connexion-btn" style={{ background: '#C4531A', color: '#fff', padding: '8px 18px', borderRadius: 8, textDecoration: 'none', fontSize: 13, fontWeight: 700 }}>{t('nav.login')}</Link>
           )}
         </div>
 
         {/* Mobile — panier + hamburger seulement */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 4 }} className="nav-mobile-toggle">
+        <div style={{ alignItems: 'center', gap: 4 }} className="nav-mobile-toggle">
+          <LangSwitch lang={lang} setLang={setLang} />
           {!isAdmin && (
             <Link to="/cart" style={{ position: 'relative', padding: 8, display: 'flex', borderRadius: 8, color: '#1A0F00', textDecoration: 'none' }}>
               <ShoppingCart size={20} />
@@ -154,37 +194,39 @@ export default function Navbar() {
           <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }}
             style={{ overflow: 'hidden', borderTop: '1px solid #D4B896', background: '#FAF3E8' }}>
             <div style={{ padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 4 }}>
-              {[['Accueil', '/'], ['Menu', '/menu']].map(([l, t]) => (
-                <Link key={t} to={t} onClick={() => setMenuOpen(false)}
-                  style={{ fontSize: 15, fontWeight: 600, color: '#1A0F00', textDecoration: 'none', padding: '10px 0', borderBottom: '1px solid #EDE0C4' }}>{l}</Link>
+              {links.map(([l, to, isNew]) => (
+                <Link key={to} to={to} onClick={() => setMenuOpen(false)}
+                  style={{ fontSize: 15, fontWeight: 600, color: isActive(to) ? '#C4531A' : '#1A0F00', textDecoration: 'none', padding: '10px 0', borderBottom: '1px solid #EDE0C4', display: 'flex', alignItems: 'center', gap: 8 }}>
+                  {l}{isNew && <NewBadge label={t('nav.new')} />}
+                </Link>
               ))}
               {!isAdmin && (
                 <Link to="/cart" onClick={() => setMenuOpen(false)}
                   style={{ fontSize: 15, fontWeight: 600, color: '#1A0F00', textDecoration: 'none', padding: '10px 0', borderBottom: '1px solid #EDE0C4', display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <ShoppingCart size={16} /> Panier {count > 0 && `(${count})`}
+                  <ShoppingCart size={16} /> {t('nav.cart')} {count > 0 && `(${count})`}
                 </Link>
               )}
               {user && !isAdmin && (
                 <Link to="/profile" onClick={() => setMenuOpen(false)}
                   style={{ fontSize: 15, fontWeight: 600, color: '#1A0F00', textDecoration: 'none', padding: '10px 0', borderBottom: '1px solid #EDE0C4', display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <User size={16} /> Mon profil
+                  <User size={16} /> {t('nav.profile')}
                 </Link>
               )}
               {isAdmin && (
                 <Link to="/admin" onClick={() => setMenuOpen(false)}
                   style={{ fontSize: 15, fontWeight: 600, color: '#C4531A', textDecoration: 'none', padding: '10px 0', borderBottom: '1px solid #EDE0C4', display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <LayoutDashboard size={16} /> Dashboard Admin
+                  <LayoutDashboard size={16} /> {t('nav.adminDashboard')}
                 </Link>
               )}
               {user ? (
                 <button onClick={() => { setMenuOpen(false); handleLogout() }}
                   style={{ fontSize: 15, fontWeight: 600, color: '#DC2626', background: 'none', border: 'none', padding: '10px 0', textAlign: 'left', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <LogOut size={16} /> Déconnexion
+                  <LogOut size={16} /> {t('nav.logout')}
                 </button>
               ) : (
                 <Link to="/login" onClick={() => setMenuOpen(false)}
                   style={{ fontSize: 15, fontWeight: 700, color: '#fff', background: '#C4531A', textDecoration: 'none', padding: '12px 20px', borderRadius: 10, textAlign: 'center', marginTop: 8 }}>
-                  Connexion
+                  {t('nav.login')}
                 </Link>
               )}
             </div>

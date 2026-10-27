@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate, Outlet } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   LayoutDashboard, ShoppingBag, UtensilsCrossed, Image,
-  Star, Users, Settings, LogOut, Menu, X, ChevronRight, ExternalLink
+  Star, Users, Settings, LogOut, Menu, X, ChevronRight, ExternalLink, Ticket, ScanLine
 } from 'lucide-react'
 import { useAuthStore } from '../../store'
 
@@ -15,6 +15,8 @@ const NAV = [
   { to: '/admin/reviews',  label: 'Avis',         icon: Star },
   { to: '/admin/users',    label: 'Utilisateurs', icon: Users },
   { to: '/admin/settings', label: 'Paramètres',   icon: Settings },
+  { to: '/admin/miawezon', label: 'MIAWÉZON',     icon: Ticket, exact: true },
+  { to: '/admin/miawezon/controle', label: 'Contrôle billets', icon: ScanLine },
 ]
 
 const css = `
@@ -52,7 +54,11 @@ export default function AdminLayout() {
   const navigate = useNavigate()
   const { logout, user } = useAuthStore()
 
-  const isActive = (to) => to === '/admin' ? location.pathname === '/admin' : location.pathname.startsWith(to)
+  const isActive = (to) => {
+    if (to === '/admin') return location.pathname === '/admin'
+    if (NAV.find((n) => n.to === to)?.exact) return location.pathname === to
+    return location.pathname.startsWith(to)
+  }
   const handleLogout = async () => { await logout(); navigate('/admin/login') }
   const currentPage = NAV.find(n => isActive(n.to))?.label || 'Dashboard'
 

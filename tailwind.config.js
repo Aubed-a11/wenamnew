@@ -10,10 +10,12 @@ export default {
         text: { dark: '#1A0F00', medium: '#5C3D11', light: '#8B6B3D' },
         border: '#D4B896',
         sidebar: '#8B3A0F',
+        mz: { night: '#1E120A', brown: '#3B2314', gold: '#D9A441', 'gold-light': '#F3E3C3', ivory: '#FBF6EE' },
       },
       fontFamily: {
         display: ['Playfair Display', 'serif'],
         body: ['Lato', 'sans-serif'],
+        script: ['Dancing Script', 'cursive'],
       },
       boxShadow: {
         card: '0 2px 12px rgba(139,58,15,0.12)',

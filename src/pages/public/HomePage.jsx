@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import api from '../../api/axios'
 import Footer from '../../components/common/Footer'
 import Navbar from '../../components/common/Navbar'
+import MiawezonBanner from '../../components/miawezon/MiawezonBanner'
 import { useAuthStore } from '../../store'
 
 const OPENING_PHOTOS = [
@@ -207,6 +208,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* MIAWEZON */}
+      <MiawezonBanner />
 
       {/* CATEGORIES */}
       <section style={{ background: '#F5ECD7', padding: '72px 20px' }}>
