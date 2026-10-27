@@ -8,9 +8,10 @@ import { useT } from '../../../i18n'
 import { useMiawezon, isMiawezonVisible } from '../../../store/miawezon'
 import { MZ_ASSETS, MZ_CONCEPT, MZ_GALLERY, MZ_VALUES, MZ_WHY } from '../../../data/miawezon'
 import {
-  CountdownBoxes, InfoRow, MzIcon, MzLogo, MzTitle, NotifyForm, PhaseChips, PreviewNotice, TicketCategoryCard,
+  CountdownBoxes, InfoRow, MzIcon, MzLogo, MzTitle, NotifyForm, PhaseChips, PreviewNotice,
 } from '../../../components/miawezon/ui'
 import { eventInfo, useCountdown } from '../../../components/miawezon/utils'
+import { TicketOffer } from '../../../components/miawezon/TicketArt'
 
 const fadeUp = { hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0 } }
 
@@ -167,8 +168,8 @@ export default function MiawezonPage() {
             {state === 'closed' ? t('mz.closedText') : t('mz.ticketingSub')}
           </p>
 
-          <div className="mt-8 grid md:grid-cols-2 gap-5">
-            {data.categories.map((c) => <TicketCategoryCard key={c._id} cat={c} state={state} />)}
+          <div className="mt-8 grid xl:grid-cols-2 gap-6">
+            {data.categories.map((c) => <TicketOffer key={c._id} cat={c} state={state} info={info} notch="#8B3A0F" />)}
           </div>
 
           {state === 'upcoming' && (

@@ -1,11 +1,10 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
 import { Bell, CalendarDays, Check, Clock, MapPin, Loader2, UtensilsCrossed, Users, Drama, PartyPopper, ChefHat, Music, HeartHandshake, Landmark, Sparkles } from 'lucide-react'
 import toast from 'react-hot-toast'
 import api from '../../api/axios'
 import { useT } from '../../i18n'
-import { MZ_ASSETS, MZ_TICKET_PERKS } from '../../data/miawezon'
-import { fmtPrice, fmtShortDate, pad2, useCountdown } from './utils'
+import { MZ_ASSETS } from '../../data/miawezon'
+import { fmtShortDate, pad2, useCountdown } from './utils'
 
 // Icones utilisables dans src/data/miawezon.js (ajoutez-les ici si besoin)
 const ICONS = { UtensilsCrossed, Users, Drama, PartyPopper, ChefHat, Music, HeartHandshake, Landmark, Sparkles }
@@ -163,78 +162,6 @@ export function NotifyForm({ dark = true, compact = false }) {
         {busy && <Loader2 size={14} className="animate-spin" />} {t('mz.notifySend')}
       </button>
     </form>
-  )
-}
-
-// Carte d'une categorie de billet (vitrine et billetterie)
-export function TicketCategoryCard({ cat, state }) {
-  const { t, pick } = useT()
-  const perks = MZ_TICKET_PERKS[cat.code] || []
-  const open = state === 'open'
-  const soldOut = open && cat.available === 0
-  const pct = cat.capacity ? Math.round((cat.available / cat.capacity) * 100) : 0
-  const low = open && !soldOut && cat.available <= Math.max(5, Math.ceil(cat.capacity * 0.15))
-
-  let badge = null
-  if (state === 'upcoming') badge = t('mz.limited')
-  else if (soldOut) badge = t('mz.soldOut')
-  else if (low) badge = t('mz.onlyLeft', { n: cat.available })
-
-  return (
-    <div className="relative overflow-hidden rounded-2xl bg-white border border-border shadow-card p-5 md:p-6 flex flex-col">
-      <div className="flex items-start justify-between gap-3">
-        <div>
-          <h3 className="font-display text-2xl font-bold text-text-dark tracking-wide">{cat.name}</h3>
-          <p className="text-sm text-text-light">{pick(cat.label)}</p>
-        </div>
-        {badge && (
-          <span className={`shrink-0 rounded-full px-3 py-1 text-[11px] font-semibold ${soldOut ? 'bg-red-100 text-red-700' : 'bg-cream-warm text-text-medium'}`}>{badge}</span>
-        )}
-      </div>
-
-      <p className="font-display text-3xl font-bold text-text-dark mt-4">{fmtPrice(cat.price)}</p>
-
-      {perks.length > 0 && (
-        <ul className="mt-4 space-y-1.5">
-          {perks.map((p) => (
-            <li key={p.fr} className="flex items-center gap-2 text-sm text-text-medium">
-              <Check size={15} className="text-primary shrink-0" /> {pick(p)}
-            </li>
-          ))}
-        </ul>
-      )}
-
-      {open && (
-        <div className="mt-5">
-          <div className="flex justify-between text-xs text-text-light mb-1">
-            <span>{t('mz.seatsLeft')}</span>
-            <span className="font-bold text-text-dark">{cat.available} / {cat.capacity}</span>
-          </div>
-          <div className="h-1.5 rounded-full bg-cream-warm overflow-hidden">
-            <div className="h-full bg-primary rounded-full" style={{ width: `${pct}%` }} />
-          </div>
-        </div>
-      )}
-
-      <div className="pt-5 mt-auto">
-        {state === 'upcoming' && (
-          <button disabled className="w-full rounded-xl bg-stone-300/70 text-stone-600 py-3 text-sm font-semibold inline-flex items-center justify-center gap-2 cursor-not-allowed">
-            <CalendarDays size={16} /> {t('mz.openingSoon')}
-          </button>
-        )}
-        {open && !soldOut && (
-          <Link to={`/miawezon/reserver?c=${cat.code}`} className="w-full rounded-xl bg-primary text-white py-3 text-sm font-semibold text-center block hover:bg-primary-dark transition shadow-btn">
-            {t('mz.book')}
-          </Link>
-        )}
-        {soldOut && (
-          <button disabled className="w-full rounded-xl bg-stone-300/70 text-stone-600 py-3 text-sm font-semibold cursor-not-allowed">{t('mz.soldOut')}</button>
-        )}
-        {state === 'closed' && (
-          <button disabled className="w-full rounded-xl bg-stone-300/70 text-stone-600 py-3 text-sm font-semibold cursor-not-allowed">{t('mz.closed')}</button>
-        )}
-      </div>
-    </div>
   )
 }
 

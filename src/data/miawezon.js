@@ -113,3 +113,26 @@ export const MZ_PAYMENT_METHODS = {
   mobileMoney: ['MTN MoMo', 'Moov Money', 'Celtiis Cash'],
   card: ['Visa', 'Mastercard'],
 }
+
+// Habillage des billets (vitrine, billets numeriques et PDF)
+export const MZ_TICKET_STYLE = {
+  subtitle: { fr: 'Buffet & Événement', en: 'Buffet & Event' },
+  slogan: { fr: 'Le goût du partage !', en: 'A taste of sharing!' },
+  // Image du volet gauche (optionnelle). Mettre null pour un volet uni.
+  image: { ZINLI: `${IMG}/billet-zinli.jpg`, AGBADJA: `${IMG}/billet-agbadja.jpg` },
+  // Badge d'acces par categorie
+  access: {
+    ZINLI: { fr: 'Accès standard', en: 'Standard access' },
+    AGBADJA: { fr: 'Accès VIP', en: 'VIP access' },
+  },
+  // Categories affichees en style sombre (VIP)
+  dark: ['AGBADJA'],
+}
+
+// Verso du billet : conditions d'utilisation
+export const MZ_TICKET_CONDITIONS = [
+  { fr: 'Présentez votre billet (QR code) à l\'entrée.', en: 'Show your ticket (QR code) at the entrance.' },
+  { fr: 'Ce billet est personnel et non transférable.', en: 'This ticket is personal and non-transferable.' },
+  { fr: 'En cas de perte, aucun remplacement ne sera effectué.', en: 'Lost tickets will not be replaced.' },
+  { fr: 'L\'accès à l\'espace VIP est réservé aux détenteurs du billet AGBADJA.', en: 'The VIP area is reserved for AGBADJA ticket holders.' },
+]

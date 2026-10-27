@@ -1,66 +1,52 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams, useSearchParams } from 'react-router-dom'
-import { CalendarDays, Clock, Download, Loader2, MapPin, MessageCircle, Ticket } from 'lucide-react'
+import { Download, Info, Loader2, Mail, MessageCircle, Phone, QrCode, ShieldCheck, Ticket } from 'lucide-react'
 import api from '../../../api/axios'
 import Navbar from '../../../components/common/Navbar'
 import Footer from '../../../components/common/Footer'
 import { useT } from '../../../i18n'
 import { useMiawezon } from '../../../store/miawezon'
+import { MZ_TICKET_CONDITIONS, MZ_TICKET_STYLE } from '../../../data/miawezon'
 import { MzLogo } from '../../../components/miawezon/ui'
 import { eventInfo } from '../../../components/miawezon/utils'
+import { TicketIssued } from '../../../components/miawezon/TicketArt'
 import { pdfUrl, ticketsUrl, whatsappUrl } from './BookingPage'
 
-function TicketVisual({ ticket, info }) {
-  const { t } = useT()
-  const inactive = ticket.status !== 'valid'
+const CONDITION_ICONS = [QrCode, ShieldCheck, Info, Ticket]
+
+// Verso du billet : remerciements, conditions, contact
+function TicketBack({ event }) {
+  const { t, pick } = useT()
   return (
-    <article className="relative rounded-2xl bg-mz-night text-white overflow-hidden border-2 border-mz-gold/70 shadow-hover">
-      <div className="absolute inset-2 rounded-xl border border-mz-gold/30 pointer-events-none" />
-      <div className="relative p-5 md:p-6">
-        <div className="flex items-center gap-3">
-          <MzLogo size={52} />
-          <div>
-            <p className="font-display text-2xl font-bold text-mz-gold leading-none">MIAWÉZON</p>
-            <p className="text-[11px] text-mz-gold-light/80 mt-1">{t('mz.tagline')}</p>
-          </div>
-        </div>
-
-        <div className="mt-5 rounded-xl bg-mz-ivory text-text-dark p-4 grid grid-cols-[1fr_auto] gap-4 items-center">
-          <div className="space-y-2.5 min-w-0">
-            <div>
-              <p className="text-[10px] uppercase tracking-wider text-text-light">{t('tickets.ticketNo')}</p>
-              <p className="font-display font-bold text-base break-all">{ticket.number}</p>
-            </div>
-            <div>
-              <p className="text-[10px] uppercase tracking-wider text-text-light">{t('tickets.name')}</p>
-              <p className="font-bold text-sm">{ticket.holderName}</p>
-            </div>
-            <div>
-              <p className="text-[10px] uppercase tracking-wider text-text-light">{t('tickets.category')}</p>
-              <p className="font-bold text-sm">{ticket.categoryName}{ticket.categoryCode === 'AGBADJA' ? ' (VIP)' : ''}</p>
-            </div>
-          </div>
-          <div className="relative">
-            {ticket.qr ? (
-              <img src={ticket.qr} alt={`QR ${ticket.number}`} className={`w-32 h-32 md:w-36 md:h-36 rounded-lg bg-white p-1 ${inactive ? 'opacity-25' : ''}`} />
-            ) : (
-              <div className="w-32 h-32 rounded-lg bg-stone-200" />
-            )}
-            {inactive && (
-              <span className={`absolute inset-0 flex items-center justify-center text-xs font-bold uppercase ${ticket.status === 'used' ? 'text-amber-700' : 'text-red-700'}`}>
-                {ticket.status === 'used' ? t('tickets.used') : t('tickets.cancelled')}
-              </span>
-            )}
-          </div>
-        </div>
-
-        <div className="mt-4 grid grid-cols-3 gap-2 text-[11px] text-white/85">
-          <p className="flex items-start gap-1.5"><CalendarDays size={13} className="text-mz-gold shrink-0 mt-px" /> {info.date}</p>
-          <p className="flex items-start gap-1.5"><MapPin size={13} className="text-mz-gold shrink-0 mt-px" /> {info.venue}</p>
-          <p className="flex items-start gap-1.5"><Clock size={13} className="text-mz-gold shrink-0 mt-px" /> {info.time}</p>
+    <section className="rounded-[18px] overflow-hidden border border-border bg-cream grid md:grid-cols-[30%_1fr] shadow-card">
+      <div className="bg-primary-dark text-cream p-5 flex md:flex-col items-center md:items-start gap-3">
+        <MzLogo size={44} />
+        <div>
+          <p className="font-display text-xl font-bold leading-none">MIAWÉZON</p>
+          <p className="font-script text-lg mt-2">{t('mz.thanks')}</p>
+          <p className="text-xs text-cream/80 mt-1 leading-relaxed hidden md:block">{t('mz.thanksText')}</p>
         </div>
       </div>
-    </article>
+      <div className="p-5 grid sm:grid-cols-[1fr_auto] gap-5">
+        <div>
+          <p className="text-[11px] font-bold uppercase tracking-wider text-primary mb-2">{t('mz.conditionsTitle')}</p>
+          <ul className="space-y-1.5">
+            {MZ_TICKET_CONDITIONS.map((c, i) => {
+              const Icon = CONDITION_ICONS[i % CONDITION_ICONS.length]
+              return <li key={c.fr} className="flex items-start gap-2 text-sm text-text-medium"><Icon size={15} className="text-primary shrink-0 mt-0.5" /> {pick(c)}</li>
+            })}
+          </ul>
+        </div>
+        {(event?.contactPhone || event?.contactEmail) && (
+          <div className="text-sm text-text-medium space-y-1.5">
+            <p className="text-[11px] font-bold uppercase tracking-wider text-primary">{t('mz.contact')}</p>
+            {event.contactPhone && <p className="flex items-center gap-2 select-all"><Phone size={14} className="text-primary" /> {event.contactPhone}</p>}
+            {event.contactEmail && <p className="flex items-center gap-2 select-all break-all"><Mail size={14} className="text-primary" /> {event.contactEmail}</p>}
+          </div>
+        )}
+      </div>
+      <p className="md:col-span-2 text-center font-script text-primary-dark text-lg pb-3">{pick(MZ_TICKET_STYLE.slogan)}</p>
+    </section>
   )
 }
 
@@ -80,12 +66,15 @@ export default function TicketsPage() {
       .catch(() => setState('notFound'))
   }, [id, token])
 
-  const info = eventInfo(data?.event?.published || data?.preview ? data.event : null, { t, pick, lang })
+  const visible = data?.event?.published || data?.preview
+  const info = eventInfo(visible ? data.event : null, { t, pick, lang })
+  const labels = Object.fromEntries((data?.categories || []).map((c) => [c.code, c.label]))
+  const prices = Object.fromEntries((order?.items || []).map((i) => [i.code, i.unitPrice]))
 
   return (
-    <div className="min-h-screen bg-mz-ivory font-body flex flex-col">
+    <div className="min-h-screen bg-cream font-body flex flex-col">
       <Navbar />
-      <main className="flex-1 max-w-2xl w-full mx-auto px-4 py-8">
+      <main className="flex-1 max-w-4xl w-full mx-auto px-4 py-8">
         <h1 className="font-display text-3xl font-bold text-text-dark flex items-center gap-3"><Ticket className="text-primary" /> {t('tickets.title')}</h1>
 
         {state === 'loading' && <div className="py-24 flex justify-center"><Loader2 className="animate-spin text-primary" size={30} /></div>}
@@ -95,7 +84,7 @@ export default function TicketsPage() {
         {state === 'ok' && order && (
           <>
             <p className="text-sm text-text-light mt-1">{t('tickets.order')} #{order.orderNumber} · {order.buyer.name}</p>
-            <div className="mt-5 flex flex-col sm:flex-row gap-2">
+            <div className="mt-5 flex flex-col sm:flex-row gap-2 max-w-xl">
               <a href={pdfUrl(order._id, token)} className="flex-1 rounded-xl bg-primary text-white py-3 text-sm font-semibold hover:bg-primary-dark shadow-btn inline-flex items-center justify-center gap-2">
                 <Download size={16} /> {t('tickets.downloadPdf')}
               </a>
@@ -108,9 +97,11 @@ export default function TicketsPage() {
                 <MessageCircle size={16} className="text-green-600" /> {t('tickets.whatsapp')}
               </a>
             </div>
-            <p className="text-xs text-text-light mt-3">{t('tickets.showAtEntrance')}</p>
-            <div className="mt-6 space-y-5">
-              {order.tickets.map((tk) => <TicketVisual key={tk._id} ticket={tk} info={info} />)}
+            <div className="mt-6 space-y-6">
+              {order.tickets.map((tk) => (
+                <TicketIssued key={tk._id} ticket={{ ...tk, categoryLabel: labels[tk.categoryCode] }} info={info} price={prices[tk.categoryCode]} notch="#FAF3E8" />
+              ))}
+              <TicketBack event={visible ? data.event : null} />
             </div>
           </>
         )}

@@ -138,7 +138,7 @@ export default function CheckinPage() {
       <form onSubmit={(e) => { e.preventDefault(); if (manual.trim()) { check(manual.trim()); setManual('') } }} className="mt-4 flex gap-2">
         <div className="relative flex-1">
           <Keyboard size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-light" />
-          <input value={manual} onChange={(e) => setManual(e.target.value)} placeholder="Saisir le n° de billet (MZW-2027-0001-1)" className="input !pl-9" autoCapitalize="characters" />
+          <input value={manual} onChange={(e) => setManual(e.target.value)} placeholder="Saisir le n° de billet (ex. ZN-000123)" className="input !pl-9" autoCapitalize="characters" />
         </div>
         <button disabled={busy || !manual.trim()} className="rounded-xl bg-primary text-white px-5 font-semibold disabled:opacity-50">Vérifier</button>
       </form>
