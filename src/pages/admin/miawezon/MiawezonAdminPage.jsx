@@ -203,7 +203,7 @@ function OrderDrawer({ id, onClose, onChanged }) {
               <div className="flex justify-between py-1 font-bold border-t border-cream-warm mt-1 pt-2"><span>Total</span><span className="text-primary">{fmtPrice(o.total)}</span></div>
             </div>
             {o.payment?.transactionId && (
-              <p className="text-xs text-text-light">Transaction KKiaPay : <span className="font-mono text-text-dark">{o.payment.transactionId}</span>{o.payment.method ? ` (${o.payment.method})` : ''}</p>
+              <p className="text-xs text-text-light">Transaction YouCan Pay : <span className="font-mono text-text-dark">{o.payment.transactionId}</span>{o.payment.method ? ` (${o.payment.method})` : ''}</p>
             )}
             {o.paidAt && <p className="text-xs text-text-light">Payée le {fmtDT(o.paidAt)}{o.emailSentAt ? ` · e-mail envoyé le ${fmtDT(o.emailSentAt)}` : ' · e-mail non envoyé'}</p>}
 
@@ -257,7 +257,7 @@ function OrderDrawer({ id, onClose, onChanged }) {
             {['pending', 'expired', 'failed'].includes(o.status) && (
               <div className="rounded-xl border border-cream-warm p-4">
                 <p className="font-bold text-text-dark flex items-center gap-2"><ShieldCheck size={15} className="text-primary" /> Vérifier un paiement</p>
-                <p className="text-xs text-text-light mt-1">Si le client a payé mais n'a pas reçu ses billets, saisissez l'identifiant de transaction KKiaPay (visible dans votre tableau de bord KKiaPay).</p>
+                <p className="text-xs text-text-light mt-1">Si le client a payé mais n'a pas reçu ses billets, saisissez l'identifiant de transaction YouCan Pay (visible dans votre tableau de bord YouCan Pay).</p>
                 <div className="flex gap-2 mt-3">
                   <input className="input !py-2" value={tx} onChange={(e) => setTx(e.target.value)} placeholder="Identifiant de transaction" />
                   <button disabled={!tx.trim() || !!busy} onClick={() => act('verify', () => api.post(`/miawezon/admin/orders/${id}/verify`, { transactionId: tx.trim() }), 'Paiement validé, billets émis')} className="rounded-lg bg-primary text-white px-4 font-semibold disabled:opacity-50">
@@ -399,7 +399,7 @@ function CategoryEditor({ cat, onSaved }) {
         <span className="text-xs text-text-light">{sold} place(s) réservée(s) ou vendue(s)</span>
       </div>
       <div className="grid grid-cols-2 gap-3">
-        <L label="Prix (MAD)"><input type="number" min="10" step="10" className="input" value={f.price} onChange={(e) => setF({ ...f, price: e.target.value })} /></L>
+        <L label="Prix (DH)"><input type="number" min="10" step="10" className="input" value={f.price} onChange={(e) => setF({ ...f, price: e.target.value })} /></L>
         <L label="Nombre de places" hint={`Minimum ${sold}`}><input type="number" min={sold} className="input" value={f.capacity} onChange={(e) => setF({ ...f, capacity: e.target.value })} /></L>
         <L label="Libellé (FR)"><input className="input" value={f.labelFr} onChange={(e) => setF({ ...f, labelFr: e.target.value })} /></L>
         <L label="Libellé (EN)"><input className="input" value={f.labelEn} onChange={(e) => setF({ ...f, labelEn: e.target.value })} /></L>
@@ -513,10 +513,10 @@ function SettingsTab({ config, reload }) {
       </Card>
 
       <Card className="lg:col-span-2">
-        <p className="font-display text-lg font-bold text-text-dark mb-2">Paiement KKiaPay</p>
+        <p className="font-display text-lg font-bold text-text-dark mb-2">Paiement YouCan Pay</p>
         <ul className="text-sm space-y-1 text-text-medium">
-          <li className="flex items-center gap-2">{p.configured ? <CheckCircle2 size={15} className="text-green-600" /> : <X size={15} className="text-red-600" />} Clés KKiaPay {p.configured ? 'configurées' : 'non configurées'} sur le serveur</li>
-          <li className="flex items-center gap-2"><ShieldCheck size={15} className="text-primary" /> Environnement : {p.mock ? 'simulation locale (KKIAPAY_MOCK)' : p.sandbox ? 'sandbox (test)' : 'production'}</li>
+          <li className="flex items-center gap-2">{p.configured ? <CheckCircle2 size={15} className="text-green-600" /> : <X size={15} className="text-red-600" />} Clés YouCan Pay {p.configured ? 'configurées' : 'non configurées'} sur le serveur</li>
+          <li className="flex items-center gap-2"><ShieldCheck size={15} className="text-primary" /> Environnement : {p.mock ? 'simulation locale (YCP_MOCK)' : p.sandbox ? 'sandbox (test)' : 'production'}</li>
           <li className="text-xs text-text-light">Délai de paiement : {config.holdMinutes} minutes. Les places non payées dans ce délai sont remises en vente automatiquement.</li>
         </ul>
       </Card>

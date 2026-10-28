@@ -48,14 +48,12 @@ export const MZ_GALLERY = [
 export const MZ_TICKET_PERKS = {
   ZINLI: [
     { fr: 'Accès au buffet', en: 'Buffet access' },
-    { fr: 'Animation culturelle', en: 'Cultural entertainment' },
     { fr: 'Espace détente', en: 'Lounge area' },
   ],
   AGBADJA: [
-    { fr: 'Accès prioritaire', en: 'Priority access' },
-    { fr: 'Buffet premium', en: 'Premium buffet' },
-    { fr: 'Boisson incluse', en: 'Drink included' },
-    { fr: 'Espace VIP', en: 'VIP area' },
+    { fr: 'Accès au buffet premium', en: 'Premium buffet access' },
+    { fr: 'Cadeau de bienvenue', en: 'Welcome gift' },
+    { fr: 'Espace VIP dédié', en: 'Dedicated VIP area' },
   ],
 }
 
@@ -104,18 +102,16 @@ export const menuFor = (menu, tier) =>
     }))
     .filter((s) => s.items.length)
 
-// Moyens de paiement affiches (le choix reel se fait dans la fenetre KKiaPay)
+// Moyens de paiement affiches (le choix se fait sur la page YouCan Pay)
 export const MZ_PAYMENT_METHODS = {
-  mobileMoney: ['MTN MoMo', 'Moov Money', 'Celtiis Cash'],
-  card: ['Visa', 'Mastercard'],
+  card: ['Visa', 'Mastercard', 'CMI'],
+  cash: ['CashPlus'],
 }
 
 // Habillage des billets (vitrine, billets numeriques et PDF)
 export const MZ_TICKET_STYLE = {
   subtitle: { fr: 'Buffet & Événement', en: 'Buffet & Event' },
   slogan: { fr: 'Le goût du partage !', en: 'A taste of sharing!' },
-  // Image du volet gauche (optionnelle). Mettre null pour un volet uni.
-  image: { ZINLI: `${IMG}/billet-zinli.jpg`, AGBADJA: `${IMG}/billet-agbadja.jpg` },
   // Badge d'acces par categorie
   access: {
     ZINLI: { fr: 'Accès standard', en: 'Standard access' },

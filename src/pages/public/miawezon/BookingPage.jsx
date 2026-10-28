@@ -3,7 +3,7 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   AlertTriangle, Check, CheckCircle2, ChevronLeft, CreditCard, Download, Hourglass, Loader2, Lock, Mail, MessageCircle,
-  Minus, Plus, RefreshCw, ShieldCheck, Smartphone, Ticket, Timer, XCircle,
+  Banknote, Minus, Plus, RefreshCw, ShieldCheck, Ticket, Timer, XCircle,
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import api from '../../../api/axios'
@@ -14,7 +14,6 @@ import { useAuthStore } from '../../../store'
 import { MZ_PAYMENT_METHODS } from '../../../data/miawezon'
 import { MzLogo, PreviewNotice } from '../../../components/miawezon/ui'
 import { apiError, fmtPrice, pad2, useCountdown } from '../../../components/miawezon/utils'
-import { openKkiapay } from '../../../components/miawezon/kkiapay'
 import { MzLoading, MzUnavailable } from './MiawezonPage'
 
 const SESSION_KEY = 'mz-booking'
@@ -114,6 +113,7 @@ export default function BookingPage() {
   const [token, setToken] = useState(null)
   const [payment, setPayment] = useState(null)
   const [restoring, setRestoring] = useState(true)
+  const [awaiting, setAwaiting] = useState(false)
   const initialized = useRef(false)
 
   useEffect(() => { load(true) }, [load])
@@ -131,23 +131,58 @@ export default function BookingPage() {
     if (pre) setQty({ [pre._id]: 1 })
   }, [cats, params])
 
-  // Reprise d'une commande en cours (rechargement de page pendant le paiement)
+  // Reprise d'une commande en cours : rechargement de page, ou retour de la page YouCan Pay
+  // (?order=...&t=...&ycp=success|error)
   useEffect(() => {
-    const s = readSession()
+    const qOrder = params.get('order')
+    const qToken = params.get('t')
+    const ycpResult = params.get('ycp')
+    const txFromReturn = params.get('transaction_id') || params.get('transactionId') || params.get('transaction')
+    const saved = readSession()
+    const s = qOrder && qToken ? { orderId: qOrder, token: qToken, payment: saved?.payment || null } : saved
+    if (qOrder) navigate('/miawezon/reserver', { replace: true })
     if (!s?.orderId || !s?.token) { setRestoring(false); return }
     api.get(`/miawezon/orders/${s.orderId}`, { params: { t: s.token } })
       .then(({ data: d }) => {
         const o = d.order
         setOrder(o); setToken(s.token); setPayment(s.payment || null)
         setBuyer(o.buyer)
+        writeSession(s)
         if (o.status === 'paid') setStep(4)
-        else if (o.status === 'pending') setStep(3)
-        else if (o.status === 'refund_needed') setProblem('refund')
+        else if (o.status === 'pending') {
+          setStep(3)
+          if (ycpResult === 'error') setProblem('payFailed')
+          else if (ycpResult === 'success') {
+            if (txFromReturn) confirm(txFromReturn, o, s.token)
+            else setAwaiting(true)
+          }
+        } else if (o.status === 'refund_needed') setProblem('refund')
         else { writeSession(null); setOrder(null); setToken(null); if (o.status === 'expired') setProblem('expired') }
       })
       .catch(() => writeSession(null))
       .finally(() => setRestoring(false))
   }, [])
+
+  // Retour de YouCan Pay sans identifiant de transaction : on attend la confirmation du serveur (webhook)
+  useEffect(() => {
+    if (!awaiting || !order || !token) return undefined
+    let tries = 0
+    setBusy('verify')
+    const id = setInterval(async () => {
+      tries += 1
+      try {
+        const { data: d } = await api.get(`/miawezon/orders/${order._id}`, { params: { t: token } })
+        if (d.order.status === 'paid') {
+          clearInterval(id); setAwaiting(false); setBusy(false)
+          setOrder(d.order); setStep(4); load(true)
+          return
+        }
+        if (d.order.status === 'refund_needed') { clearInterval(id); setAwaiting(false); setBusy(false); setProblem('refund'); return }
+      } catch { /* on reessaie */ }
+      if (tries >= 20) { clearInterval(id); setAwaiting(false); setBusy(false); setProblem('payLater') }
+    }, 3000)
+    return () => clearInterval(id)
+  }, [awaiting, order?._id, token])
 
   // Liste des billets (une ligne par billet) pour les noms
   const lines = useMemo(() => {
@@ -216,10 +251,10 @@ export default function BookingPage() {
     }
   }
 
-  const confirm = async (transactionId) => {
+  const confirm = async (transactionId, o = order, tk = token) => {
     setBusy('verify')
     try {
-      const { data: d } = await api.post(`/miawezon/orders/${order._id}/confirm`, { token, transactionId })
+      const { data: d } = await api.post(`/miawezon/orders/${o._id}/confirm`, { token: tk, transactionId })
       setOrder(d.order)
       setStep(4)
       setProblem(null)
@@ -235,27 +270,22 @@ export default function BookingPage() {
     }
   }
 
+  // Paiement : redirection vers la page securisee YouCan Pay (carte bancaire ou CashPlus)
   const pay = async () => {
     if (!order) return
     if (payment?.mock) { confirm(`MOCK-${Date.now()}`); return }
-    setBusy('widget')
+    setBusy('redirect')
     try {
-      await openKkiapay({
-        amount: order.total,
-        publicKey: payment?.publicKey,
-        sandbox: payment?.sandbox,
-        name: order.buyer.name,
-        email: order.buyer.email,
-        phone: order.buyer.phone,
-        orderId: order._id,
-        onSuccess: (tx) => confirm(tx),
-        onFailed: () => { setBusy(false); setProblem('payFailed') },
-      })
-      // Le widget est ouvert : on libere le bouton (le client peut fermer la fenetre)
-      setTimeout(() => setBusy((b) => (b === 'widget' ? false : b)), 1500)
-    } catch {
+      const { data: d } = await api.post(`/miawezon/orders/${order._id}/pay`, { token, lang })
+      if (d.paid) { setAwaiting(true); return }
+      if (d.mock) { confirm(`MOCK-${Date.now()}`); return }
+      window.location.assign(d.paymentUrl)
+    } catch (err) {
       setBusy(false)
-      toast.error(t('common.error'))
+      const e = apiError(err)
+      if (e.code === 'ORDER_CLOSED') { writeSession(null); setProblem('expired') }
+      else if (e.code === 'PAYMENT_NOT_READY') setProblem('notReady')
+      else toast.error(t('booking.payInitError'))
     }
   }
 
@@ -441,12 +471,12 @@ export default function BookingPage() {
 
                   <div className="grid grid-cols-2 gap-3">
                     <div className="rounded-xl border border-border p-3">
-                      <p className="flex items-center gap-2 text-sm font-semibold text-text-dark"><Smartphone size={16} className="text-primary" /> {t('booking.mobileMoney')}</p>
-                      <p className="text-[11px] text-text-light mt-1 leading-snug">{MZ_PAYMENT_METHODS.mobileMoney.join(' · ')}</p>
-                    </div>
-                    <div className="rounded-xl border border-border p-3">
                       <p className="flex items-center gap-2 text-sm font-semibold text-text-dark"><CreditCard size={16} className="text-primary" /> {t('booking.card')}</p>
                       <p className="text-[11px] text-text-light mt-1 leading-snug">{MZ_PAYMENT_METHODS.card.join(' · ')}</p>
+                    </div>
+                    <div className="rounded-xl border border-border p-3">
+                      <p className="flex items-center gap-2 text-sm font-semibold text-text-dark"><Banknote size={16} className="text-primary" /> {t('booking.cash')}</p>
+                      <p className="text-[11px] text-text-light mt-1 leading-snug">{MZ_PAYMENT_METHODS.cash.join(' · ')}</p>
                     </div>
                   </div>
 
@@ -469,10 +499,11 @@ export default function BookingPage() {
 
                   <button onClick={pay} disabled={Boolean(busy)} className="w-full mt-4 rounded-xl bg-primary text-white py-3.5 font-semibold hover:bg-primary-dark shadow-btn disabled:opacity-60 inline-flex items-center justify-center gap-2">
                     {busy ? <Loader2 size={16} className="animate-spin" /> : <Lock size={16} />}
-                    {busy === 'verify' ? t('booking.verifying') : payment?.mock ? t('booking.mockBtn') : t('booking.payBtn')}
+                    {busy === 'verify' ? t('booking.verifying') : busy === 'redirect' ? t('booking.redirecting') : payment?.mock ? t('booking.mockBtn') : t('booking.payBtn')}
                   </button>
                   {payment?.mock && <p className="text-[11px] text-amber-700 text-center mt-2">{t('booking.mockNote')}</p>}
                   <p className="flex items-center justify-center gap-1.5 text-[11px] text-text-light mt-3"><ShieldCheck size={13} /> {t('booking.payVia')}</p>
+                  {!payment?.mock && <p className="text-[11px] text-text-light text-center mt-1">{t('booking.redirectNote')}</p>}
                   <button onClick={releaseAndEdit} disabled={Boolean(busy)} className="w-full text-sm text-text-light hover:text-primary mt-3 py-1">{t('booking.modify')}</button>
                 </div>
               )}

@@ -99,7 +99,7 @@ export default function TicketsPage() {
             </div>
             <div className="mt-6 space-y-6">
               {order.tickets.map((tk) => (
-                <TicketIssued key={tk._id} ticket={{ ...tk, categoryLabel: labels[tk.categoryCode] }} info={info} price={prices[tk.categoryCode]} notch="#FAF3E8" />
+                <TicketIssued key={tk._id} ticket={tk} />
               ))}
               <TicketBack event={visible ? data.event : null} />
             </div>

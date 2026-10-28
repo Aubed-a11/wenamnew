@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { locale } from '../../i18n'
 
-export const fmtPrice = (n) => `${Number(n || 0).toLocaleString('fr-FR').replace(/[\u202f\u00a0]/g, ' ')} MAD`
+export const fmtPrice = (n) => `${Number(n || 0).toLocaleString('fr-FR').replace(/[\u202f\u00a0]/g, ' ')} DH`
 
 export const fmtShortDate = (d, lang) =>
   d ? new Date(d).toLocaleDateString(locale(lang), { day: '2-digit', month: '2-digit', year: 'numeric' }) : ''
@@ -15,6 +15,8 @@ export function eventInfo(event, { t, pick, lang }) {
   const dateLabel = pick(event?.eventDateLabel)
   return {
     date: dateLabel || (event?.eventDate ? fmtLongDate(event.eventDate, lang) : tbc),
+    // Date courte imprimee sur les billets : "15 mai 2027"
+    dateShort: dateLabel || (event?.eventDate ? new Date(event.eventDate).toLocaleDateString(locale(lang), { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Africa/Casablanca' }) : tbc),
     venue: pick(event?.venue) || tbc,
     time: pick(event?.eventTimeLabel) || tbc,
     address: event?.venueAddress || '',
