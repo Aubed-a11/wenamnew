@@ -54,6 +54,7 @@ export default function AdminLayout() {
   const navigate = useNavigate()
   const { logout, user } = useAuthStore()
 
+  const isMzAdmin = location.pathname.startsWith('/admin/miawezon')
   const isActive = (to) => {
     if (to === '/admin') return location.pathname === '/admin'
     if (NAV.find((n) => n.to === to)?.exact) return location.pathname === to
@@ -73,21 +74,28 @@ export default function AdminLayout() {
         {/* Sidebar */}
         <aside className={`admin-sidebar ${sidebarOpen ? 'open' : ''}`}>
 
-          {/* Logo — vrai logo Wênam */}
+          {/* Logo : MIAWEZON sur les pages admin MIAWEZON, Wenam ailleurs */}
           <div style={{ padding: '20px 20px 16px', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-              <div style={{ width: 48, height: 48, borderRadius: 12, overflow: 'hidden', background: '#fff', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <img
-                  src="/images/wenam-logo.png"
-                  alt="Wênam"
-                  style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-                />
-              </div>
+            {isMzAdmin ? (
               <div>
-                <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 18, fontWeight: 700, color: '#fff', margin: 0 }}>Wênam</p>
-                <p style={{ fontSize: 10, color: 'rgba(255,255,255,0.4)', margin: 0, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Admin</p>
+                <img src="/images/miawezon/logo-gold.png" alt="MIAWÉZON by Wênam" style={{ height: 44, width: 'auto', maxWidth: '100%', objectFit: 'contain', display: 'block' }} />
+                <p style={{ fontSize: 10, color: 'rgba(255,255,255,0.4)', margin: '6px 0 0', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Admin MIAWÉZON</p>
               </div>
-            </div>
+            ) : (
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                <div style={{ width: 48, height: 48, borderRadius: 12, overflow: 'hidden', background: '#fff', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <img
+                    src="/images/wenam-logo.png"
+                    alt="Wênam"
+                    style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                  />
+                </div>
+                <div>
+                  <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 18, fontWeight: 700, color: '#fff', margin: 0 }}>Wênam</p>
+                  <p style={{ fontSize: 10, color: 'rgba(255,255,255,0.4)', margin: 0, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Admin</p>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Nav */}
