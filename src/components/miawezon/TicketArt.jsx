@@ -90,7 +90,12 @@ export function TemplateTicket({ code, values = {}, qr, main = false, stamp, lab
         <img src={TEMPLATE[code] || TEMPLATE.ZINLI} alt="" className="absolute inset-0 w-full h-full select-none" draggable="false" style={{ maxWidth: 'none' }} />
         {keys.map((k) => (values[k] ? <FitText key={k} f={L.fields[k]} W={W} H={H}>{values[k]}</FitText> : null))}
         {!main && qr && (
-          <img src={qr} alt="" className="absolute" style={{ left: pct(L.qr.x, W), top: pct(L.qr.y, H), width: pct(L.qr.size, W), maxWidth: 'none' }} />
+          <div
+            className="absolute"
+            style={{ left: pct(L.qr.x, W), top: pct(L.qr.y, H), width: pct(L.qr.size, W), aspectRatio: '1 / 1', background: L.qr.bg || '#FFFFFF', borderRadius: cqw(L.qr.radius || 0, W), padding: cqw(L.qr.pad || 0, W) }}
+          >
+            <img src={qr} alt="" className="block w-full h-full" style={{ maxWidth: 'none' }} />
+          </div>
         )}
         {!main && (
           <div

@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, useParams } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import { ProtectedRoute, AdminRoute, PublicOnlyRoute, AdminPublicRoute } from './routes/guards'
 import InstallPrompt from './components/common/InstallPrompt'
@@ -18,6 +18,7 @@ import MiawezonPage from './pages/public/miawezon/MiawezonPage'
 import BuffetMenuPage from './pages/public/miawezon/BuffetMenuPage'
 import BookingPage from './pages/public/miawezon/BookingPage'
 import TicketsPage from './pages/public/miawezon/TicketsPage'
+import TicketCheckPage from './pages/public/miawezon/TicketCheckPage'
 
 import AdminLoginPage from './pages/admin/AdminLoginPage'
 import DashboardPage from './pages/admin/DashboardPage'
@@ -30,6 +31,12 @@ import SettingsPage from './pages/admin/SettingsPage'
 import MiawezonAdminPage from './pages/admin/miawezon/MiawezonAdminPage'
 import CheckinPage from './pages/admin/miawezon/CheckinPage'
 import AdminLayout from './components/admin/AdminLayout'
+
+// Lien court imprime dans le QR code des billets
+function MzShortLink() {
+  const { code } = useParams()
+  return <Navigate to={`/miawezon/billet/${code}`} replace />
+}
 
 export default function App() {
   return (
@@ -60,6 +67,8 @@ export default function App() {
         <Route path="/miawezon/menu" element={<BuffetMenuPage />} />
         <Route path="/miawezon/reserver" element={<BookingPage />} />
         <Route path="/miawezon/billets/:id" element={<TicketsPage />} />
+        <Route path="/miawezon/billet/:code" element={<TicketCheckPage />} />
+        <Route path="/mz/:code" element={<MzShortLink />} />
 
         {/* ── Admin : login séparé ── */}
         <Route path="/admin/login" element={<AdminPublicRoute><AdminLoginPage /></AdminPublicRoute>} />
