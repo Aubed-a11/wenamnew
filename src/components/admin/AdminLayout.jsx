@@ -1,4 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { io } from 'socket.io-client'
+import toast from 'react-hot-toast'
+import { useMzPending } from '../../store/miawezonAdmin'
 import { Link, useLocation, useNavigate, Outlet } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
@@ -53,6 +56,26 @@ export default function AdminLayout() {
   const location = useLocation()
   const navigate = useNavigate()
   const { logout, user } = useAuthStore()
+  const { pending, refresh } = useMzPending()
+
+  // Reçus de virement MIAWEZON : badge (toutes les minutes) et alerte en temps reel
+  useEffect(() => {
+    refresh()
+    const timer = setInterval(refresh, 60000)
+    const socket = io(import.meta.env.VITE_SOCKET_URL || 'https://api.wenamfood.com', { withCredentials: true })
+    socket.emit('join_admin')
+    socket.on('miawezon:proof', (d) => {
+      refresh()
+      toast((tt) => (
+        <span className="text-sm">
+          <strong>Nouveau reçu de virement</strong><br />
+          {d.orderNumber} · {Number(d.total || 0).toLocaleString('fr-FR')} DH{' '}
+          <button className="underline text-primary font-semibold" onClick={() => { toast.dismiss(tt.id); navigate(`/admin/miawezon?commande=${d._id}`) }}>Voir</button>
+        </span>
+      ), { duration: 10000 })
+    })
+    return () => { clearInterval(timer); socket.disconnect() }
+  }, [refresh])
 
   const isMzAdmin = location.pathname.startsWith('/admin/miawezon')
   const isActive = (to) => {
@@ -112,7 +135,10 @@ export default function AdminLayout() {
                   }}>
                   <Icon size={16} />
                   <span style={{ fontSize: 13, fontWeight: active ? 700 : 500 }}>{label}</span>
-                  {active && <ChevronRight size={13} style={{ marginLeft: 'auto' }} />}
+                  {to === '/admin/miawezon' && pending > 0 && (
+                    <span title="Reçus de virement à valider" style={{ marginLeft: 'auto', background: '#EA580C', color: '#fff', fontSize: 10, fontWeight: 700, borderRadius: 999, padding: '2px 7px', lineHeight: 1.4 }}>{pending}</span>
+                  )}
+                  {active && <ChevronRight size={13} style={{ marginLeft: to === '/admin/miawezon' && pending > 0 ? 6 : 'auto' }} />}
                 </Link>
               )
             })}

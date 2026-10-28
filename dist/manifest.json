@@ -1,0 +1,16 @@
+{
+  "name": "Wênam — Cuisine Africaine",
+  "short_name": "Wênam",
+  "description": "Commandez vos plats africains en ligne",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAF3E8",
+  "theme_color": "#C4531A",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "/images/wenam-logo.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/images/wenam-logo.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "screenshots": [],
+  "categories": ["food", "lifestyle"]
+}

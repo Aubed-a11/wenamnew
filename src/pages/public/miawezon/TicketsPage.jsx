@@ -61,7 +61,7 @@ export default function TicketsPage() {
   useEffect(() => { load() }, [load])
   useEffect(() => {
     api.get(`/miawezon/orders/${id}`, { params: { t: token } })
-      .then(({ data: d }) => { setOrder(d.order); setState(d.order.status === 'paid' ? 'ok' : 'pending') })
+      .then(({ data: d }) => { setOrder(d.order); setState(d.order.status === 'paid' ? 'ok' : d.order.status === 'awaiting_validation' ? 'validating' : 'pending') })
       .catch(() => setState('notFound'))
   }, [id, token])
 
@@ -79,6 +79,7 @@ export default function TicketsPage() {
         {state === 'loading' && <div className="py-24 flex justify-center"><Loader2 className="animate-spin text-primary" size={30} /></div>}
         {state === 'notFound' && <p className="mt-8 rounded-xl bg-white border border-border p-6 text-text-medium">{t('tickets.notFound')}</p>}
         {state === 'pending' && <p className="mt-8 rounded-xl bg-white border border-border p-6 text-text-medium">{t('tickets.pending')}</p>}
+        {state === 'validating' && <p className="mt-8 rounded-xl bg-amber-50 border border-amber-200 p-6 text-amber-900">{t('tickets.validating')}</p>}
 
         {state === 'ok' && order && (
           <>

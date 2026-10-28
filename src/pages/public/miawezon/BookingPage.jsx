@@ -13,6 +13,7 @@ import { useMiawezon, isMiawezonVisible } from '../../../store/miawezon'
 import { useAuthStore } from '../../../store'
 import { MZ_PAYMENT_METHODS } from '../../../data/miawezon'
 import { MzLogo, PreviewNotice } from '../../../components/miawezon/ui'
+import TransferStep from '../../../components/miawezon/TransferStep'
 import { apiError, fmtPrice, pad2, useCountdown } from '../../../components/miawezon/utils'
 import { MzLoading, MzUnavailable } from './MiawezonPage'
 
@@ -88,9 +89,11 @@ function HoldTimer({ expiresAt, offset, onExpire }) {
     if (c.done && expiresAt && !fired.current) { fired.current = true; onExpire() }
   }, [c.done, expiresAt, onExpire])
   const mins = Math.floor(c.total / 60000)
+  const hours = Math.floor(c.total / 3600000)
+  const time = hours > 0 ? `${hours} h ${pad2(Math.floor((c.total / 60000) % 60))} min` : `${pad2(mins)}:${pad2(c.seconds)}`
   return (
     <p className={`flex items-center justify-center gap-2 text-xs rounded-lg py-2 ${mins < 3 ? 'bg-red-50 text-red-700' : 'bg-cream-dark text-text-medium'}`}>
-      <Timer size={14} /> {t('booking.holdTimer', { time: `${pad2(mins)}:${pad2(c.seconds)}` })}
+      <Timer size={14} /> {t('booking.holdTimer', { time })}
     </p>
   )
 }
@@ -148,7 +151,8 @@ export default function BookingPage() {
         setOrder(o); setToken(s.token); setPayment(s.payment || null)
         setBuyer(o.buyer)
         writeSession(s)
-        if (o.status === 'paid') setStep(4)
+        if (o.status === 'paid' || o.status === 'awaiting_validation') setStep(4)
+        else if (o.status === 'rejected') { writeSession(null); setProblem('rejected') }
         else if (o.status === 'pending') {
           setStep(3)
           if (ycpResult === 'error') setProblem('payFailed')
@@ -271,7 +275,7 @@ export default function BookingPage() {
   }
 
   // Paiement : redirection vers la page securisee YouCan Pay (carte bancaire ou CashPlus)
-  const pay = async () => {
+  const payOnline = async () => {
     if (!order) return
     if (payment?.mock) { confirm(`MOCK-${Date.now()}`); return }
     setBusy('redirect')
@@ -312,6 +316,8 @@ export default function BookingPage() {
   if (!isMiawezonVisible(data)) return <MzUnavailable />
 
   const salesOpen = ev.salesState === 'open'
+  const pay = payment || data?.payment
+  const isTransfer = (pay?.provider || ev.paymentMode) === 'transfer'
   const effectiveProblem = problem || (!salesOpen && step < 3 ? 'closed' : null)
 
   return (
@@ -355,8 +361,14 @@ export default function BookingPage() {
                   <button onClick={() => navigate('/miawezon#billetterie')} className="btn-outline normal-case tracking-normal">{t('booking.backTickets')}</button>
                 </StateCard>
               )}
+              {effectiveProblem === 'rejected' && (
+                <StateCard tone="red" icon={XCircle} title={t('transfer.rejectedT')} text={t('transfer.rejectedD')}>
+                  {order?.rejectionReason && <p className="text-sm text-text-dark bg-cream rounded-lg px-3 py-2">{t('transfer.reason')} : {order.rejectionReason}</p>}
+                  <button onClick={restart} className="btn-outline normal-case tracking-normal">{t('booking.restart')}</button>
+                </StateCard>
+              )}
               {effectiveProblem === 'notReady' && (
-                <StateCard tone="amber" icon={AlertTriangle} title={t('booking.notReadyT')} text={t('booking.notReadyD')}>
+                <StateCard tone="amber" icon={AlertTriangle} title={t('booking.notReadyT')} text={isTransfer ? t('transfer.notReadyD') : t('booking.notReadyD')}>
                   <button onClick={() => navigate('/miawezon')} className="btn-outline normal-case tracking-normal">{t('mz.backEvent')}</button>
                 </StateCard>
               )}
@@ -462,7 +474,18 @@ export default function BookingPage() {
               )}
 
               {/* ── ETAPE 3 : PAIEMENT ── */}
-              {!effectiveProblem && step === 3 && order && (
+              {!effectiveProblem && step === 3 && order && isTransfer && (
+                <TransferStep
+                  order={order}
+                  token={token}
+                  event={ev}
+                  timer={<HoldTimer expiresAt={order.expiresAt} offset={offset} onExpire={onExpire} />}
+                  onSubmitted={(o) => { setOrder(o); setStep(4) }}
+                  onExpired={() => { writeSession(null); setProblem('expired') }}
+                  onEdit={releaseAndEdit}
+                />
+              )}
+              {!effectiveProblem && step === 3 && order && !isTransfer && (
                 <div>
                   <h1 className="font-display text-xl font-bold text-text-dark mb-4">{t('booking.payTitle')}</h1>
 
@@ -494,7 +517,7 @@ export default function BookingPage() {
                     <HoldTimer expiresAt={order.expiresAt} offset={offset} onExpire={onExpire} />
                   </div>
 
-                  <button onClick={pay} disabled={Boolean(busy)} className="w-full mt-4 rounded-xl bg-primary text-white py-3.5 font-semibold hover:bg-primary-dark shadow-btn disabled:opacity-60 inline-flex items-center justify-center gap-2">
+                  <button onClick={payOnline} disabled={Boolean(busy)} className="w-full mt-4 rounded-xl bg-primary text-white py-3.5 font-semibold hover:bg-primary-dark shadow-btn disabled:opacity-60 inline-flex items-center justify-center gap-2">
                     {busy ? <Loader2 size={16} className="animate-spin" /> : <Lock size={16} />}
                     {busy === 'verify' ? t('booking.verifying') : busy === 'redirect' ? t('booking.redirecting') : payment?.mock ? t('booking.mockBtn') : t('booking.payBtn')}
                   </button>
@@ -506,7 +529,27 @@ export default function BookingPage() {
               )}
 
               {/* ── ETAPE 4 : CONFIRMATION ── */}
-              {!effectiveProblem && step === 4 && order && (
+              {!effectiveProblem && step === 4 && order && order.status === 'awaiting_validation' && (
+                <div className="text-center py-2">
+                  <motion.span initial={{ scale: 0.4 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 260, damping: 16 }} className="mx-auto w-16 h-16 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center">
+                    <Hourglass size={32} />
+                  </motion.span>
+                  <h1 className="font-display text-2xl font-bold text-text-dark mt-4">{t('transfer.sentTitle')}</h1>
+                  <p className="text-sm text-text-medium mt-2 max-w-sm mx-auto">{t('transfer.sentText', { hours: ev.validationHours || 24 })}</p>
+                  <div className="mt-5 rounded-xl bg-cream py-3">
+                    <p className="text-xs text-text-light">{t('booking.orderNumber')}</p>
+                    <p className="font-display text-xl font-bold text-text-dark">#{order.orderNumber}</p>
+                  </div>
+                  <p className="mt-4 rounded-xl border border-border py-3 px-3 text-sm text-text-medium inline-flex items-center justify-center gap-2">
+                    <Mail size={16} className="text-primary shrink-0" /> {t('transfer.sentMail', { email: order.buyer.email })}
+                  </p>
+                  <div className="mt-4 flex flex-col gap-2">
+                    <Link to="/miawezon" className="rounded-xl bg-primary text-white py-3.5 font-semibold hover:bg-primary-dark shadow-btn">{t('mz.backEvent')}</Link>
+                    <button onClick={restart} className="text-sm text-text-light hover:text-primary py-2">{t('booking.another')}</button>
+                  </div>
+                </div>
+              )}
+              {!effectiveProblem && step === 4 && order && order.status !== 'awaiting_validation' && (
                 <div className="text-center py-2">
                   <motion.span initial={{ scale: 0.4 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 260, damping: 16 }} className="mx-auto w-16 h-16 rounded-full bg-green-100 text-green-700 flex items-center justify-center">
                     <CheckCircle2 size={34} />
