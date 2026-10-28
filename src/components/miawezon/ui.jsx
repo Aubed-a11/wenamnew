@@ -14,27 +14,26 @@ export function MzIcon({ name, ...props }) {
   return <C {...props} />
 }
 
-export function MzLogo({ size = 64, className = '' }) {
+// Logo MIAWEZON ("MIAWEZON by Wenam"). variant : dark (fond clair), light ou gold (fond sombre)
+export function MzLogo({ height = 48, variant = 'dark', className = '' }) {
   return (
     <img
-      src={MZ_ASSETS.logo}
-      alt="MIAWÉZON"
-      width={size}
-      height={size}
-      className={`object-contain shrink-0 ${className}`}
-      style={{ width: size, height: size }}
+      src={MZ_ASSETS.logo[variant] || MZ_ASSETS.logo.dark}
+      alt="MIAWÉZON by Wênam"
+      className={`w-auto max-w-full object-contain shrink-0 ${className}`}
+      style={{ height }}
       onError={(e) => { e.currentTarget.style.visibility = 'hidden' }}
     />
   )
 }
 
-export function MzTitle({ size = 'lg', className = '' }) {
+// Logo + accroche
+export function MzTitle({ height = 64, variant = 'gold', className = '' }) {
   const { t } = useT()
-  const cls = size === 'xl' ? 'text-4xl md:text-6xl' : size === 'lg' ? 'text-3xl md:text-5xl' : 'text-2xl md:text-3xl'
   return (
     <div className={className}>
-      <p className={`font-display font-bold text-mz-gold leading-none tracking-wide ${cls}`}>MIAWÉZON</p>
-      <p className="font-display text-mz-gold-light/90 text-sm md:text-base mt-1.5">{t('mz.tagline')}</p>
+      <MzLogo height={height} variant={variant} />
+      <p className="font-display text-mz-gold-light/90 text-sm md:text-base mt-2">{t('mz.tagline')}</p>
     </div>
   )
 }

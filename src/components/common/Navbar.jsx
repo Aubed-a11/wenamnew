@@ -81,6 +81,7 @@ export default function Navbar() {
     [t('nav.menu'), '/menu'],
     ...(showMz ? [[t('nav.miawezon'), '/miawezon', true]] : []),
   ]
+  const isMz = location.pathname.startsWith('/miawezon')
   const isActive = (to) => (to === '/' ? location.pathname === '/' : location.pathname.startsWith(to))
 
   const handleLogout = async () => {
@@ -95,14 +96,20 @@ export default function Navbar() {
       <style>{css}</style>
       <div className="nav-inner">
 
-        {/* Logo */}
-        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none', flexShrink: 0 }}>
-          <img src="/images/wenam-logo.png" alt="Wênam" style={{ width: 40, height: 40, objectFit: 'contain', borderRadius: '50%', flexShrink: 0 }} />
-          <div style={{ lineHeight: 1 }}>
-            <p className="nav-logo-text" style={{ fontFamily: "'Playfair Display',serif", fontSize: 20, fontWeight: 700, color: '#8B3A0F', margin: 0 }}>wênam</p>
-            <p className="nav-logo-sub" style={{ fontSize: 7, letterSpacing: '0.18em', color: '#8B6B3D', textTransform: 'uppercase', margin: 0 }}>Better Food, Better Mood</p>
-          </div>
-        </Link>
+        {/* Logo : MIAWEZON dans sa rubrique, Wenam ailleurs */}
+        {isMz ? (
+          <Link to="/miawezon" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', flexShrink: 0 }}>
+            <img src="/images/miawezon/logo-dark.png" alt="MIAWÉZON by Wênam" style={{ height: 38, width: 'auto', objectFit: 'contain' }} />
+          </Link>
+        ) : (
+          <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none', flexShrink: 0 }}>
+            <img src="/images/wenam-logo.png" alt="Wênam" style={{ width: 40, height: 40, objectFit: 'contain', borderRadius: '50%', flexShrink: 0 }} />
+            <div style={{ lineHeight: 1 }}>
+              <p className="nav-logo-text" style={{ fontFamily: "'Playfair Display',serif", fontSize: 20, fontWeight: 700, color: '#8B3A0F', margin: 0 }}>wênam</p>
+              <p className="nav-logo-sub" style={{ fontSize: 7, letterSpacing: '0.18em', color: '#8B6B3D', textTransform: 'uppercase', margin: 0 }}>Better Food, Better Mood</p>
+            </div>
+          </Link>
+        )}
 
         {/* Nav links — desktop uniquement */}
         <div className="nav-links">

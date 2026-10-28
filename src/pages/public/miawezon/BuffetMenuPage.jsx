@@ -34,7 +34,7 @@ function MenuSheet({ tier, cat, menu }) {
       <div className="relative rounded-[16px] px-5 py-8 md:px-12 md:py-12" style={{ border: `1px solid ${th.inner}` }}>
 
         <header className="text-center">
-          <div className="flex justify-center"><MzLogo size={64} /></div>
+          <div className="flex justify-center"><MzLogo height={58} variant={themeFor(tier) === 'vip' ? 'gold' : 'dark'} /></div>
           <p className="mt-3 text-[11px] font-bold uppercase tracking-[0.35em]" style={{ color: th.muted }}>{t('menu.menuOf')}</p>
           <h2 className="font-display text-5xl md:text-6xl font-bold tracking-wide leading-none mt-2" style={{ color: th.title }}>{tier}</h2>
           {cat && (

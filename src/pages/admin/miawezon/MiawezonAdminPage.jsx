@@ -692,7 +692,7 @@ export default function MiawezonAdminPage() {
   return (
     <div className="font-body">
       <div className="flex flex-wrap items-center gap-3 mb-5">
-        <img src="/images/miawezon/logo.png" alt="" className="w-11 h-11 rounded-xl bg-mz-night p-1 object-contain" />
+        <img src="/images/miawezon/logo-dark.png" alt="MIAWÉZON" className="h-11 w-auto object-contain" />
         <div>
           <h2 className="font-display text-2xl font-bold text-text-dark leading-none">MIAWÉZON</h2>
           <p className="text-xs text-text-light mt-1">Billetterie et gestion de l'événement</p>

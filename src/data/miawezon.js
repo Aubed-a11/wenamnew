@@ -8,7 +8,8 @@
 const IMG = '/images/miawezon'
 
 export const MZ_ASSETS = {
-  logo: `${IMG}/logo.png`,
+  // Logo MIAWEZON : dark = sur fond clair, light = sur fond sombre, gold = version doree
+  logo: { dark: `${IMG}/logo-dark.png`, light: `${IMG}/logo-light.png`, gold: `${IMG}/logo-gold.png` },
   hero: `${IMG}/hero.jpg`,
   homeBanner: `${IMG}/banniere-accueil.jpg`,
   concept: `${IMG}/concept.jpg`,

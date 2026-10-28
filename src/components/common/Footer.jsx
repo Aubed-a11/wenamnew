@@ -1,17 +1,22 @@
 import { Calendar, Clock, Instagram, MapPin, Phone } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 const INSTAGRAM = 'https://www.instagram.com/itswenam?igsh=cjNsN294M2RzNHBl&utm_source=qr'
 
 export default function Footer() {
+  const isMz = useLocation().pathname.startsWith('/miawezon')
   return (
     <footer className="bg-primary-dark text-cream pt-12 pb-6">
       <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
         <div>
-          <div className="flex items-center gap-2 mb-1">
-            <img src="/images/wenam-logo.png" alt="Wênam" style={{ width: 36, height: 36, objectFit: 'contain', mixBlendMode: 'screen' }} />
-            <h3 className="font-display text-2xl text-white">Wênam</h3>
-          </div>
+          {isMz ? (
+            <img src="/images/miawezon/logo-light.png" alt="MIAWÉZON by Wênam" className="h-12 w-auto object-contain mb-3" />
+          ) : (
+            <div className="flex items-center gap-2 mb-1">
+              <img src="/images/wenam-logo.png" alt="Wênam" style={{ width: 36, height: 36, objectFit: 'contain', mixBlendMode: 'screen' }} />
+              <h3 className="font-display text-2xl text-white">Wênam</h3>
+            </div>
+          )}
           <p className="text-cream/50 text-xs font-body tracking-widest uppercase mb-3">Avenue Al Majd 2, Rabat</p>
           <p className="text-cream/70 text-sm leading-relaxed mb-4">Cuisine africaine façon Bénin : du cœur à l’assiette</p>
           <div className="flex gap-3">

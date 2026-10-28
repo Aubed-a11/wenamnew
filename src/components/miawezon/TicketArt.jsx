@@ -10,7 +10,8 @@ import { fmtPrice } from './utils'
 
 const IMG = '/images/miawezon'
 const TEMPLATE = { AGBADJA: `${IMG}/ticket-agbadja.jpg`, ZINLI: `${IMG}/ticket-zinli.jpg` }
-const LOGO = `${IMG}/ticket-logo.png`
+// Logo MIAWEZON (version doree) dans la case logo du talon
+const LOGO = `${IMG}/logo-gold.png`
 // Largeur de la partie principale (sans le talon), en pixels du modele
 const MAIN_W = 1122
 const PAPER = '#F0E4D2'
@@ -96,7 +97,7 @@ export function TemplateTicket({ code, values = {}, qr, main = false, stamp, lab
             className="absolute flex items-center justify-center"
             style={{ left: pct(g.x, W), top: pct(g.y, H), width: pct(g.w, W), height: pct(g.h, H), background: g.bg, borderRadius: cqw(g.radius || 0, W), padding: cqw(g.pad || 0, W) }}
           >
-            <img src={LOGO} alt="Wênam" className="max-w-full max-h-full object-contain" />
+            <img src={LOGO} alt="MIAWÉZON" className="max-w-full max-h-full object-contain" />
           </div>
         )}
         {stamp && (

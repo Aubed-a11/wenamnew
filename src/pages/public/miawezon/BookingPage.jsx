@@ -324,10 +324,7 @@ export default function BookingPage() {
           <Link to="/miawezon#billetterie" className="inline-flex items-center gap-1 text-sm text-text-light hover:text-primary">
             <ChevronLeft size={16} /> {t('mz.backEvent')}
           </Link>
-          <div className="flex items-center gap-2">
-            <MzLogo size={28} />
-            <span className="font-display font-bold text-primary-dark">MIAWÉZON</span>
-          </div>
+          <MzLogo height={34} variant="dark" />
         </div>
 
         <div className="bg-white rounded-2xl border border-border shadow-card p-5 md:p-7">

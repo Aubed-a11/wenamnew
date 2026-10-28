@@ -20,10 +20,9 @@ function TicketBack({ event }) {
   return (
     <section className="rounded-[18px] overflow-hidden border border-border bg-cream grid md:grid-cols-[30%_1fr] shadow-card">
       <div className="bg-primary-dark text-cream p-5 flex md:flex-col items-center md:items-start gap-3">
-        <MzLogo size={44} />
         <div>
-          <p className="font-display text-xl font-bold leading-none">MIAWÉZON</p>
-          <p className="font-script text-lg mt-2">{t('mz.thanks')}</p>
+          <MzLogo height={46} variant="light" />
+          <p className="font-script text-lg mt-3">{t('mz.thanks')}</p>
           <p className="text-xs text-cream/80 mt-1 leading-relaxed hidden md:block">{t('mz.thanksText')}</p>
         </div>
       </div>
