@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import { ProtectedRoute, AdminRoute, PublicOnlyRoute, AdminPublicRoute } from './routes/guards'
 import InstallPrompt from './components/common/InstallPrompt'
+import RouteBranding from './components/miawezon/RouteBranding'
 
 import HomePage from './pages/public/HomePage'
 import MenuPage from './pages/public/MenuPage'
@@ -33,6 +34,7 @@ import AdminLayout from './components/admin/AdminLayout'
 export default function App() {
   return (
     <BrowserRouter>
+      <RouteBranding />
       <Toaster
         position="top-center"
         toastOptions={{

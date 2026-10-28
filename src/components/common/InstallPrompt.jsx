@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import { X } from 'lucide-react'
 
 const isIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent)
@@ -7,6 +8,8 @@ const isStandalone = () =>
   window.navigator.standalone === true
 
 export default function InstallPrompt() {
+  // Pas de bandeau d'installation Wenam dans la rubrique MIAWEZON
+  const onMiawezon = useLocation().pathname.startsWith('/miawezon')
   const [prompt, setPrompt] = useState(null)
   const [visible, setVisible] = useState(false)
   const [ios, setIos] = useState(false)
@@ -44,7 +47,7 @@ export default function InstallPrompt() {
     setVisible(false)
   }
 
-  if (!visible) return null
+  if (!visible || onMiawezon) return null
 
   return (
     <div style={{
