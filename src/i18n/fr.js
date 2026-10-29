@@ -72,6 +72,7 @@ const fr = {
     unavailable: 'La rubrique MIAWÉZON n\'est pas disponible pour le moment.',
   },
   menu: {
+    downloadPdf: ({ tier }) => `Télécharger le menu ${tier} (PDF)`,
     title: 'Menu du buffet',
     subtitle: 'Un menu par catégorie de billet. Le menu AGBADJA comprend quelques plats en plus.',
     menuOf: 'Menu',

@@ -72,6 +72,7 @@ const en = {
     unavailable: 'The MIAWÉZON section is not available at the moment.',
   },
   menu: {
+    downloadPdf: ({ tier }) => `Download the ${tier} menu (PDF)`,
     title: 'Buffet menu',
     subtitle: 'One menu per ticket category. The AGBADJA menu includes a few extra dishes.',
     menuOf: 'Menu',

@@ -1,79 +1,22 @@
 import { useEffect, useMemo, useState } from 'react'
+import toast from 'react-hot-toast'
 import { Link, useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronLeft, ChevronRight, Clock } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Clock, Download, Loader2 } from 'lucide-react'
 import Navbar from '../../../components/common/Navbar'
 import Footer from '../../../components/common/Footer'
 import { useT } from '../../../i18n'
 import { useMiawezon, isMiawezonVisible } from '../../../store/miawezon'
-import { MZ_MENU_TIERS, MZ_TICKET_STYLE, menuFor } from '../../../data/miawezon'
-import { MzLogo, PreviewNotice } from '../../../components/miawezon/ui'
-import { fmtPrice } from '../../../components/miawezon/utils'
+import api from '../../../api/axios'
+import { MZ_MENU_TIERS, menuFor } from '../../../data/miawezon'
+import { PreviewNotice } from '../../../components/miawezon/ui'
+import { eventInfo, fmtPrice } from '../../../components/miawezon/utils'
+import MenuCard from '../../../components/miawezon/MenuCard'
 import { MzLoading, MzUnavailable } from './MiawezonPage'
 
-// Deux ambiances de carte, reprises des billets
-const THEMES = {
-  standard: {
-    paper: '#FFFDF8', frame: '#8B3A0F', inner: '#D4B896', title: '#8B3A0F', text: '#1A0F00',
-    muted: '#8B6B3D', icon: '#C4531A', iconBg: '#F5ECD7', badgeBg: '#C4531A', badgeText: '#FFFFFF',
-  },
-  vip: {
-    paper: '#1A0F00', frame: '#E8763A', inner: '#5C3D11', title: '#E8763A', text: '#FAF3E8',
-    muted: '#D4B896', icon: '#E8763A', iconBg: '#2B1A0C', badgeBg: '#E8763A', badgeText: '#1A0F00',
-  },
-}
-const themeFor = (code) => (MZ_TICKET_STYLE.dark?.includes(code) ? 'vip' : 'standard')
-
-function MenuSheet({ tier, cat, menu }) {
-  const { t, pick } = useT()
-  const th = THEMES[themeFor(tier)]
-  const sections = menuFor(menu, tier)
-
-  return (
-    <div className="rounded-[22px] p-2 md:p-3 shadow-hover" style={{ background: th.paper, border: `2px solid ${th.frame}` }}>
-      <div className="relative rounded-[16px] px-5 py-8 md:px-12 md:py-12" style={{ border: `1px solid ${th.inner}` }}>
-
-        <header className="text-center">
-          <div className="flex justify-center"><MzLogo height={58} variant={themeFor(tier) === 'vip' ? 'gold' : 'dark'} /></div>
-          <p className="mt-3 text-[11px] font-bold uppercase tracking-[0.35em]" style={{ color: th.muted }}>{t('menu.menuOf')}</p>
-          <h2 className="font-display text-5xl md:text-6xl font-bold tracking-wide leading-none mt-2" style={{ color: th.title }}>{tier}</h2>
-          {cat && (
-            <p className="mt-3 text-sm md:text-base font-semibold" style={{ color: th.text }}>
-              {pick(cat.label)} <span style={{ color: th.muted }}>·</span> {fmtPrice(cat.price)} <span className="font-normal" style={{ color: th.muted }}>{t('mz.perPerson')}</span>
-            </p>
-          )}
-          <p className="font-script text-2xl mt-2" style={{ color: th.icon }}>{pick(MZ_TICKET_STYLE.slogan)}</p>
-        </header>
-
-        <div className="mt-10 grid md:grid-cols-2 gap-x-12 gap-y-10">
-          {sections.map((s) => {
-            return (
-              <section key={s.key} aria-labelledby={`mz-${tier}-${s.key}`}>
-                <h3 id={`mz-${tier}-${s.key}`} className="font-display text-2xl font-bold text-center mb-5" style={{ color: th.title }}>{t(`menu.${s.key}`)}</h3>
-                <ul className="space-y-4">
-                  {s.items.map((it, i) => (
-                    <li key={`${it.name.fr}-${i}`} className="text-center">
-                      <p className="font-display text-lg font-semibold leading-snug" style={{ color: th.text }}>{pick(it.name)}</p>
-                      {pick(it.desc) && <p className="text-sm italic mt-0.5" style={{ color: th.muted }}>{pick(it.desc)}</p>}
-                      {it.exclusive && (
-                        <span className="inline-block mt-1.5 rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider" style={{ background: th.badgeBg, color: th.badgeText }}>
-                          {t('menu.exclusiveOf', { tier })}
-                        </span>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            )
-          })}
-        </div>
-      </div>
-    </div>
-  )
-}
-
 export default function BuffetMenuPage() {
-  const { t, pick } = useT()
+  const { t, pick, lang } = useT()
+  const [busy, setBusy] = useState(false)
   const [params, setParams] = useSearchParams()
   const { data, load } = useMiawezon()
   useEffect(() => { load() }, [load])
@@ -98,6 +41,27 @@ export default function BuffetMenuPage() {
   const open = ev.salesState === 'open'
   const byCode = Object.fromEntries(data.categories.map((c) => [c.code, c]))
   const cat = byCode[tier]
+  const info = eventInfo(ev, { t, pick, lang })
+
+  // PDF de la carte (passe par l'API pour que l'aperçu admin fonctionne aussi)
+  const download = async () => {
+    setBusy(true)
+    try {
+      const { data: blob } = await api.get(`/miawezon/menu/${tier}.pdf`, { params: { lang }, responseType: 'blob' })
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `Menu-MIAWEZON-${tier}.pdf`
+      document.body.appendChild(a)
+      a.click()
+      a.remove()
+      setTimeout(() => URL.revokeObjectURL(url), 2000)
+    } catch {
+      toast.error(t('common.error'))
+    } finally {
+      setBusy(false)
+    }
+  }
 
   return (
     <div className="min-h-screen bg-cream font-body">
@@ -145,9 +109,17 @@ export default function BuffetMenuPage() {
 
         <AnimatePresence mode="wait">
           <motion.div key={tier} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.25 }}>
-            <MenuSheet tier={tier} cat={cat} menu={menu} />
+            <div className="max-w-[640px] mx-auto">
+              <MenuCard tier={tier} cat={cat} menu={menu} info={info} />
+            </div>
           </motion.div>
         </AnimatePresence>
+
+        <div className="mt-4 flex justify-center">
+          <button type="button" onClick={download} disabled={busy} className="inline-flex items-center gap-2 rounded-xl border border-border bg-white px-5 py-2.5 text-sm font-semibold text-text-dark hover:border-primary hover:text-primary transition disabled:opacity-60">
+            {busy ? <Loader2 size={16} className="animate-spin" /> : <Download size={16} />} {t('menu.downloadPdf', { tier })}
+          </button>
+        </div>
 
         {/* Ce que les autres menus ajoutent */}
         {extras.map((x) => (
