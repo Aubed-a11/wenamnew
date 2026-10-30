@@ -97,7 +97,7 @@ export function TemplateTicket({ code, values = {}, qr, main = false, stamp, lab
             <img src={qr} alt="" className="block w-full h-full" style={{ maxWidth: 'none' }} />
           </div>
         )}
-        {!main && (
+        {!main && g && (
           <div
             className="absolute flex items-center justify-center"
             style={{ left: pct(g.x, W), top: pct(g.y, H), width: pct(g.w, W), height: pct(g.h, H), background: g.bg, borderRadius: cqw(g.radius || 0, W), padding: cqw(g.pad || 0, W) }}
