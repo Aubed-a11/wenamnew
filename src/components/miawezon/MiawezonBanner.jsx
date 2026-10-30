@@ -30,7 +30,7 @@ export default function MiawezonBanner() {
         className="max-w-[1280px] mx-auto rounded-2xl overflow-hidden bg-mz-night border-2 border-mz-gold/60 shadow-hover grid md:grid-cols-[1.1fr_1.2fr_1fr]"
       >
         <div className="flex items-center gap-4 p-5 md:p-7">
-          <MzTitle height={60} variant="gold" />
+          <MzTitle height={110} variant="gold" />
         </div>
 
         <div className="px-5 pb-5 md:py-7 md:px-2 flex flex-col justify-center gap-3">

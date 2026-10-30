@@ -99,7 +99,7 @@ export default function Navbar() {
         {/* Logo : MIAWEZON dans sa rubrique, Wenam ailleurs */}
         {isMz ? (
           <Link to="/miawezon" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', flexShrink: 0 }}>
-            <img src="/images/miawezon/logo-dark.png" alt="MIAWÉZON by Wênam" style={{ height: 38, width: 'auto', objectFit: 'contain' }} />
+            <img src="/images/miawezon/logo-dark.png" alt="MIAWÉZON by Wênam" style={{ height: 54, width: 'auto', objectFit: 'contain' }} />
           </Link>
         ) : (
           <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none', flexShrink: 0 }}>

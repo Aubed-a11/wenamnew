@@ -29,7 +29,7 @@ export function MzUnavailable() {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <div className="flex-1 flex flex-col items-center justify-center text-center px-6 py-24 gap-5">
-        <MzLogo height={72} variant="dark" />
+        <MzLogo height={130} variant="dark" />
         <p className="text-text-medium max-w-md">{t('mz.unavailable')}</p>
         <Link to="/" className="btn-primary">{t('nav.home')}</Link>
       </div>
@@ -91,7 +91,7 @@ export default function MiawezonPage() {
         <div className="absolute inset-0 bg-gradient-to-r from-mz-night via-mz-night/85 to-mz-night/20" />
         <div className="relative max-w-[1280px] mx-auto px-5 py-14 md:py-20">
           <motion.div variants={fadeUp} initial="hidden" animate="show" transition={{ duration: 0.6 }} className="max-w-2xl">
-            <MzTitle height="clamp(72px, 9vw, 120px)" variant="gold" />
+            <MzTitle height="clamp(150px, 17vw, 230px)" variant="gold" />
             <p className="font-script text-mz-gold-light text-2xl md:text-[34px] leading-snug mt-6 md:mt-8 max-w-xl">{t('mz.punch')}</p>
             <InfoRow info={info} className="mt-8" />
           </motion.div>

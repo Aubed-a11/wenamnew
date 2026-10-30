@@ -101,7 +101,7 @@ export default function AdminLayout() {
           <div style={{ padding: '20px 20px 16px', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
             {isMzAdmin ? (
               <div>
-                <img src="/images/miawezon/logo-gold.png" alt="MIAWÉZON by Wênam" style={{ height: 44, width: 'auto', maxWidth: '100%', objectFit: 'contain', display: 'block' }} />
+                <img src="/images/miawezon/logo-gold.png" alt="MIAWÉZON by Wênam" style={{ height: 84, width: 'auto', maxWidth: '100%', objectFit: 'contain', display: 'block' }} />
                 <p style={{ fontSize: 10, color: 'rgba(255,255,255,0.4)', margin: '6px 0 0', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Admin MIAWÉZON</p>
               </div>
             ) : (
