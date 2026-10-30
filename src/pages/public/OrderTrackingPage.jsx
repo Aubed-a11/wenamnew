@@ -2,7 +2,7 @@ import { motion } from 'framer-motion'
 import { ArrowLeft, Bike, CheckCircle, ChefHat, Clock, Package, XCircle } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { io } from 'socket.io-client'
+import { connectSocket } from '../../utils/socket'
 import api from '../../api/axios'
 import Navbar from '../../components/common/Navbar'
 import { useAuthStore } from '../../store'
@@ -27,8 +27,7 @@ export default function OrderTrackingPage() {
 
   useEffect(() => {
     if (!user) return
-    const socket = io(import.meta.env.VITE_SOCKET_URL || 'https://api.wenamfood.com', { withCredentials: true })
-    socket.emit('join_room', user._id)
+    const socket = connectSocket((s, token) => s.emit('join_room', user._id, token))
     socket.on('order:status_updated', (payload) => {
       if (String(payload.orderId) === String(id)) {
         setOrder((prev) => prev ? { ...prev, status: payload.status } : prev)

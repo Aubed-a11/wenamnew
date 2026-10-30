@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import {
+import { ClipboardList,
   AlertTriangle, ArrowDown, ArrowUp, Ban, Bell, CheckCircle2, Copy, Download, ExternalLink, Eye, FileCheck, FileDown, Landmark, Loader2, Mail, MessageCircle, RefreshCw, Save, ScanLine,
   Plus, Search, Send, ShieldCheck, Ticket, Trash2, TrendingUp, UserCheck, Users, Wallet, X, XCircle,
 } from 'lucide-react'
@@ -889,6 +889,7 @@ export default function MiawezonAdminPage() {
         </div>
         <div className="ml-auto flex gap-2">
           <a href="/miawezon" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-white px-3 py-2 text-xs font-semibold text-text-medium hover:border-primary"><ExternalLink size={14} /> Voir la page</a>
+          <Link to="/admin/miawezon/participants" className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-white px-3 py-2 text-xs font-semibold text-text-medium hover:border-primary"><ClipboardList size={14} /> Participants</Link>
           <Link to="/admin/miawezon/controle" className="inline-flex items-center gap-1.5 rounded-lg bg-mz-night text-mz-gold px-3 py-2 text-xs font-semibold"><ScanLine size={14} /> Contrôle des billets</Link>
         </div>
       </div>

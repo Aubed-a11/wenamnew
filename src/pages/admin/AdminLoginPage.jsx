@@ -100,7 +100,7 @@ export default function AdminLoginPage() {
                   type="email"
                   value={form.email}
                   onChange={e => setForm({ ...form, email: e.target.value })}
-                  placeholder="admin@wenam.ma"
+                  placeholder="email@exemple.com"
                   required
                   autoComplete="email"
                   style={{ width: '100%', padding: '11px 12px 11px 38px', border: '1px solid #D4B896', borderRadius: 10, fontSize: 14, background: '#fff', color: '#1A0F00', outline: 'none', boxSizing: 'border-box', fontFamily: 'Lato, sans-serif' }}

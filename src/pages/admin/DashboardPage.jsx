@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { TrendingUp, ShoppingBag, Package, Star, Eye, Bell, X, CheckCircle } from 'lucide-react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
-import { io } from 'socket.io-client'
+import { connectSocket } from '../../utils/socket'
 import api from '../../api/axios'
 import { useAuthStore } from '../../store'
 import toast from 'react-hot-toast'
@@ -89,8 +89,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     if (!user) return
-    const socket = io(import.meta.env.VITE_SOCKET_URL || 'https://api.wenamfood.com', { withCredentials: true })
-    socket.emit('join_admin')
+    const socket = connectSocket((s, token) => s.emit('join_admin', token))
     socket.on('order:new', ({ order }) => { setNewOrder(order); fetchOrders() })
     return () => socket.disconnect()
   }, [user])

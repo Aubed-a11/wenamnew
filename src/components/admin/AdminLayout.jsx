@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
-import { io } from 'socket.io-client'
+import { connectSocket } from '../../utils/socket'
 import toast from 'react-hot-toast'
 import { useMzPending } from '../../store/miawezonAdmin'
 import { Link, useLocation, useNavigate, Outlet } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import {
+import { ClipboardList,
   LayoutDashboard, ShoppingBag, UtensilsCrossed, Image,
   Star, Users, Settings, LogOut, Menu, X, ChevronRight, ExternalLink, Ticket, ScanLine
 } from 'lucide-react'
@@ -20,6 +20,7 @@ const NAV = [
   { to: '/admin/settings', label: 'Paramètres',   icon: Settings },
   { to: '/admin/miawezon', label: 'MIAWÉZON',     icon: Ticket, exact: true },
   { to: '/admin/miawezon/controle', label: 'Contrôle billets', icon: ScanLine },
+  { to: '/admin/miawezon/participants', label: 'Participants', icon: ClipboardList },
 ]
 
 const css = `
@@ -62,8 +63,7 @@ export default function AdminLayout() {
   useEffect(() => {
     refresh()
     const timer = setInterval(refresh, 60000)
-    const socket = io(import.meta.env.VITE_SOCKET_URL || 'https://api.wenamfood.com', { withCredentials: true })
-    socket.emit('join_admin')
+    const socket = connectSocket((s, token) => s.emit('join_admin', token))
     socket.on('miawezon:proof', (d) => {
       refresh()
       toast((tt) => (

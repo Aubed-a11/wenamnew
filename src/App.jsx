@@ -30,6 +30,7 @@ import GalleryPage from './pages/admin/GalleryPage'
 import SettingsPage from './pages/admin/SettingsPage'
 import MiawezonAdminPage from './pages/admin/miawezon/MiawezonAdminPage'
 import CheckinPage from './pages/admin/miawezon/CheckinPage'
+import ParticipantsPage from './pages/admin/miawezon/ParticipantsPage'
 import AdminLayout from './components/admin/AdminLayout'
 
 // Lien court imprime dans le QR code des billets
@@ -92,6 +93,7 @@ export default function App() {
           <Route path="settings" element={<SettingsPage />} />
           <Route path="miawezon" element={<MiawezonAdminPage />} />
           <Route path="miawezon/controle" element={<CheckinPage />} />
+          <Route path="miawezon/participants" element={<ParticipantsPage />} />
         </Route>
 
         {/* Fallback */}
