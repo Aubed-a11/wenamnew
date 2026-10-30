@@ -17,25 +17,71 @@ export const MZ_ASSETS = {
   conceptVideo: null,
 }
 
+// Textes repris du dossier de presentation MIAWÉZON (Wênam, 2026)
+export const MZ_SIGNATURE = {
+  fr: 'Faire découvrir le Bénin autour d\'une table.',
+  en: 'Discovering Benin around a table.',
+}
+
 export const MZ_CONCEPT = {
-  fr: 'MIAWÉZON, c\'est bien plus qu\'un buffet. C\'est une invitation au voyage des saveurs, une célébration de notre culture, une rencontre autour de plats authentiques, dans une ambiance chaleureuse et festive.',
-  en: 'MIAWÉZON is much more than a buffet. It is an invitation to a journey of flavours, a celebration of our culture, a gathering around authentic dishes in a warm and festive atmosphere.',
+  fr: 'MIAWÉZON est un événement gastronomique et culturel dédié à la découverte du Bénin à travers sa cuisine. Autour d\'un buffet 100\u00a0% béninois, chaque plat raconte une histoire, une tradition, une manière de recevoir. On y vient pour manger, mais surtout pour découvrir et rencontrer le Bénin, dans un cadre convivial et chaleureux.',
+  en: 'MIAWÉZON is a food and cultural event dedicated to discovering Benin through its cuisine. Around a 100% Beninese buffet, every dish tells a story, a tradition, a way of welcoming. You come to eat, but above all to discover and meet Benin, in a warm and friendly setting.',
 }
 
 // icon : nom d'une icone lucide-react declaree dans src/components/miawezon/ui.jsx (ICONS)
 export const MZ_VALUES = [
-  { icon: 'UtensilsCrossed', label: { fr: 'Cuisine authentique', en: 'Authentic cuisine' } },
-  { icon: 'Users', label: { fr: 'Partage et convivialité', en: 'Sharing and friendship' } },
-  { icon: 'Drama', label: { fr: 'Culture et tradition', en: 'Culture and tradition' } },
-  { icon: 'PartyPopper', label: { fr: 'Ambiance festive', en: 'Festive atmosphere' } },
+  { icon: 'UtensilsCrossed', label: { fr: 'Buffet 100\u00a0% béninois', en: '100% Beninese buffet' } },
+  { icon: 'BookOpen', label: { fr: 'L\'histoire de chaque plat', en: 'The story of each dish' } },
+  { icon: 'HeartHandshake', label: { fr: 'Un pont Bénin et Maroc', en: 'A bridge between Benin and Morocco' } },
+  { icon: 'Music', label: { fr: 'Ambiance culturelle', en: 'Cultural atmosphere' } },
 ]
 
-export const MZ_WHY = [
-  { icon: 'ChefHat', label: { fr: 'Saveurs authentiques', en: 'Authentic flavours' } },
-  { icon: 'Music', label: { fr: 'Ambiance festive', en: 'Festive atmosphere' } },
-  { icon: 'HeartHandshake', label: { fr: 'Réseautage', en: 'Networking' } },
-  { icon: 'Landmark', label: { fr: 'Culture et partage', en: 'Culture and sharing' } },
+// Ce qui attend les invites
+export const MZ_EXPERIENCE = [
+  { icon: 'ChefHat', title: { fr: 'Les spécialités du Bénin', en: 'Beninese specialities' }, text: { fr: 'Un buffet exclusivement béninois pour découvrir, ou redécouvrir, la diversité de la cuisine du pays.', en: 'An exclusively Beninese buffet to discover, or rediscover, the diversity of the country\'s cuisine.' } },
+  { icon: 'BookOpen', title: { fr: 'Des plats qui se racontent', en: 'Dishes with a story' }, text: { fr: 'La présentation des plats, leur origine et leur place dans la culture béninoise.', en: 'Each dish presented with its origin and its place in Beninese culture.' } },
+  { icon: 'Store', title: { fr: 'Produits et savoir-faire', en: 'Products and know-how' }, text: { fr: 'La mise en valeur de produits et de savoir-faire béninois.', en: 'Beninese products and know-how in the spotlight.' } },
+  { icon: 'Music', title: { fr: 'Musique et culture', en: 'Music and culture' }, text: { fr: 'Une ambiance musicale et une décoration inspirées du Bénin.', en: 'Music and decor inspired by Benin.' } },
+  { icon: 'Mic', title: { fr: 'Prises de parole', en: 'Talks' }, text: { fr: 'Des interventions pour mieux comprendre la culture béninoise.', en: 'Talks to better understand Beninese culture.' } },
+  { icon: 'Users', title: { fr: 'Échanges et networking', en: 'Meeting and networking' }, text: { fr: 'Des espaces pour rencontrer, partager et créer des liens.', en: 'Spaces to meet, share and build connections.' } },
 ]
+
+// Public invite
+export const MZ_AUDIENCE = [
+  { fr: 'La communauté béninoise du Maroc', en: 'The Beninese community in Morocco' },
+  { fr: 'Le public marocain', en: 'The Moroccan public' },
+  { fr: 'Étudiants et jeunes professionnels', en: 'Students and young professionals' },
+  { fr: 'Entrepreneurs et associations', en: 'Entrepreneurs and associations' },
+  { fr: 'Acteurs culturels et institutionnels', en: 'Cultural and institutional actors' },
+  { fr: 'Les autres communautés africaines', en: 'Other African communities' },
+  { fr: 'Les amoureux de la gastronomie', en: 'Food lovers' },
+]
+
+// Pourquoi MIAWÉZON (ambitions du projet)
+export const MZ_WHY = [
+  { icon: 'Compass', label: { fr: 'Découvrir le Bénin autrement', en: 'Discover Benin differently' }, text: { fr: 'Une immersion dans l\'univers culinaire béninois, même pour ceux qui connaissent peu le pays.', en: 'An immersion in Beninese cuisine, even for those who know little about the country.' } },
+  { icon: 'HeartHandshake', label: { fr: 'Un pont entre le Bénin et le Maroc', en: 'A bridge between Benin and Morocco' }, text: { fr: 'Un espace de rencontre entre deux cultures, ouvert à tous les publics.', en: 'A meeting place between two cultures, open to everyone.' } },
+  { icon: 'Globe', label: { fr: 'Le rayonnement du Bénin', en: 'Sharing Benin with the world' }, text: { fr: 'Montrer un Bénin vivant, créatif, accueillant et riche de son patrimoine.', en: 'Showing a lively, creative and welcoming Benin, rich in heritage.' } },
+  { icon: 'Sparkles', label: { fr: 'Une expérience unique', en: 'A unique experience' }, text: { fr: 'Plus qu\'un buffet : la table devient le point de départ d\'une découverte.', en: 'More than a buffet: the table becomes the starting point of a discovery.' } },
+]
+
+// Wênam, a l'origine du projet
+export const MZ_STORY = {
+  text: {
+    fr: 'MIAWÉZON est porté par Wênam, fondée le 18 mai 2024 par Ahouéfa Samuelle KAKPO pour faire connaître et aimer la cuisine béninoise à Rabat. Après plus de 150 plats servis, trois années de stand au Festi AECAM et des prestations traiteur pour des associations, Wênam franchit une nouvelle étape : créer son propre événement, entièrement pensé autour du Bénin.',
+    en: 'MIAWÉZON is brought to you by Wênam, founded on 18 May 2024 by Ahouéfa Samuelle KAKPO to share Beninese cuisine in Rabat. After more than 150 dishes served, three years with a stand at Festi AECAM and catering for associations, Wênam is taking a new step: creating its own event, entirely devoted to Benin.',
+  },
+  facts: [
+    { value: '2024', label: { fr: 'Création de Wênam', en: 'Wênam founded' } },
+    { value: '150+', label: { fr: 'Plats réalisés', en: 'Dishes served' } },
+    { value: '3', label: { fr: 'Éditions du Festi AECAM', en: 'Festi AECAM editions' } },
+    { value: '2026', label: { fr: 'Traiteur du Triduum culturel ASEBEM', en: 'ASEBEM Cultural Triduum caterer' } },
+  ],
+  closing: {
+    fr: 'Porter le Bénin au-delà des frontières, une table à la fois.',
+    en: 'Taking Benin beyond its borders, one table at a time.',
+  },
+}
 
 export const MZ_GALLERY = [
   { src: `${IMG}/galerie-1.jpg`, alt: { fr: 'Akassa, sauce et poisson', en: 'Akassa with sauce and fish' } },

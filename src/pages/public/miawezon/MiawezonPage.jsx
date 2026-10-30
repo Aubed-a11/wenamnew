@@ -6,7 +6,7 @@ import Navbar from '../../../components/common/Navbar'
 import Footer from '../../../components/common/Footer'
 import { useT } from '../../../i18n'
 import { useMiawezon, isMiawezonVisible } from '../../../store/miawezon'
-import { MZ_ASSETS, MZ_CONCEPT, MZ_GALLERY, MZ_VALUES, MZ_WHY } from '../../../data/miawezon'
+import { MZ_ASSETS, MZ_AUDIENCE, MZ_CONCEPT, MZ_EXPERIENCE, MZ_GALLERY, MZ_SIGNATURE, MZ_STORY, MZ_VALUES, MZ_WHY } from '../../../data/miawezon'
 import {
   CountdownBoxes, InfoRow, MzIcon, MzLogo, MzTitle, NotifyForm, PreviewNotice,
 } from '../../../components/miawezon/ui'
@@ -99,15 +99,16 @@ export default function MiawezonPage() {
       </section>
 
       {/* CONCEPT */}
-      <section className="max-w-[1280px] mx-auto px-5 py-14 md:py-16 grid md:grid-cols-2 gap-10 items-center">
+      <section className="max-w-[1280px] mx-auto px-5 py-14 md:py-20 grid md:grid-cols-2 gap-10 md:gap-14 items-center">
         <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
           <SectionTitle>{t('mz.conceptTitle')}</SectionTitle>
+          <p className="mt-5 font-display italic text-2xl md:text-3xl leading-snug text-primary-dark">« {pick(MZ_SIGNATURE)} »</p>
           <p className="mt-5 text-text-medium leading-relaxed max-w-xl">{pick(MZ_CONCEPT)}</p>
-          <div className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-5 max-w-xl">
             {MZ_VALUES.map((v) => (
-              <div key={v.label.fr} className="flex flex-col items-start gap-2">
-                <MzIcon name={v.icon} size={24} strokeWidth={1.75} className="text-primary" aria-hidden="true" />
-                <span className="text-xs text-text-medium leading-snug">{pick(v.label)}</span>
+              <div key={v.label.fr} className="flex items-start gap-3">
+                <MzIcon name={v.icon} size={22} strokeWidth={1.75} className="text-primary shrink-0 mt-0.5" aria-hidden="true" />
+                <span className="text-sm font-semibold text-text-dark leading-snug">{pick(v.label)}</span>
               </div>
             ))}
           </div>
@@ -121,6 +122,23 @@ export default function MiawezonPage() {
         </motion.div>
       </section>
 
+      {/* CE QUI VOUS ATTEND */}
+      <section className="bg-cream-dark/60 border-y border-border">
+        <div className="max-w-[1280px] mx-auto px-5 py-14 md:py-16">
+          <SectionTitle>{t('mz.experienceTitle')}</SectionTitle>
+          <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {MZ_EXPERIENCE.map((x, i) => (
+              <motion.div key={x.title.fr} variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} transition={{ delay: i * 0.05 }} className="rounded-2xl bg-white border border-border p-5 md:p-6">
+                <MzIcon name={x.icon} size={26} strokeWidth={1.6} className="text-primary" aria-hidden="true" />
+                <h3 className="mt-3 font-display text-lg font-bold text-text-dark">{pick(x.title)}</h3>
+                <p className="mt-1.5 text-sm text-text-medium leading-relaxed">{pick(x.text)}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <div className="h-14" />
       {/* GALERIE */}
       <section className="max-w-[1280px] mx-auto px-5 pb-12">
         <SectionTitle>{t('mz.galleryTitle')}</SectionTitle>
@@ -138,6 +156,21 @@ export default function MiawezonPage() {
               <img src={g.src} alt={pick(g.alt)} loading="lazy" className="w-full h-full object-cover hover:scale-105 transition duration-500" />
             </motion.div>
           ))}
+        </div>
+      </section>
+
+      {/* POUR QUI */}
+      <section className="max-w-[1280px] mx-auto px-5 pb-14">
+        <div className="rounded-2xl bg-mz-night text-white px-6 py-8 md:px-10 md:py-10 grid lg:grid-cols-[1fr_1.4fr] gap-6 lg:gap-10 items-center">
+          <div>
+            <h2 className="font-display text-2xl md:text-3xl font-bold text-mz-gold">{t('mz.audienceTitle')}</h2>
+            <p className="mt-3 text-white/80 text-sm md:text-base leading-relaxed">{t('mz.audienceSub')}</p>
+          </div>
+          <ul className="flex flex-wrap gap-2.5">
+            {MZ_AUDIENCE.map((x) => (
+              <li key={x.fr} className="rounded-full border border-mz-gold/50 px-4 py-2 text-sm text-mz-gold-light">{pick(x)}</li>
+            ))}
+          </ul>
         </div>
       </section>
 
@@ -177,16 +210,37 @@ export default function MiawezonPage() {
         </div>
       </section>
 
-      {/* POURQUOI PARTICIPER */}
-      <section className="max-w-[1280px] mx-auto px-5 py-14">
+      {/* POURQUOI MIAWEZON */}
+      <section className="max-w-[1280px] mx-auto px-5 py-14 md:py-16">
         <SectionTitle>{t('mz.whyTitle')}</SectionTitle>
-        <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {MZ_WHY.map((w) => (
-            <div key={w.label.fr} className="flex flex-col items-center text-center gap-3">
-              <MzIcon name={w.icon} size={30} strokeWidth={1.75} className="text-primary" aria-hidden="true" />
-              <span className="text-sm font-semibold text-text-medium">{pick(w.label)}</span>
+            <div key={w.label.fr} className="border-t-2 border-primary pt-4">
+              <MzIcon name={w.icon} size={26} strokeWidth={1.6} className="text-primary" aria-hidden="true" />
+              <h3 className="mt-3 font-display text-lg font-bold text-text-dark leading-snug">{pick(w.label)}</h3>
+              {w.text && <p className="mt-1.5 text-sm text-text-medium leading-relaxed">{pick(w.text)}</p>}
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* PORTE PAR WENAM */}
+      <section className="bg-cream-dark/60 border-t border-border">
+        <div className="max-w-[1280px] mx-auto px-5 py-14 md:py-16 grid lg:grid-cols-[1.3fr_1fr] gap-10 items-center">
+          <div>
+            <SectionTitle>{t('mz.storyTitle')}</SectionTitle>
+            <p className="mt-5 text-text-medium leading-relaxed max-w-2xl">{pick(MZ_STORY.text)}</p>
+            <p className="mt-6 font-script text-3xl md:text-4xl text-primary leading-snug">{pick(MZ_STORY.closing)}</p>
+          </div>
+          <dl className="grid grid-cols-2 gap-4">
+            {MZ_STORY.facts.map((f) => (
+              <div key={f.value + f.label.fr} className="rounded-2xl bg-white border border-border p-5">
+                <dt className="sr-only">{pick(f.label)}</dt>
+                <dd className="font-display text-3xl md:text-4xl font-bold text-primary-dark">{f.value}</dd>
+                <dd className="mt-1 text-sm text-text-medium leading-snug">{pick(f.label)}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </section>
 

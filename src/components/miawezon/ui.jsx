@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Bell, CalendarDays, Check, Clock, MapPin, Loader2, UtensilsCrossed, Users, Drama, PartyPopper, ChefHat, Music, HeartHandshake, Landmark, Sparkles } from 'lucide-react'
+import { Bell, CalendarDays, Check, Clock, MapPin, Loader2, UtensilsCrossed, Users, Drama, PartyPopper, ChefHat, Music, HeartHandshake, Landmark, Sparkles, BookOpen, Store, Mic, Compass, Globe } from 'lucide-react'
 import toast from 'react-hot-toast'
 import api from '../../api/axios'
 import { useT } from '../../i18n'
@@ -7,7 +7,7 @@ import { MZ_ASSETS } from '../../data/miawezon'
 import { pad2, useCountdown } from './utils'
 
 // Icones utilisables dans src/data/miawezon.js (ajoutez-les ici si besoin)
-const ICONS = { UtensilsCrossed, Users, Drama, PartyPopper, ChefHat, Music, HeartHandshake, Landmark, Sparkles }
+const ICONS = { UtensilsCrossed, Users, Drama, PartyPopper, ChefHat, Music, HeartHandshake, Landmark, Sparkles, BookOpen, Store, Mic, Compass, Globe }
 
 export function MzIcon({ name, ...props }) {
   const C = ICONS[name] || Sparkles
