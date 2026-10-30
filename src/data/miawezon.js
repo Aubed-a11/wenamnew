@@ -39,10 +39,10 @@ export const MZ_WHY = [
 
 export const MZ_GALLERY = [
   { src: `${IMG}/galerie-1.jpg`, alt: { fr: 'Plats du buffet', en: 'Buffet dishes' } },
-  { src: `${IMG}/galerie-2.jpg`, alt: { fr: 'La salle', en: 'The venue' } },
-  { src: `${IMG}/galerie-3.jpg`, alt: { fr: 'Entrées', en: 'Starters' } },
-  { src: `${IMG}/galerie-4.jpg`, alt: { fr: 'Décoration', en: 'Decoration' } },
-  { src: `${IMG}/galerie-5.jpg`, alt: { fr: 'Le buffet', en: 'The buffet' } },
+  { src: `${IMG}/galerie-2.jpg`, alt: { fr: 'Billet AGBADJA', en: 'AGBADJA ticket' } },
+  { src: `${IMG}/galerie-3.jpg`, alt: { fr: 'Saveurs authentiques', en: 'Authentic flavours' } },
+  { src: `${IMG}/galerie-4.jpg`, alt: { fr: 'Billet ZINLI', en: 'ZINLI ticket' } },
+  { src: `${IMG}/galerie-5.jpg`, alt: { fr: 'MIAWÉZON by Wênam', en: 'MIAWÉZON by Wênam' } },
 ]
 
 // Prestations affichees sur chaque billet (cle = code de la categorie dans l'admin)
