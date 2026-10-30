@@ -38,11 +38,11 @@ export const MZ_WHY = [
 ]
 
 export const MZ_GALLERY = [
-  { src: `${IMG}/galerie-1.jpg`, alt: { fr: 'Plats du buffet', en: 'Buffet dishes' } },
-  { src: `${IMG}/galerie-2.jpg`, alt: { fr: 'Billet AGBADJA', en: 'AGBADJA ticket' } },
-  { src: `${IMG}/galerie-3.jpg`, alt: { fr: 'Saveurs authentiques', en: 'Authentic flavours' } },
-  { src: `${IMG}/galerie-4.jpg`, alt: { fr: 'Billet ZINLI', en: 'ZINLI ticket' } },
-  { src: `${IMG}/galerie-5.jpg`, alt: { fr: 'MIAWÉZON by Wênam', en: 'MIAWÉZON by Wênam' } },
+  { src: `${IMG}/galerie-1.jpg`, alt: { fr: 'Akassa, sauce et poisson', en: 'Akassa with sauce and fish' } },
+  { src: `${IMG}/galerie-2.jpg`, alt: { fr: 'Poulet braisé', en: 'Grilled chicken' } },
+  { src: `${IMG}/galerie-3.jpg`, alt: { fr: 'Beignets', en: 'Doughnuts' } },
+  { src: `${IMG}/galerie-4.jpg`, alt: { fr: 'Riz gras', en: 'Jollof rice' } },
+  { src: `${IMG}/galerie-5.jpg`, alt: { fr: 'Bissap et boissons maison', en: 'Hibiscus and homemade drinks' } },
 ]
 
 // Prestations affichees sur chaque billet (cle = code de la categorie dans l'admin)
