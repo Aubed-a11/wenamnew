@@ -67,8 +67,8 @@ const css = `
 
   /* ── Upload zone ── */
   .upload-zone { border: 2px dashed #D4B896; border-radius: 12px; padding: 16px; text-align: center; cursor: pointer; transition: all 0.2s; background: #FAF3E8; }
-  .upload-zone:hover { border-color: #C4531A; background: rgba(196,83,26,0.04); }
-  .upload-zone.dragover { border-color: #C4531A; background: rgba(196,83,26,0.08); }
+  .upload-zone:hover { border-color: #946420; background: rgba(148,100,32,0.04); }
+  .upload-zone.dragover { border-color: #946420; background: rgba(148,100,32,0.08); }
 
   /* ── Tags ── */
   .accomp-tag { display:inline-block; background:#FEF3C7; color:#92400E; border:1px solid #FDE68A; border-radius:20px; font-size:10px; font-weight:600; padding:2px 8px; margin:2px 2px 0 0; }
@@ -196,14 +196,14 @@ export default function MenuManagePage() {
 
       <div className="menu-header">
         <h1 style={{ fontFamily:"'Playfair Display',serif", fontSize:'clamp(18px,4vw,24px)', fontWeight:700, color:'#1A0F00', margin:0 }}>Gestion du Menu</h1>
-        <button onClick={openAdd} style={{ ...btn('#C4531A','#fff'), padding:'10px 18px', fontSize:13, display:'flex', alignItems:'center', gap:8, borderRadius:10 }}>
+        <button onClick={openAdd} style={{ ...btn('#946420','#fff'), padding:'10px 18px', fontSize:13, display:'flex', alignItems:'center', gap:8, borderRadius:10 }}>
           <Plus size={15}/> Ajouter un plat
         </button>
       </div>
 
       <div className="menu-filters">
         {CATS.map(c => (
-          <button key={c.key} onClick={() => setCat(c.key)} className="filter-btn" style={{ ...btn(cat===c.key?'#C4531A':'#fff', cat===c.key?'#fff':'#5C3D11'), border:`1px solid ${cat===c.key?'#C4531A':'#D4B896'}`, borderRadius:20, padding:'6px 14px', flexShrink:0 }}>
+          <button key={c.key} onClick={() => setCat(c.key)} className="filter-btn" style={{ ...btn(cat===c.key?'#946420':'#fff', cat===c.key?'#fff':'#5C3D11'), border:`1px solid ${cat===c.key?'#946420':'#D4B896'}`, borderRadius:20, padding:'6px 14px', flexShrink:0 }}>
             {c.label}
           </button>
         ))}
@@ -245,9 +245,9 @@ export default function MenuManagePage() {
                   </div>
                 )}
                 <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginTop:8 }}>
-                  <span className="menu-card-price" style={{ fontFamily:"'Playfair Display',serif", fontWeight:700, color:'#C4531A', fontSize:15 }}>{item.price} MAD</span>
+                  <span className="menu-card-price" style={{ fontFamily:"'Playfair Display',serif", fontWeight:700, color:'#946420', fontSize:15 }}>{item.price} MAD</span>
                   <div style={{ display:'flex', gap:5 }}>
-                    <button onClick={() => openEdit(item)} style={{ ...btn('#FAF3E8','#C4531A'), padding:'4px 7px', border:'1px solid #D4B896' }}><Edit2 size={12}/></button>
+                    <button onClick={() => openEdit(item)} style={{ ...btn('#FAF3E8','#946420'), padding:'4px 7px', border:'1px solid #D4B896' }}><Edit2 size={12}/></button>
                     <button onClick={() => handleDelete(item._id)} style={{ ...btn('#FEF2F2','#991B1B'), padding:'4px 7px', border:'1px solid #FECACA' }}><Trash2 size={12}/></button>
                   </div>
                 </div>
@@ -292,7 +292,7 @@ export default function MenuManagePage() {
                     onDragLeave={() => setDragOver(false)}>
                     {uploading ? (
                       <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:8 }}>
-                        <span style={{ width:24, height:24, border:'3px solid #D4B896', borderTopColor:'#C4531A', borderRadius:'50%', animation:'spin 0.8s linear infinite', display:'inline-block' }} />
+                        <span style={{ width:24, height:24, border:'3px solid #D4B896', borderTopColor:'#946420', borderRadius:'50%', animation:'spin 0.8s linear infinite', display:'inline-block' }} />
                         <p style={{ fontSize:13, color:'#8B6B3D', margin:0 }}>Upload en cours...</p>
                       </div>
                     ) : preview ? (
@@ -305,7 +305,7 @@ export default function MenuManagePage() {
                               Fichier
                             </button>
                             <button type="button" onClick={e => { e.stopPropagation(); cameraInputRef.current?.click() }}
-                              style={{ padding:'7px 14px', background:'#C4531A', color:'#fff', border:'none', borderRadius:8, fontSize:12, fontWeight:700, cursor:'pointer' }}>
+                              style={{ padding:'7px 14px', background:'#946420', color:'#fff', border:'none', borderRadius:8, fontSize:12, fontWeight:700, cursor:'pointer' }}>
                               Photo
                             </button>
                           </div>
@@ -313,13 +313,13 @@ export default function MenuManagePage() {
                       </div>
                     ) : (
                       <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:12, padding:'8px 0' }}>
-                        <div style={{ width:44, height:44, borderRadius:12, background:'rgba(196,83,26,0.1)', display:'flex', alignItems:'center', justifyContent:'center' }}>
-                          <Upload size={20} color="#C4531A" />
+                        <div style={{ width:44, height:44, borderRadius:12, background:'rgba(148,100,32,0.1)', display:'flex', alignItems:'center', justifyContent:'center' }}>
+                          <Upload size={20} color="#946420" />
                         </div>
                         <p style={{ fontSize:13, color:'#5C3D11', fontWeight:600, margin:0 }}>Choisir une image</p>
                         <div style={{ display:'flex', gap:8, flexWrap:'wrap', justifyContent:'center' }}>
                           <button type="button" onClick={() => fileInputRef.current?.click()}
-                            style={{ padding:'8px 16px', background:'#C4531A', color:'#fff', border:'none', borderRadius:8, fontSize:12, fontWeight:700, cursor:'pointer', fontFamily:'Lato,sans-serif' }}>
+                            style={{ padding:'8px 16px', background:'#946420', color:'#fff', border:'none', borderRadius:8, fontSize:12, fontWeight:700, cursor:'pointer', fontFamily:'Lato,sans-serif' }}>
                             Fichier
                           </button>
                           <button type="button" onClick={() => cameraInputRef.current?.click()}
@@ -379,7 +379,7 @@ export default function MenuManagePage() {
                 <div style={{ display:'flex', gap:16, flexWrap:'wrap' }}>
                   {[['isAvailable','Disponible'],['featured','Mis en avant']].map(([field,label]) => (
                     <label key={field} style={{ display:'flex', alignItems:'center', gap:8, cursor:'pointer', fontSize:14, color:'#1A0F00' }}>
-                      <input type="checkbox" checked={form[field]} onChange={e => setForm({...form,[field]:e.target.checked})} style={{ width:16, height:16, accentColor:'#C4531A' }} />
+                      <input type="checkbox" checked={form[field]} onChange={e => setForm({...form,[field]:e.target.checked})} style={{ width:16, height:16, accentColor:'#946420' }} />
                       {label}
                     </label>
                   ))}
@@ -387,7 +387,7 @@ export default function MenuManagePage() {
 
                 <div style={{ display:'flex', gap:10, paddingTop:4 }}>
                   <button onClick={() => setModal(null)} style={{ ...btn('#FAF3E8','#5C3D11'), flex:1, padding:11, border:'1px solid #D4B896', borderRadius:10, fontSize:14 }}>Annuler</button>
-                  <button onClick={handleSave} disabled={saving || uploading} style={{ ...btn('#C4531A','#fff'), flex:1, padding:11, borderRadius:10, fontSize:14, display:'flex', alignItems:'center', justifyContent:'center', gap:8, opacity: (saving||uploading)?0.7:1 }}>
+                  <button onClick={handleSave} disabled={saving || uploading} style={{ ...btn('#946420','#fff'), flex:1, padding:11, borderRadius:10, fontSize:14, display:'flex', alignItems:'center', justifyContent:'center', gap:8, opacity: (saving||uploading)?0.7:1 }}>
                     {saving && <span style={{ width:13, height:13, border:'2px solid rgba(255,255,255,0.3)', borderTopColor:'#fff', borderRadius:'50%', animation:'spin 0.7s linear infinite', display:'inline-block' }} />}
                     <Save size={14}/>{saving ? 'Sauvegarde...' : 'Sauvegarder'}
                   </button>

@@ -153,7 +153,7 @@ export default function ResetPasswordPage() {
               <button
                 type="submit"
                 disabled={loading}
-                style={{ width: '100%', padding: '12px', background: loading ? '#D4B896' : '#C4531A', color: '#fff', border: 'none', borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: loading ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, transition: 'background 0.2s' }}
+                style={{ width: '100%', padding: '12px', background: loading ? '#D4B896' : '#946420', color: '#fff', border: 'none', borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: loading ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, transition: 'background 0.2s' }}
               >
                 {loading && <span style={{ width: 14, height: 14, border: '2px solid rgba(255,255,255,0.3)', borderTopColor: '#fff', borderRadius: '50%', animation: 'spin 0.8s linear infinite', display: 'inline-block' }} />}
                 {loading ? 'Enregistrement...' : 'Changer le mot de passe'}
@@ -169,7 +169,7 @@ export default function ResetPasswordPage() {
             <p style={{ fontSize: 13, color: '#8B6B3D', margin: '0 0 24px' }}>Vous pouvez maintenant vous connecter avec votre nouveau mot de passe.</p>
             <button
               onClick={() => navigate('/login')}
-              style={{ width: '100%', padding: '12px', background: '#C4531A', color: '#fff', border: 'none', borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: 'pointer' }}
+              style={{ width: '100%', padding: '12px', background: '#946420', color: '#fff', border: 'none', borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: 'pointer' }}
             >
               Se connecter
             </button>
@@ -177,7 +177,7 @@ export default function ResetPasswordPage() {
         )}
 
         <p style={{ textAlign: 'center', marginTop: 20, fontSize: 13, color: '#8B6B3D' }}>
-          <Link to="/forgot-password" style={{ color: '#C4531A', fontWeight: 600, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+          <Link to="/forgot-password" style={{ color: '#946420', fontWeight: 600, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
             <ArrowLeft size={13} /> Renvoyer un code
           </Link>
         </p>

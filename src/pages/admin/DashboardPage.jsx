@@ -9,7 +9,7 @@ import { useAuthStore } from '../../store'
 import toast from 'react-hot-toast'
 
 const S_LABEL = { pending:'En attente', confirmed:'Confirmée', preparing:'Préparation', out_for_delivery:'En route', delivered:'Livré', cancelled:'Annulée' }
-const S_COLOR = { pending:'#B7791F', confirmed:'#2563EB', preparing:'#C4531A', out_for_delivery:'#7C3AED', delivered:'#166534', cancelled:'#991B1B' }
+const S_COLOR = { pending:'#B7791F', confirmed:'#2563EB', preparing:'#946420', out_for_delivery:'#7C3AED', delivered:'#166534', cancelled:'#991B1B' }
 const S_BG    = { pending:'#FEFCE8', confirmed:'#EFF6FF', preparing:'#FFF7ED', out_for_delivery:'#F5F3FF', delivered:'#F0FDF4', cancelled:'#FEF2F2' }
 
 const css = `
@@ -45,8 +45,8 @@ function StatCard({ label, value, icon: Icon, bg, i }) {
 function NewOrderBanner({ order, onValidate, onDismiss }) {
   return (
     <motion.div className="new-order-banner" initial={{ x:400, opacity:0 }} animate={{ x:0, opacity:1 }} exit={{ x:400, opacity:0 }}
-      style={{ position:'fixed', bottom:24, right:24, zIndex:9999, background:'#fff', borderRadius:16, boxShadow:'0 8px 32px rgba(139,58,15,0.25)', border:'1px solid #D4B896', overflow:'hidden' }}>
-      <div style={{ background:'#C4531A', padding:'12px 16px', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
+      style={{ position:'fixed', bottom:24, right:24, zIndex:9999, background:'#fff', borderRadius:16, boxShadow:'0 8px 32px rgba(59,36,16,0.25)', border:'1px solid #D4B896', overflow:'hidden' }}>
+      <div style={{ background:'#946420', padding:'12px 16px', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
         <div style={{ display:'flex', alignItems:'center', gap:8 }}>
           <Bell size={15} color="#fff" />
           <span style={{ color:'#fff', fontWeight:700, fontSize:13 }}>Nouvelle commande !</span>
@@ -54,12 +54,12 @@ function NewOrderBanner({ order, onValidate, onDismiss }) {
         <button onClick={onDismiss} style={{ background:'none', border:'none', cursor:'pointer', color:'rgba(255,255,255,0.7)' }}><X size={15}/></button>
       </div>
       <div style={{ padding:16 }}>
-        <p style={{ fontFamily:"'Playfair Display',serif", fontSize:18, fontWeight:700, color:'#C4531A', margin:'0 0 2px' }}>{order.orderNumber}</p>
+        <p style={{ fontFamily:"'Playfair Display',serif", fontSize:18, fontWeight:700, color:'#946420', margin:'0 0 2px' }}>{order.orderNumber}</p>
         <p style={{ fontSize:13, color:'#5C3D11', margin:'0 0 2px' }}>{order.user?.name}</p>
         <p style={{ fontSize:12, color:'#8B6B3D', margin:'0 0 14px' }}>{order.items?.length} article(s) · {order.total} MAD</p>
         <div style={{ display:'flex', gap:8 }}>
           <button onClick={onDismiss} style={{ flex:1, padding:'8px', border:'1px solid #D4B896', borderRadius:8, background:'none', cursor:'pointer', fontSize:12, color:'#5C3D11' }}>Ignorer</button>
-          <button onClick={() => onValidate(order)} style={{ flex:1, padding:'8px', border:'none', borderRadius:8, background:'#C4531A', cursor:'pointer', fontSize:12, color:'#fff', fontWeight:700, display:'flex', alignItems:'center', justifyContent:'center', gap:6 }}>
+          <button onClick={() => onValidate(order)} style={{ flex:1, padding:'8px', border:'none', borderRadius:8, background:'#946420', cursor:'pointer', fontSize:12, color:'#fff', fontWeight:700, display:'flex', alignItems:'center', justifyContent:'center', gap:6 }}>
             <CheckCircle size={13}/> Valider
           </button>
         </div>
@@ -104,8 +104,8 @@ export default function DashboardPage() {
 
   const STATS = [
     { label: 'Ventes Totales (MAD)', value: stats?.totalSales,      icon: TrendingUp, bg: '#2C4A35' },
-    { label: 'Nouvelles Commandes',  value: stats?.newOrders,        icon: ShoppingBag, bg: '#C4531A' },
-    { label: 'Produits en Ligne',    value: stats?.onlineProducts,   icon: Package,    bg: '#E8763A' },
+    { label: 'Nouvelles Commandes',  value: stats?.newOrders,        icon: ShoppingBag, bg: '#946420' },
+    { label: 'Produits en Ligne',    value: stats?.onlineProducts,   icon: Package,    bg: '#D9A84E' },
     { label: 'Nouveaux Avis',        value: stats?.newReviews,       icon: Star,       bg: '#8B6B3D' },
   ]
 
@@ -132,7 +132,7 @@ export default function DashboardPage() {
         <div style={{ background:'#fff', borderRadius:16, border:'1px solid #D4B896', padding:20 }}>
           <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:16 }}>
             <h2 style={{ fontFamily:"'Playfair Display',serif", fontSize:17, fontWeight:600, color:'#1A0F00', margin:0 }}>Commandes Récentes</h2>
-            <Link to="/admin/orders" style={{ fontSize:12, color:'#C4531A', textDecoration:'none', fontWeight:600 }}>Voir tout →</Link>
+            <Link to="/admin/orders" style={{ fontSize:12, color:'#946420', textDecoration:'none', fontWeight:600 }}>Voir tout →</Link>
           </div>
           <div style={{ overflowX:'auto' }}>
             <table style={{ width:'100%', borderCollapse:'collapse', fontSize:13 }}>
@@ -148,14 +148,14 @@ export default function DashboardPage() {
                   <tr key={o._id} style={{ borderBottom:'1px solid #F5ECD7' }}>
                     <td style={{ padding:'10px', fontWeight:700, color:'#1A0F00', whiteSpace:'nowrap' }}>{o.orderNumber}</td>
                     <td style={{ padding:'10px', color:'#5C3D11', maxWidth:120, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{o.user?.name || '—'}</td>
-                    <td style={{ padding:'10px', fontWeight:700, color:'#C4531A', fontFamily:"'Playfair Display',serif", whiteSpace:'nowrap' }}>{o.total} MAD</td>
+                    <td style={{ padding:'10px', fontWeight:700, color:'#946420', fontFamily:"'Playfair Display',serif", whiteSpace:'nowrap' }}>{o.total} MAD</td>
                     <td style={{ padding:'10px' }}>
                       <span style={{ fontSize:11, fontWeight:700, padding:'3px 8px', borderRadius:20, background: S_BG[o.status]||'#f5f5f5', color: S_COLOR[o.status]||'#333', whiteSpace:'nowrap' }}>
                         {S_LABEL[o.status]||o.status}
                       </span>
                     </td>
                     <td style={{ padding:'10px' }}>
-                      <Link to="/admin/orders" style={{ color:'#C4531A' }}><Eye size={15}/></Link>
+                      <Link to="/admin/orders" style={{ color:'#946420' }}><Eye size={15}/></Link>
                     </td>
                   </tr>
                 ))}
@@ -171,12 +171,12 @@ export default function DashboardPage() {
         <div style={{ background:'#fff', borderRadius:16, border:'1px solid #D4B896', padding:20 }}>
           <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:16 }}>
             <h2 style={{ fontFamily:"'Playfair Display',serif", fontSize:17, fontWeight:600, color:'#1A0F00', margin:0 }}>Avis Récents</h2>
-            <Link to="/admin/reviews" style={{ fontSize:12, color:'#C4531A', textDecoration:'none', fontWeight:600 }}>Voir tout →</Link>
+            <Link to="/admin/reviews" style={{ fontSize:12, color:'#946420', textDecoration:'none', fontWeight:600 }}>Voir tout →</Link>
           </div>
           <div>
             {reviews.map(r => (
               <div key={r._id} style={{ display:'flex', gap:12, paddingBottom:14, marginBottom:14, borderBottom:'1px solid #F5ECD7' }}>
-                <div style={{ width:36, height:36, borderRadius:'50%', background:'rgba(196,83,26,0.15)', display:'flex', alignItems:'center', justifyContent:'center', color:'#C4531A', fontWeight:700, fontSize:14, flexShrink:0 }}>{r.user?.name?.[0]}</div>
+                <div style={{ width:36, height:36, borderRadius:'50%', background:'rgba(148,100,32,0.15)', display:'flex', alignItems:'center', justifyContent:'center', color:'#946420', fontWeight:700, fontSize:14, flexShrink:0 }}>{r.user?.name?.[0]}</div>
                 <div style={{ minWidth:0 }}>
                   <div style={{ display:'flex', alignItems:'center', gap:6, marginBottom:3, flexWrap:'wrap' }}>
                     <span style={{ fontWeight:700, fontSize:13, color:'#1A0F00' }}>{r.user?.name}</span>
@@ -200,7 +200,7 @@ export default function DashboardPage() {
             <XAxis dataKey="day" tick={{ fontSize:11, fontFamily:'Lato', fill:'#8B6B3D' }} axisLine={false} tickLine={false} />
             <YAxis tick={{ fontSize:11, fontFamily:'Lato', fill:'#8B6B3D' }} axisLine={false} tickLine={false} />
             <Tooltip contentStyle={{ borderRadius:10, border:'1px solid #D4B896', fontFamily:'Lato', fontSize:13 }} formatter={v => [`${v} MAD`, 'Ventes']} />
-            <Line type="monotone" dataKey="total" stroke="#E8763A" strokeWidth={3} dot={{ fill:'#C4531A', r:5, strokeWidth:0 }} activeDot={{ r:7, fill:'#C4531A' }} />
+            <Line type="monotone" dataKey="total" stroke="#D9A84E" strokeWidth={3} dot={{ fill:'#946420', r:5, strokeWidth:0 }} activeDot={{ r:7, fill:'#946420' }} />
           </LineChart>
         </ResponsiveContainer>
       </div>

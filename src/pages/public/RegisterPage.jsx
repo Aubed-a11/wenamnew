@@ -158,7 +158,7 @@ export default function RegisterPage() {
           100% { background-position: 0% 50%; }
         }
         .gold-panel {
-          background: linear-gradient(135deg, #3D1A00, #8B3A0F, #C4531A, #E8763A, #F59E0B, #C4531A, #8B3A0F, #3D1A00);
+          background: linear-gradient(135deg, #3D1A00, #3B2410, #946420, #D9A84E, #F59E0B, #946420, #3B2410, #3D1A00);
           background-size: 400% 400%;
           animation: goldFlow 8s ease infinite;
         }
@@ -200,7 +200,7 @@ export default function RegisterPage() {
           {/* Indicateur d'étape */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 28 }}>
             {[1, 2].map((s) => (
-              <div key={s} style={{ flex: 1, height: 4, borderRadius: 99, background: s <= step ? '#C4531A' : '#F5ECD7', transition: 'background 0.3s' }} />
+              <div key={s} style={{ flex: 1, height: 4, borderRadius: 99, background: s <= step ? '#946420' : '#F5ECD7', transition: 'background 0.3s' }} />
             ))}
           </div>
 
@@ -346,7 +346,7 @@ export default function RegisterPage() {
 
           <p style={{ textAlign: 'center', marginTop: 24, fontSize: 13, color: '#8B6B3D' }}>
             Déjà un compte ?{' '}
-            <Link to="/login" style={{ color: '#C4531A', fontWeight: 600, textDecoration: 'none' }}>
+            <Link to="/login" style={{ color: '#946420', fontWeight: 600, textDecoration: 'none' }}>
               Se connecter
             </Link>
           </p>

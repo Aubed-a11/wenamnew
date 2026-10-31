@@ -184,7 +184,7 @@ export default function TransferStep({ order, token, event, timer, onSubmitted, 
       <input id="mz-ref" className="input" value={reference} onChange={(e) => setReference(e.target.value)} placeholder={t('transfer.referenceHint')} maxLength={80} />
 
       <label className="flex items-start gap-3 mt-4 cursor-pointer">
-        <input type="checkbox" checked={confirmed} onChange={(e) => setConfirmed(e.target.checked)} className="mt-1 w-4 h-4 accent-[#C4531A]" />
+        <input type="checkbox" checked={confirmed} onChange={(e) => setConfirmed(e.target.checked)} className="mt-1 w-4 h-4 accent-[#946420]" />
         <span className="text-sm text-text-medium">{t('transfer.confirm', { amount: fmtPrice(order.total) })}</span>
       </label>
 

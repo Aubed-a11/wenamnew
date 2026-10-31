@@ -50,7 +50,7 @@ export default function SettingsPage() {
   const inputStyle = { width: '100%', padding: '10px 12px', border: '1px solid #D4B896', borderRadius: 10, fontSize: 13, outline: 'none', boxSizing: 'border-box', fontFamily: 'Lato, sans-serif', background: '#fff' }
   const labelStyle = { fontSize: 11, fontWeight: 700, color: '#5C3D11', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 6, display: 'flex', alignItems: 'center', gap: 4 }
 
-  if (loading) return <div style={{ display:'flex', justifyContent:'center', padding:80 }}><span style={{ width:32, height:32, border:'4px solid rgba(196,83,26,0.2)', borderTopColor:'#C4531A', borderRadius:'50%', animation:'spin 0.8s linear infinite', display:'inline-block' }} /><style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style></div>
+  if (loading) return <div style={{ display:'flex', justifyContent:'center', padding:80 }}><span style={{ width:32, height:32, border:'4px solid rgba(148,100,32,0.2)', borderTopColor:'#946420', borderRadius:'50%', animation:'spin 0.8s linear infinite', display:'inline-block' }} /><style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style></div>
 
   return (
     <div style={{ fontFamily: 'Lato, sans-serif' }}>
@@ -61,9 +61,9 @@ export default function SettingsPage() {
 
         {/* Promo */}
         <motion.div initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }} style={{ background:'#fff', borderRadius:20, border:'1px solid #D4B896', overflow:'hidden' }}>
-          <div style={{ background:'rgba(196,83,26,0.05)', borderBottom:'1px solid #EDE0C4', padding:'16px 20px', display:'flex', alignItems:'center', gap:12, flexWrap:'wrap' }}>
-            <div style={{ width:40, height:40, borderRadius:12, background:'rgba(196,83,26,0.1)', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
-              <Percent size={18} color="#C4531A" />
+          <div style={{ background:'rgba(148,100,32,0.05)', borderBottom:'1px solid #EDE0C4', padding:'16px 20px', display:'flex', alignItems:'center', gap:12, flexWrap:'wrap' }}>
+            <div style={{ width:40, height:40, borderRadius:12, background:'rgba(148,100,32,0.1)', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+              <Percent size={18} color="#946420" />
             </div>
             <div style={{ flex:1, minWidth:0 }}>
               <h2 style={{ fontFamily:"'Playfair Display', serif", fontSize:17, fontWeight:600, color:'#1A0F00', margin:0 }}>Offre Spéciale</h2>
@@ -77,7 +77,7 @@ export default function SettingsPage() {
 
           <div style={{ padding:'20px' }}>
             {promo.active && (
-              <div style={{ background:'#C4531A', borderRadius:12, padding:'16px 20px', marginBottom:20 }}>
+              <div style={{ background:'#946420', borderRadius:12, padding:'16px 20px', marginBottom:20 }}>
                 <div className="promo-preview">
                   <div>
                     <p style={{ color:'rgba(255,255,255,0.6)', fontSize:11, margin:'0 0 4px' }}>Aperçu sur le site</p>
@@ -108,7 +108,7 @@ export default function SettingsPage() {
               <textarea value={promo.description} onChange={e => setPromo({ ...promo, description: e.target.value })} rows={2} style={{ ...inputStyle, resize:'none' }} />
             </div>
 
-            <button onClick={savePromo} disabled={saving} style={{ display:'flex', alignItems:'center', gap:8, background:'#C4531A', color:'#fff', border:'none', borderRadius:10, padding:'10px 20px', fontSize:13, fontWeight:700, cursor:'pointer' }}>
+            <button onClick={savePromo} disabled={saving} style={{ display:'flex', alignItems:'center', gap:8, background:'#946420', color:'#fff', border:'none', borderRadius:10, padding:'10px 20px', fontSize:13, fontWeight:700, cursor:'pointer' }}>
               {saving && <span style={{ width:14, height:14, border:'2px solid rgba(255,255,255,0.3)', borderTopColor:'#fff', borderRadius:'50%', animation:'spin 0.7s linear infinite', display:'inline-block' }} />}
               <Save size={14} /> {saving ? 'Sauvegarde...' : promo.active ? 'Activer et sauvegarder' : 'Sauvegarder'}
             </button>
@@ -146,7 +146,7 @@ export default function SettingsPage() {
               <label style={labelStyle}>Délai commande à l'avance (heures)</label>
               <input type="number" value={info.advanceHours} onChange={e => setInfo({ ...info, advanceHours: Number(e.target.value) })} style={{ ...inputStyle, maxWidth:140 }} />
             </div>
-            <button onClick={saveInfo} disabled={saving} style={{ display:'flex', alignItems:'center', gap:8, background:'#C4531A', color:'#fff', border:'none', borderRadius:10, padding:'10px 20px', fontSize:13, fontWeight:700, cursor:'pointer', width:'fit-content' }}>
+            <button onClick={saveInfo} disabled={saving} style={{ display:'flex', alignItems:'center', gap:8, background:'#946420', color:'#fff', border:'none', borderRadius:10, padding:'10px 20px', fontSize:13, fontWeight:700, cursor:'pointer', width:'fit-content' }}>
               <Save size={14} />Sauvegarder
             </button>
           </div>

@@ -6,7 +6,7 @@ import toast from 'react-hot-toast'
 
 const STATUS_FLOW = ['pending','confirmed','preparing','out_for_delivery','delivered']
 const S_LABEL = { pending:'En attente', confirmed:'Confirmée', preparing:'Préparation', out_for_delivery:'En route', delivered:'Livré', cancelled:'Annulée' }
-const S_COLOR = { pending:'#B7791F', confirmed:'#2563EB', preparing:'#C4531A', out_for_delivery:'#7C3AED', delivered:'#166534', cancelled:'#991B1B' }
+const S_COLOR = { pending:'#B7791F', confirmed:'#2563EB', preparing:'#946420', out_for_delivery:'#7C3AED', delivered:'#166534', cancelled:'#991B1B' }
 const S_BG    = { pending:'#FEFCE8', confirmed:'#EFF6FF', preparing:'#FFF7ED', out_for_delivery:'#F5F3FF', delivered:'#F0FDF4', cancelled:'#FEF2F2' }
 
 const css = `
@@ -98,7 +98,7 @@ export default function OrdersPage() {
                   <td style={{ padding:'13px 14px', color:'#5C3D11', maxWidth:120, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{o.user?.name||'—'}</td>
                   <td style={{ padding:'13px 14px', color:'#8B6B3D', whiteSpace:'nowrap' }}>{new Date(o.createdAt).toLocaleDateString('fr-FR')}</td>
                   <td style={{ padding:'13px 14px', textAlign:'center', color:'#5C3D11' }}>{o.items?.length||0}</td>
-                  <td style={{ padding:'13px 14px', fontWeight:700, color:'#C4531A', fontFamily:"'Playfair Display',serif", whiteSpace:'nowrap' }}>{o.total} MAD</td>
+                  <td style={{ padding:'13px 14px', fontWeight:700, color:'#946420', fontFamily:"'Playfair Display',serif", whiteSpace:'nowrap' }}>{o.total} MAD</td>
                   <td style={{ padding:'13px 14px' }}>
                     <span style={{ fontSize:11, fontWeight:700, padding:'3px 8px', borderRadius:20, background:S_BG[o.status]||'#f5f5f5', color:S_COLOR[o.status]||'#333', whiteSpace:'nowrap' }}>
                       {S_LABEL[o.status]||o.status}
@@ -106,9 +106,9 @@ export default function OrdersPage() {
                   </td>
                   <td style={{ padding:'13px 14px' }}>
                     <div style={{ display:'flex', gap:6, alignItems:'center', flexWrap:'nowrap' }}>
-                      <button onClick={() => setSelected(o)} style={{ background:'none', border:'1px solid #D4B896', borderRadius:6, cursor:'pointer', padding:'5px 8px', color:'#C4531A', display:'flex' }}><Eye size={13}/></button>
+                      <button onClick={() => setSelected(o)} style={{ background:'none', border:'1px solid #D4B896', borderRadius:6, cursor:'pointer', padding:'5px 8px', color:'#946420', display:'flex' }}><Eye size={13}/></button>
                       {nextStatus(o) && (
-                        <button onClick={() => advanceStatus(o)} style={{ background:'#C4531A', border:'none', borderRadius:6, cursor:'pointer', padding:'5px 8px', color:'#fff', fontSize:11, fontWeight:700, whiteSpace:'nowrap' }}>
+                        <button onClick={() => advanceStatus(o)} style={{ background:'#946420', border:'none', borderRadius:6, cursor:'pointer', padding:'5px 8px', color:'#fff', fontSize:11, fontWeight:700, whiteSpace:'nowrap' }}>
                           → {S_LABEL[nextStatus(o)]}
                         </button>
                       )}
@@ -133,7 +133,7 @@ export default function OrdersPage() {
               onClick={e => e.stopPropagation()}>
               <div style={{ position:'sticky', top:0, background:'#fff', borderBottom:'1px solid #EDE0C4', padding:'16px 20px', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
                 <div>
-                  <p style={{ fontFamily:"'Playfair Display',serif", fontSize:20, fontWeight:700, color:'#C4531A', margin:0 }}>{selected.orderNumber}</p>
+                  <p style={{ fontFamily:"'Playfair Display',serif", fontSize:20, fontWeight:700, color:'#946420', margin:0 }}>{selected.orderNumber}</p>
                   <p style={{ fontSize:12, color:'#8B6B3D', margin:0 }}>{new Date(selected.createdAt).toLocaleString('fr-FR')}</p>
                 </div>
                 <button onClick={() => setSelected(null)} style={{ background:'none', border:'none', cursor:'pointer', color:'#8B6B3D' }}><X size={20}/></button>
@@ -159,15 +159,15 @@ export default function OrdersPage() {
                         <p style={{ fontSize:13, fontWeight:600, color:'#1A0F00', margin:0, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{item.name}</p>
                         <p style={{ fontSize:12, color:'#8B6B3D', margin:0 }}>x{item.quantity}</p>
                       </div>
-                      <p style={{ fontWeight:700, color:'#C4531A', fontSize:13, margin:0, flexShrink:0 }}>{item.price*item.quantity} MAD</p>
+                      <p style={{ fontWeight:700, color:'#946420', fontSize:13, margin:0, flexShrink:0 }}>{item.price*item.quantity} MAD</p>
                     </div>
                   ))}
                   <div style={{ borderTop:'1px solid #EDE0C4', paddingTop:10, display:'flex', justifyContent:'space-between', fontWeight:700, fontSize:15 }}>
-                    <span>Total</span><span style={{ color:'#C4531A' }}>{selected.total} MAD</span>
+                    <span>Total</span><span style={{ color:'#946420' }}>{selected.total} MAD</span>
                   </div>
                 </div>
                 {nextStatus(selected) && (
-                  <button onClick={() => advanceStatus(selected)} style={{ width:'100%', padding:'13px', background:'#C4531A', color:'#fff', border:'none', borderRadius:10, fontSize:14, fontWeight:700, cursor:'pointer' }}>
+                  <button onClick={() => advanceStatus(selected)} style={{ width:'100%', padding:'13px', background:'#946420', color:'#fff', border:'none', borderRadius:10, fontSize:14, fontWeight:700, cursor:'pointer' }}>
                     Passer à : {S_LABEL[nextStatus(selected)]}
                   </button>
                 )}

@@ -21,14 +21,14 @@ const css = `
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
   @keyframes spin{to{transform:rotate(360deg)}}
   .tab-btn { padding: 7px 14px; border-radius: 20px; border: 1px solid #D4B896; background: none; cursor: pointer; font-size: 12px; font-weight: 700; color: #8B6B3D; transition: all 0.2s; white-space: nowrap; }
-  .tab-btn.active { background: #C4531A; color: #fff; border-color: #C4531A; }
+  .tab-btn.active { background: #946420; color: #fff; border-color: #946420; }
   .tab-btn:hover:not(.active) { background: #F5ECD7; }
   .upload-zone { border: 2px dashed #D4B896; border-radius: 12px; padding: 28px 16px; text-align: center; cursor: pointer; transition: all 0.2s; background: #FDF8F2; }
-  .upload-zone:hover, .upload-zone.drag { border-color: #C4531A; background: rgba(196,83,26,0.04); }
+  .upload-zone:hover, .upload-zone.drag { border-color: #946420; background: rgba(148,100,32,0.04); }
   .method-tab { flex: 1; padding: 9px; border: 1px solid #D4B896; background: none; cursor: pointer; font-size: 12px; font-weight: 700; color: #8B6B3D; transition: all 0.2s; }
   .method-tab:first-child { border-radius: 8px 0 0 8px; border-right: none; }
   .method-tab:last-child { border-radius: 0 8px 8px 0; }
-  .method-tab.active { background: #C4531A; color: #fff; border-color: #C4531A; }
+  .method-tab.active { background: #946420; color: #fff; border-color: #946420; }
 `
 
 export default function GalleryPage() {
@@ -113,7 +113,7 @@ export default function GalleryPage() {
           <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(18px,4vw,22px)', fontWeight: 700, color: '#1A0F00', margin: '0 0 2px' }}>Galerie Photos</h1>
           <p style={{ fontSize: 12, color: '#8B6B3D', margin: 0 }}>{items.length} photo{items.length !== 1 ? 's' : ''} au total</p>
         </div>
-        <button onClick={() => setModal(true)} style={{ display: 'flex', alignItems: 'center', gap: 8, background: '#C4531A', color: '#fff', border: 'none', borderRadius: 10, padding: '9px 16px', cursor: 'pointer', fontSize: 13, fontWeight: 700 }}>
+        <button onClick={() => setModal(true)} style={{ display: 'flex', alignItems: 'center', gap: 8, background: '#946420', color: '#fff', border: 'none', borderRadius: 10, padding: '9px 16px', cursor: 'pointer', fontSize: 13, fontWeight: 700 }}>
           <Plus size={15} /> Ajouter une photo
         </button>
       </div>
@@ -135,7 +135,7 @@ export default function GalleryPage() {
         <div style={{ background: 'linear-gradient(135deg,#0D0700,#2A1200)', borderRadius: 12, padding: '12px 16px', marginBottom: 20, display: 'flex', alignItems: 'center', gap: 12 }}>
           <span style={{ fontSize: 20 }}>🎉</span>
           <div>
-            <p style={{ color: '#E8763A', fontSize: 12, fontWeight: 700, margin: '0 0 2px', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Section Festi AECAM 2026</p>
+            <p style={{ color: '#D9A84E', fontSize: 12, fontWeight: 700, margin: '0 0 2px', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Section Festi AECAM 2026</p>
             <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: 12, margin: 0 }}>
               {catCounts['aecam']} photo{catCounts['aecam'] !== 1 ? 's' : ''} — Ces photos apparaissent dans la section "2 ans de Wênam" sur la page d'accueil
             </p>
@@ -155,7 +155,7 @@ export default function GalleryPage() {
             {filterCat === 'aecam' ? 'Aucune photo AECAM — ajoute des photos pour alimenter la section homepage' : 'Aucune photo dans cette catégorie'}
           </p>
           <button onClick={() => { setForm(f => ({ ...f, category: filterCat === 'all' ? 'aecam' : filterCat })); setModal(true) }}
-            style={{ background: '#C4531A', color: '#fff', border: 'none', borderRadius: 8, padding: '10px 20px', cursor: 'pointer', fontSize: 13, fontWeight: 700 }}>
+            style={{ background: '#946420', color: '#fff', border: 'none', borderRadius: 8, padding: '10px 20px', cursor: 'pointer', fontSize: 13, fontWeight: 700 }}>
             Ajouter une photo
           </button>
         </div>
@@ -163,11 +163,11 @@ export default function GalleryPage() {
         <div className="gallery-grid">
           {filtered.map(item => (
             <motion.div key={item._id} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
-              style={{ position: 'relative', aspectRatio: '1', borderRadius: 12, overflow: 'hidden', border: item.category === 'aecam' ? '2px solid rgba(196,83,26,0.5)' : '1px solid #D4B896' }}>
+              style={{ position: 'relative', aspectRatio: '1', borderRadius: 12, overflow: 'hidden', border: item.category === 'aecam' ? '2px solid rgba(148,100,32,0.5)' : '1px solid #D4B896' }}>
               <img src={item.image} alt={item.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                 onError={e => e.target.src = 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=300'} />
               {item.category === 'aecam' && (
-                <span style={{ position: 'absolute', top: 6, right: 6, background: '#C4531A', color: '#fff', fontSize: 9, fontWeight: 700, padding: '2px 7px', borderRadius: 10, letterSpacing: '0.08em' }}>AECAM</span>
+                <span style={{ position: 'absolute', top: 6, right: 6, background: '#946420', color: '#fff', fontSize: 9, fontWeight: 700, padding: '2px 7px', borderRadius: 10, letterSpacing: '0.08em' }}>AECAM</span>
               )}
               <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0)', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: 8, transition: 'background 0.2s' }}
                 onMouseEnter={e => e.currentTarget.style.background = 'rgba(0,0,0,0.55)'}
@@ -202,7 +202,7 @@ export default function GalleryPage() {
                   {CATS.map(c => <option key={c} value={c}>{CAT_LABELS[c]}</option>)}
                 </select>
                 {form.category === 'aecam' && (
-                  <p style={{ fontSize: 11, color: '#C4531A', marginTop: 5, fontWeight: 600 }}>
+                  <p style={{ fontSize: 11, color: '#946420', marginTop: 5, fontWeight: 600 }}>
                     ✓ Cette photo apparaîtra dans "2 ans de Wênam & Festi AECAM 2026" sur la page d'accueil
                   </p>
                 )}
@@ -249,7 +249,7 @@ export default function GalleryPage() {
                       </div>
                     ) : (
                       <>
-                        <Upload size={28} style={{ color: '#C4531A', marginBottom: 8 }} />
+                        <Upload size={28} style={{ color: '#946420', marginBottom: 8 }} />
                         <p style={{ fontSize: 13, color: '#5C3D11', fontWeight: 600, margin: '0 0 4px' }}>Clique ou glisse une image ici</p>
                         <p style={{ fontSize: 11, color: '#8B6B3D', margin: 0 }}>JPG, PNG, WEBP — max 5 Mo</p>
                       </>
@@ -267,7 +267,7 @@ export default function GalleryPage() {
                   Annuler
                 </button>
                 <button onClick={add} disabled={uploading}
-                  style={{ flex: 2, padding: 10, border: 'none', borderRadius: 8, background: uploading ? '#E8A882' : '#C4531A', color: '#fff', cursor: uploading ? 'default' : 'pointer', fontSize: 13, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
+                  style={{ flex: 2, padding: 10, border: 'none', borderRadius: 8, background: uploading ? '#E8A882' : '#946420', color: '#fff', cursor: uploading ? 'default' : 'pointer', fontSize: 13, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
                   {uploading ? (
                     <><span style={{ width: 14, height: 14, border: '2px solid rgba(255,255,255,0.3)', borderTopColor: '#fff', borderRadius: '50%', animation: 'spin 0.8s linear infinite', display: 'inline-block' }} /> Ajout en cours...</>
                   ) : (

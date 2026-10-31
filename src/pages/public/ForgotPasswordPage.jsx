@@ -73,7 +73,7 @@ export default function ForgotPasswordPage() {
               <button
                 type="submit"
                 disabled={loading}
-                style={{ width: '100%', padding: '12px', background: loading ? '#D4B896' : '#C4531A', color: '#fff', border: 'none', borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: loading ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, transition: 'background 0.2s' }}
+                style={{ width: '100%', padding: '12px', background: loading ? '#D4B896' : '#946420', color: '#fff', border: 'none', borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: loading ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, transition: 'background 0.2s' }}
               >
                 {loading && <span style={{ width: 14, height: 14, border: '2px solid rgba(255,255,255,0.3)', borderTopColor: '#fff', borderRadius: '50%', animation: 'spin 0.8s linear infinite', display: 'inline-block' }} />}
                 {loading ? 'Envoi...' : 'Envoyer le code'}
@@ -82,17 +82,17 @@ export default function ForgotPasswordPage() {
           </div>
         ) : (
           <div style={{ background: '#fff', borderRadius: 16, border: '1px solid #D4B896', padding: '28px 24px', textAlign: 'center' }}>
-            <div style={{ width: 60, height: 60, background: 'rgba(196,83,26,0.1)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
-              <Mail size={26} color="#C4531A" />
+            <div style={{ width: 60, height: 60, background: 'rgba(148,100,32,0.1)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
+              <Mail size={26} color="#946420" />
             </div>
             <p style={{ fontSize: 15, color: '#1A0F00', fontWeight: 600, margin: '0 0 8px' }}>Code envoyé à</p>
-            <p style={{ fontSize: 14, color: '#C4531A', fontWeight: 700, margin: '0 0 20px' }}>{email}</p>
+            <p style={{ fontSize: 14, color: '#946420', fontWeight: 700, margin: '0 0 20px' }}>{email}</p>
             <p style={{ fontSize: 13, color: '#8B6B3D', margin: '0 0 24px' }}>
               Vérifiez votre boîte mail (et vos spams). Le code expire dans <strong>1 heure</strong>.
             </p>
             <button
               onClick={() => navigate(`/reset-password?email=${encodeURIComponent(email)}`)}
-              style={{ width: '100%', padding: '12px', background: '#C4531A', color: '#fff', border: 'none', borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: 'pointer' }}
+              style={{ width: '100%', padding: '12px', background: '#946420', color: '#fff', border: 'none', borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: 'pointer' }}
             >
               Entrer mon code
             </button>
@@ -100,7 +100,7 @@ export default function ForgotPasswordPage() {
         )}
 
         <p style={{ textAlign: 'center', marginTop: 20, fontSize: 13, color: '#8B6B3D' }}>
-          <Link to="/login" style={{ color: '#C4531A', fontWeight: 600, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+          <Link to="/login" style={{ color: '#946420', fontWeight: 600, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
             <ArrowLeft size={13} /> Retour à la connexion
           </Link>
         </p>

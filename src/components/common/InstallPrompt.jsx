@@ -103,7 +103,7 @@ export default function InstallPrompt() {
         /* Bouton Android/Chrome */
         <div style={{ padding: '0 14px 14px', display: 'flex', gap: 8 }}>
           <button onClick={handleInstall} style={{
-            flex: 1, background: '#C4531A', color: '#fff', border: 'none',
+            flex: 1, background: '#946420', color: '#fff', border: 'none',
             borderRadius: 12, padding: '11px', fontSize: 14, fontWeight: 700, cursor: 'pointer',
           }}>
             Installer l'application

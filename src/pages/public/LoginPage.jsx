@@ -35,7 +35,7 @@ export default function LoginPage() {
           100% { background-position: 0% 50%; }
         }
         .gold-panel {
-          background: linear-gradient(135deg, #3D1A00, #8B3A0F, #C4531A, #E8763A, #F59E0B, #C4531A, #8B3A0F, #3D1A00);
+          background: linear-gradient(135deg, #3D1A00, #3B2410, #946420, #D9A84E, #F59E0B, #946420, #3B2410, #3D1A00);
           background-size: 400% 400%;
           animation: goldFlow 8s ease infinite;
         }
@@ -99,7 +99,7 @@ export default function LoginPage() {
                 <label style={{ display: 'block', fontSize: 11, fontWeight: 600, color: '#8B6B3D', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                   Mot de passe
                 </label>
-                <Link to="/forgot-password" style={{ fontSize: 11, color: '#C4531A', fontWeight: 600, textDecoration: 'none' }}>
+                <Link to="/forgot-password" style={{ fontSize: 11, color: '#946420', fontWeight: 600, textDecoration: 'none' }}>
                   Mot de passe oublié ?
                 </Link>
               </div>
@@ -139,7 +139,7 @@ export default function LoginPage() {
 
           <p style={{ textAlign: 'center', marginTop: 24, fontSize: 13, color: '#8B6B3D' }}>
             Pas encore de compte ?{' '}
-            <Link to="/register" style={{ color: '#C4531A', fontWeight: 600, textDecoration: 'none' }}>
+            <Link to="/register" style={{ color: '#946420', fontWeight: 600, textDecoration: 'none' }}>
               S'inscrire
             </Link>
           </p>
