@@ -21,7 +21,7 @@ function TicketBack({ event }) {
     <section className="rounded-[18px] overflow-hidden border border-border bg-cream grid md:grid-cols-[30%_1fr] shadow-card">
       <div className="bg-primary-dark text-cream p-5 flex md:flex-col items-center md:items-start gap-3">
         <div>
-          <MzLogo height={84} variant="light" />
+          <MzLogo height={46} variant="light" />
           <p className="font-script text-lg mt-3">{t('mz.thanks')}</p>
           <p className="text-xs text-cream/80 mt-1 leading-relaxed hidden md:block">{t('mz.thanksText')}</p>
         </div>

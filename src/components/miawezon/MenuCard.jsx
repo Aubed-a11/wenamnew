@@ -75,7 +75,7 @@ export default function MenuCard({ tier, menu, cat, info }) {
         style={{ left: pct(p.x + p.padX, L.width), top: pct(p.y + p.padY, L.height), width: pct(p.w - 2 * p.padX, L.width), height: pct(p.h - 2 * p.padY, L.height) }}
       >
         <div ref={inner} className="text-center" style={{ '--s': 1 }}>
-          <img src={LOGOS[L.logo] || LOGOS.dark} alt="MIAWÉZON by Wênam" className="mx-auto block" style={{ height: fs(150), width: 'auto', maxWidth: 'none' }} />
+          <img src={LOGOS[L.logo] || LOGOS.dark} alt="MIAWÉZON by Wênam" className="mx-auto block" style={{ height: fs(84), width: 'auto', maxWidth: 'none' }} />
           <p style={{ marginTop: fs(16), fontFamily: SANS, fontWeight: 700, fontSize: fs(15), letterSpacing: fs(6), color: th.muted, lineHeight: 1.2 }}>{t('menu.menuOf').toUpperCase()}</p>
           <p style={{ marginTop: fs(6), fontFamily: DISPLAY, fontWeight: 700, fontSize: fs(74), letterSpacing: fs(3), color: th.title, lineHeight: 1.15 }}>{tier}</p>
           {catLine && <p style={{ marginTop: fs(8), fontFamily: SANS, fontWeight: 600, fontSize: fs(16), color: th.text, lineHeight: 1.3, whiteSpace: 'pre' }}>{catLine}</p>}

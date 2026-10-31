@@ -10,7 +10,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
         <div>
           {isMz ? (
-            <img src="/images/miawezon/logo-light.png" alt="MIAWÉZON by Wênam" className="h-24 w-auto object-contain mb-3" />
+            <img src="/images/miawezon/logo-light.png" alt="MIAWÉZON by Wênam" className="h-12 w-auto object-contain mb-3" />
           ) : (
             <div className="flex items-center gap-2 mb-1">
               <img src="/images/wenam-logo.png" alt="Wênam" style={{ width: 36, height: 36, objectFit: 'contain', mixBlendMode: 'screen' }} />
