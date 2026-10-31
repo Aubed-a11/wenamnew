@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { CheckCircle2, ChevronLeft, Download, Loader2, Printer, RefreshCw, Search } from 'lucide-react'
+import { CheckCircle2, ChevronLeft, Download, Loader2, LogOut, Printer, RefreshCw, Search } from 'lucide-react'
 import toast from 'react-hot-toast'
 import api from '../../../api/axios'
 
@@ -32,6 +32,7 @@ export default function ParticipantsPage() {
       && (!n || [t.holderName, t.number, t.orderNumber, t.buyerName, t.buyerPhone].some((v) => norm(v).includes(n))))
   }, [tickets, q, cat])
   const used = tickets.filter((t) => t.status === 'used').length
+  const inside = tickets.filter((t) => t.status === 'used' && !t.outAt).length
   const byCat = cats.map((c) => ({ c, n: tickets.filter((t) => t.categoryCode === c).length }))
 
   const exportCsv = async () => {
@@ -79,7 +80,7 @@ export default function ParticipantsPage() {
         <div>
           <h2 className="font-display text-2xl font-bold text-text-dark">Liste des participants</h2>
           <p className="text-sm text-text-light mt-1">
-            {tickets.length} billet(s) payé(s){byCat.length ? ` · ${byCat.map((x) => `${x.c} ${x.n}`).join(' · ')}` : ''} · {used} entrée(s)
+            {tickets.length} billet(s) payé(s){byCat.length ? ` · ${byCat.map((x) => `${x.c} ${x.n}`).join(' · ')}` : ''} · {used} entrée(s) · {inside} présent(s)
             {data?.generatedAt ? <span className="hidden print:inline"> · liste du {fmt(data.generatedAt)}</span> : null}
           </p>
         </div>
@@ -125,8 +126,10 @@ export default function ParticipantsPage() {
                   <td className="px-3 py-2 font-mono text-xs">{t.orderNumber}</td>
                   <td className="px-3 py-2 whitespace-nowrap">{t.buyerPhone}</td>
                   <td className="px-3 py-2 whitespace-nowrap">
-                    {t.status === 'used'
-                      ? <span className="inline-flex items-center gap-1 text-green-700 font-semibold"><CheckCircle2 size={14} /> {fmt(t.checkedInAt)}</span>
+                    {t.status === 'used' && t.outAt
+                      ? <span className="inline-flex items-center gap-1 text-sky-700 font-semibold"><LogOut size={14} /> Sorti {fmt(t.outAt)}</span>
+                      : t.status === 'used'
+                      ? <span className="inline-flex items-center gap-1 text-green-700 font-semibold"><CheckCircle2 size={14} /> {fmt(t.checkedInAt)}{t.reentries ? ` · ${t.reentries} retour(s)` : ''}</span>
                       : <span className="inline-block w-5 h-5 rounded border border-text-light align-middle" aria-label="À cocher" />}
                   </td>
                 </tr>

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { AlertTriangle, Camera, CameraOff, CheckCircle2, ChevronLeft, CloudOff, Download, Keyboard, Loader2, RefreshCw, Wifi, XCircle } from 'lucide-react'
+import { AlertTriangle, Camera, CameraOff, CheckCircle2, ChevronLeft, CloudOff, Download, Keyboard, Loader2, LogIn, LogOut, RefreshCw, Wifi, XCircle } from 'lucide-react'
 import toast from 'react-hot-toast'
 import api from '../../../api/axios'
 
@@ -10,6 +10,11 @@ const RESULT = {
   cancelled: { label: 'Billet annulé', sub: 'Entrée refusée', cls: 'bg-red-600', icon: XCircle },
   invalid: { label: 'Billet invalide', sub: 'QR code inconnu', cls: 'bg-red-600', icon: XCircle },
   error: { label: 'Erreur', sub: 'Vérifiez la connexion internet', cls: 'bg-stone-600', icon: AlertTriangle },
+  reentry: { label: 'Retour autorisé', sub: 'Sortie enregistrée, la personne peut revenir', cls: 'bg-green-600', icon: LogIn },
+  reentry_forced: { label: 'Retour autorisé', sub: 'Autorisé par le contrôleur', cls: 'bg-green-700', icon: LogIn },
+  exit_ok: { label: 'Sortie enregistrée', sub: 'Le billet pourra être scanné au retour', cls: 'bg-sky-700', icon: LogOut },
+  not_entered: { label: 'Pas encore entré', sub: 'Ce billet n\'a pas été scanné à l\'entrée', cls: 'bg-amber-500', icon: AlertTriangle },
+  already_out: { label: 'Déjà sorti', sub: 'Sortie déjà enregistrée', cls: 'bg-amber-500', icon: AlertTriangle },
 }
 
 // ─── Mode hors ligne ─────────────────────────────────────────────────────────
@@ -32,7 +37,11 @@ const isNetworkError = (e) => !e?.response
 const fmtTime = (d) => (d ? new Date(d).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }) : '')
 
 export default function CheckinPage() {
-  const [counts, setCounts] = useState({ total: 0, checkedIn: 0 })
+  const [counts, setCounts] = useState({ total: 0, checkedIn: 0, inside: 0 })
+  const [mode, setMode] = useState('in') // in : entree, out : sortie
+  const modeRef = useRef('in')
+  const lastCode = useRef('')
+  const switchMode = (m) => { setMode(m); modeRef.current = m; setResult(null) }
   const [result, setResult] = useState(null)
   const [camera, setCamera] = useState('off') // off | starting | on | error
   const [camError, setCamError] = useState('')
@@ -71,9 +80,9 @@ export default function CheckinPage() {
     const left = []
     for (const it of items) {
       try {
-        const { data } = await api.post('/miawezon/admin/checkin', { code: it.code, offlineAt: it.at }, { timeout: 10000 })
-        if (data.result === 'already_used') conflicts += 1
-        setCounts({ total: data.total, checkedIn: data.checkedIn })
+        const { data } = await api.post('/miawezon/admin/checkin', { code: it.code, offlineAt: it.at, mode: it.mode || 'in', force: !!it.force }, { timeout: 10000 })
+        if (data.result === 'already_used' || data.result === 'already_out') conflicts += 1
+        setCounts({ total: data.total, checkedIn: data.checkedIn, inside: data.inside })
       } catch (e) {
         if (isNetworkError(e)) left.push(it)
       }
@@ -98,48 +107,62 @@ export default function CheckinPage() {
   }, [downloadList, sync])
 
   // Controle sur la liste locale quand le serveur est injoignable
-  const checkOffline = (text) => {
+  const checkOffline = (text, m, force) => {
     const list = read(LIST_KEY, null)
     if (!list) return { result: 'error', ticket: null, offline: true }
     const code = parseCode(text)
     const t = list.tickets.find((x) => x.code === code || x.number === code)
     if (!t) return { result: 'invalid', ticket: null, offline: true }
     const ticket = { number: t.number, holderName: t.holderName, categoryCode: t.categoryCode, categoryName: t.categoryName, checkedInAt: t.checkedInAt }
-    if (t.status === 'used') return { result: 'already_used', ticket, offline: true }
     const at = new Date().toISOString()
-    t.status = 'used'
-    t.checkedInAt = at
+    let result
+    if (m === 'out') {
+      if (t.status !== 'used') return { result: 'not_entered', ticket, offline: true, mode: m }
+      if (t.outAt) return { result: 'already_out', ticket, offline: true, mode: m }
+      t.outAt = at; result = 'exit_ok'
+    } else if (t.status !== 'used') {
+      t.status = 'used'; t.checkedInAt = at; t.outAt = null; result = 'valid'
+    } else if (t.outAt || force) {
+      t.outAt = null; result = force ? 'reentry_forced' : 'reentry'
+    } else {
+      return { result: 'already_used', ticket, offline: true, mode: m }
+    }
     write(LIST_KEY, list)
     setOffline({ ...list })
-    const q = [...read(QUEUE_KEY, []), { code: t.code, at }]
+    const q = [...read(QUEUE_KEY, []), { code: t.code, at, mode: m, force: !!force }]
     write(QUEUE_KEY, q)
     setQueue(q)
-    return { result: 'valid', ticket: { ...ticket, checkedInAt: at }, offline: true }
+    return { result, ticket: { ...ticket, checkedInAt: t.checkedInAt }, offline: true, mode: m }
   }
 
-  const check = useCallback(async (code) => {
+  const check = useCallback(async (code, { force = false } = {}) => {
     if (processing.current) return
     processing.current = true
+    lastCode.current = code
     setBusy(true)
     try {
       let data
       try {
-        const res = await api.post('/miawezon/admin/checkin', { code }, { timeout: 6000 })
+        const m = modeRef.current
+        const res = await api.post('/miawezon/admin/checkin', { code, mode: m, force }, { timeout: 6000 })
         data = res.data
-        setCounts({ total: data.total, checkedIn: data.checkedIn })
+        setCounts({ total: data.total, checkedIn: data.checkedIn, inside: data.inside })
         setOnline(true)
         // garde la liste locale a jour
         const list = read(LIST_KEY, null)
         const t = list?.tickets.find((x) => x.number === data.ticket?.number)
-        if (t && data.result === 'valid') { t.status = 'used'; t.checkedInAt = new Date().toISOString(); write(LIST_KEY, list) }
+        if (t && ['valid', 'reentry', 'reentry_forced', 'exit_ok'].includes(data.result)) {
+          t.status = 'used'; t.checkedInAt = t.checkedInAt || new Date().toISOString(); t.outAt = data.result === 'exit_ok' ? new Date().toISOString() : null
+          write(LIST_KEY, list)
+        }
       } catch (e) {
         if (!isNetworkError(e)) throw e
         setOnline(false)
-        data = checkOffline(code)
+        data = checkOffline(code, modeRef.current, force)
       }
       setResult(data)
       setHistory((h) => [{ at: new Date(), ...data }, ...h].slice(0, 8))
-      try { navigator.vibrate?.(data.result === 'valid' ? 120 : [80, 60, 80]) } catch { /* non supporte */ }
+      try { navigator.vibrate?.(['valid', 'reentry', 'reentry_forced', 'exit_ok'].includes(data.result) ? 120 : [80, 60, 80]) } catch { /* non supporte */ }
     } catch (e) {
       setResult({ result: e?.response?.data?.result || 'error', ticket: null })
     } finally {
@@ -191,12 +214,22 @@ export default function CheckinPage() {
       <div className="flex items-center justify-between mb-4">
         <Link to="/admin/miawezon" className="inline-flex items-center gap-1 text-sm text-text-light hover:text-primary"><ChevronLeft size={16} /> MIAWÉZON</Link>
         <div className="rounded-xl bg-mz-night text-white px-4 py-2 text-right">
-          <p className="text-[10px] uppercase tracking-wider text-mz-gold-light/70">Compteur d'entrées</p>
-          <p className="font-display text-xl font-bold text-mz-gold leading-tight">{counts.checkedIn} / {counts.total}</p>
+          <p className="text-[10px] uppercase tracking-wider text-mz-gold-light/70">Présents · Entrés</p>
+          <p className="font-display text-xl font-bold text-mz-gold leading-tight">{counts.inside ?? counts.checkedIn} · {counts.checkedIn} / {counts.total}</p>
         </div>
       </div>
 
       <h2 className="font-display text-2xl font-bold text-text-dark mb-3">Contrôle du jour J</h2>
+
+      <div className="mb-3 grid grid-cols-2 gap-2 rounded-xl bg-white border border-cream-warm p-1.5" role="tablist" aria-label="Type de contrôle">
+        {[['in', 'Entrée', LogIn], ['out', 'Sortie', LogOut]].map(([m, label, I]) => (
+          <button key={m} type="button" role="tab" aria-selected={mode === m} onClick={() => switchMode(m)}
+            className={`rounded-lg py-2.5 text-sm font-semibold inline-flex items-center justify-center gap-2 transition ${mode === m ? (m === 'in' ? 'bg-green-600 text-white' : 'bg-sky-700 text-white') : 'text-text-medium hover:bg-cream'}`}>
+            <I size={16} /> {label}
+          </button>
+        ))}
+      </div>
+      {mode === 'out' && <p className="mb-3 text-xs text-text-medium">Mode sortie : scannez le billet de la personne qui sort. À son retour, repassez en mode Entrée : le billet sera accepté une nouvelle fois.</p>}
 
       {/* Etat du mode hors ligne */}
       <div className={`mb-3 rounded-xl border px-3 py-2.5 text-xs flex items-center gap-2 ${online ? 'bg-white border-cream-warm text-text-medium' : 'bg-amber-50 border-amber-300 text-amber-900'}`}>
@@ -243,6 +276,14 @@ export default function CheckinPage() {
               </div>
             </div>
           </button>
+        )}
+        {result?.result === 'already_used' && mode === 'in' && result.ticket && (
+          <div className="absolute inset-x-3 top-3 rounded-xl bg-white/95 p-3 shadow-hover text-sm">
+            <p className="text-text-dark">Sortie non scannée. Vérifiez que c'est bien <strong>{result.ticket.holderName}</strong> (pièce d'identité) avant d'autoriser son retour.</p>
+            <button type="button" onClick={() => check(lastCode.current, { force: true })} disabled={busy} className="mt-2 w-full rounded-lg bg-green-600 text-white py-2 font-semibold inline-flex items-center justify-center gap-2 disabled:opacity-60">
+              <LogIn size={15} /> Autoriser le retour
+            </button>
+          </div>
         )}
         {busy && <div className="absolute top-3 right-3"><Loader2 className="animate-spin text-white" /></div>}
       </div>
