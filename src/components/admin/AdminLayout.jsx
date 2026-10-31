@@ -130,8 +130,8 @@ export default function AdminLayout() {
                   style={{
                     display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px', borderRadius: 10,
                     marginBottom: 2, textDecoration: 'none', transition: 'all 0.15s',
-                    background: active ? 'rgba(148,100,32,0.2)' : 'transparent',
-                    color: active ? '#D9A84E' : 'rgba(255,255,255,0.6)',
+                    background: active ? 'rgba(196,83,26,0.2)' : 'transparent',
+                    color: active ? '#E8763A' : 'rgba(255,255,255,0.6)',
                   }}>
                   <Icon size={16} />
                   <span style={{ fontSize: 13, fontWeight: active ? 700 : 500 }}>{label}</span>
@@ -147,7 +147,7 @@ export default function AdminLayout() {
           {/* User + logout */}
           <div style={{ padding: '14px 10px', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 12px', marginBottom: 4 }}>
-              <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'rgba(148,100,32,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#D9A84E', fontWeight: 700, fontSize: 13, flexShrink: 0 }}>
+              <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'rgba(196,83,26,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#E8763A', fontWeight: 700, fontSize: 13, flexShrink: 0 }}>
                 {user?.name?.[0]}
               </div>
               <div style={{ minWidth: 0 }}>
@@ -170,11 +170,11 @@ export default function AdminLayout() {
             </button>
             <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 16, fontWeight: 700, color: '#1A0F00', margin: 0, flex: 1 }}>{currentPage}</h1>
             <a href="/" target="_blank" rel="noopener noreferrer"
-              style={{ display:'flex', alignItems:'center', gap:6, background:'#946420', color:'#fff', padding:'7px 14px', borderRadius:8, textDecoration:'none', fontWeight:700, fontSize:12, fontFamily:'Lato,sans-serif', flexShrink:0 }}>
+              style={{ display:'flex', alignItems:'center', gap:6, background:'#C4531A', color:'#fff', padding:'7px 14px', borderRadius:8, textDecoration:'none', fontWeight:700, fontSize:12, fontFamily:'Lato,sans-serif', flexShrink:0 }}>
               <ExternalLink size={13} />
               Voir le site
             </a>
-            <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'rgba(148,100,32,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#946420', fontWeight: 700, fontSize: 13, flexShrink:0 }}>
+            <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'rgba(196,83,26,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#C4531A', fontWeight: 700, fontSize: 13, flexShrink:0 }}>
               {user?.name?.[0]}
             </div>
           </div>

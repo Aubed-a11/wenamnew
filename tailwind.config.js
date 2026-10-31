@@ -4,16 +4,14 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Couleurs des logos Wenam et MIAWEZON : or bronze, or clair, espresso
-        primary: { DEFAULT: '#946420', light: '#D9A84E', dark: '#3B2410' },
-        gold: { DEFAULT: '#D9A84E', light: '#F2D28B', deep: '#946420' },
+        primary: { DEFAULT: '#C4531A', light: '#E8763A', dark: '#8B3A0F' },
         secondary: '#2C4A35',
         cream: { DEFAULT: '#FAF3E8', dark: '#F5ECD7', warm: '#EDE0C4' },
         text: { dark: '#1A0F00', medium: '#5C3D11', light: '#8B6B3D' },
         border: '#D4B896',
-        sidebar: '#3B2410',
-        // Palette MIAWEZON : or du logo, espresso et ivoire
-        mz: { night: '#1C120A', brown: '#3B2410', gold: '#E4B566', 'gold-light': '#F2D28B', ivory: '#FAF5EC' },
+        sidebar: '#8B3A0F',
+        // Palette MIAWEZON alignee sur la charte Wenam (brun, orange, creme)
+        mz: { night: '#8B3A0F', brown: '#6B2C0B', gold: '#FAF3E8', 'gold-light': '#EDE0C4', ivory: '#FAF3E8' },
       },
       fontFamily: {
         display: ['Playfair Display', 'serif'],
@@ -21,9 +19,9 @@ export default {
         script: ['Dancing Script', 'cursive'],
       },
       boxShadow: {
-        card: '0 2px 12px rgba(59,36,16,0.12)',
-        hover: '0 8px 24px rgba(59,36,16,0.18)',
-        btn: '0 4px 12px rgba(148,100,32,0.3)',
+        card: '0 2px 12px rgba(139,58,15,0.12)',
+        hover: '0 8px 24px rgba(139,58,15,0.18)',
+        btn: '0 4px 12px rgba(196,83,26,0.3)',
       },
     },
   },

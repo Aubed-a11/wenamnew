@@ -107,7 +107,7 @@ const css = `
   .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
   .hero-h1 { font-size: 52px; }
   .promo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
-  .hero-video-wrap { width: 100%; max-width: 340px; border-radius: 20px; overflow: hidden; border: 4px solid #EDE0C4; box-shadow: 0 8px 32px rgba(59,36,16,0.15); aspect-ratio: 9/16; position: relative; }
+  .hero-video-wrap { width: 100%; max-width: 340px; border-radius: 20px; overflow: hidden; border: 4px solid #EDE0C4; box-shadow: 0 8px 32px rgba(139,58,15,0.15); aspect-ratio: 9/16; position: relative; }
   @media (max-width: 768px) {
     .hero-grid { grid-template-columns: 1fr; gap: 28px; }
     .hero-h1 { font-size: clamp(28px, 7vw, 42px); }
@@ -142,7 +142,7 @@ export default function HomePage() {
       <Navbar />
 
       {/* INFO BAR */}
-      <div style={{ background: '#3B2410', color: '#fff', fontSize: 12, padding: '8px 16px' }}>
+      <div style={{ background: '#8B3A0F', color: '#fff', fontSize: 12, padding: '8px 16px' }}>
         <div style={{ maxWidth: 1280, margin: '0 auto', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center', gap: '6px 24px' }}>
           <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}><Clock size={11} /> Ouvert 09h · Livraisons jusqu'à 20h</span>
           <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}><MapPin size={11} /> Avenue Al Majd 2, Rabat</span>
@@ -156,22 +156,22 @@ export default function HomePage() {
 
       {/* HERO */}
       <section style={{ background: '#FAF3E8', minHeight: 580, display: 'flex', alignItems: 'center', overflow: 'hidden', position: 'relative' }}>
-        <div style={{ position: 'absolute', top: 40, left: 40, width: 120, height: 120, borderRadius: '50%', background: 'rgba(148,100,32,0.05)' }} />
-        <div style={{ position: 'absolute', bottom: 40, right: '30%', width: 180, height: 180, borderRadius: '50%', background: 'rgba(148,100,32,0.04)' }} />
+        <div style={{ position: 'absolute', top: 40, left: 40, width: 120, height: 120, borderRadius: '50%', background: 'rgba(196,83,26,0.05)' }} />
+        <div style={{ position: 'absolute', bottom: 40, right: '30%', width: 180, height: 180, borderRadius: '50%', background: 'rgba(196,83,26,0.04)' }} />
         <div style={{ maxWidth: 1280, margin: '0 auto', padding: '48px 20px', width: '100%' }}>
           <div className="hero-grid">
             <motion.div variants={fadeUp} initial="hidden" animate="show" transition={{ duration: 0.6 }}>
-              <p style={{ color: '#946420', fontWeight: 700, fontSize: 13, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 12 }}>Bienvenue à Wênam</p>
+              <p style={{ color: '#C4531A', fontWeight: 700, fontSize: 13, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 12 }}>Bienvenue à Wênam</p>
               <h1 className="hero-h1" style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, color: '#1A0F00', lineHeight: 1.15, margin: '0 0 8px' }}>
                 Commandez de la<br />Délicieuse Cuisine
               </h1>
-              <h1 className="hero-h1" style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontStyle: 'italic', color: '#946420', lineHeight: 1.15, margin: '0 0 32px' }}>en Ligne</h1>
+              <h1 className="hero-h1" style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontStyle: 'italic', color: '#C4531A', lineHeight: 1.15, margin: '0 0 32px' }}>en Ligne</h1>
               <div className="hero-ctas" style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 36 }}>
-                <Link to="/menu" style={{ background: '#946420', color: '#fff', padding: '13px 28px', borderRadius: 10, textDecoration: 'none', fontWeight: 700, fontSize: 13, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                <Link to="/menu" style={{ background: '#C4531A', color: '#fff', padding: '13px 28px', borderRadius: 10, textDecoration: 'none', fontWeight: 700, fontSize: 13, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
                   Voir le Menu
                 </Link>
                 {!user && (
-                  <Link to="/register" style={{ border: '2px solid #946420', color: '#946420', padding: '11px 24px', borderRadius: 10, textDecoration: 'none', fontWeight: 700, fontSize: 13, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                  <Link to="/register" style={{ border: '2px solid #C4531A', color: '#C4531A', padding: '11px 24px', borderRadius: 10, textDecoration: 'none', fontWeight: 700, fontSize: 13, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
                     Créer un compte
                   </Link>
                 )}
@@ -183,7 +183,7 @@ export default function HomePage() {
                   ['30 min', 'Livraison'],
                 ].map(([val, lbl]) => (
                   <div key={lbl}>
-                    <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 24, fontWeight: 700, color: '#946420', margin: 0 }}>{val}</p>
+                    <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 24, fontWeight: 700, color: '#C4531A', margin: 0 }}>{val}</p>
                     <p style={{ fontSize: 12, color: '#8B6B3D', margin: 0 }}>{lbl}</p>
                   </div>
                 ))}
@@ -222,7 +222,7 @@ export default function HomePage() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 16 }}>
             {CATEGORIES.map((cat, i) => (
               <motion.div key={cat.key} variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} transition={{ delay: i * 0.1 }}
-                whileHover={{ scale: 1.03 }} style={{ background: '#fff', borderRadius: 20, overflow: 'hidden', border: '1px solid #D4B896', boxShadow: '0 2px 12px rgba(59,36,16,0.1)', cursor: 'pointer' }}>
+                whileHover={{ scale: 1.03 }} style={{ background: '#fff', borderRadius: 20, overflow: 'hidden', border: '1px solid #D4B896', boxShadow: '0 2px 12px rgba(139,58,15,0.1)', cursor: 'pointer' }}>
                 <div style={{ height: 140, overflow: 'hidden' }}>
                   <img src={cat.img} alt={cat.label} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s' }}
                     onMouseEnter={e => e.target.style.transform = 'scale(1.1)'}
@@ -230,7 +230,7 @@ export default function HomePage() {
                 </div>
                 <div style={{ padding: '12px 14px' }}>
                   <h3 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 600, color: '#1A0F00', fontSize: 15, margin: '0 0 8px' }}>{cat.label}</h3>
-                  <Link to={`/menu?category=${cat.key}`} style={{ display: 'block', textAlign: 'center', background: '#946420', color: '#fff', padding: '7px', borderRadius: 8, textDecoration: 'none', fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                  <Link to={`/menu?category=${cat.key}`} style={{ display: 'block', textAlign: 'center', background: '#C4531A', color: '#fff', padding: '7px', borderRadius: 8, textDecoration: 'none', fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
                     Voir Menu
                   </Link>
                 </div>
@@ -242,7 +242,7 @@ export default function HomePage() {
 
       {/* PROMO */}
       {promo?.active && (
-        <section style={{ background: '#946420', padding: '64px 20px', position: 'relative', overflow: 'hidden' }}>
+        <section style={{ background: '#C4531A', padding: '64px 20px', position: 'relative', overflow: 'hidden' }}>
           <div style={{ position: 'absolute', inset: 0, opacity: 0.08, backgroundImage: 'repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 0,transparent 50%)', backgroundSize: '20px 20px' }} />
           <div style={{ maxWidth: 1280, margin: '0 auto', position: 'relative', zIndex: 1 }}>
             <div className="promo-grid">
@@ -254,7 +254,7 @@ export default function HomePage() {
                 <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(22px,5vw,36px)', fontStyle: 'italic', color: 'rgba(255,255,255,0.8)', margin: '0 0 8px' }}>OFF</p>
                 <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(16px,3vw,24px)', color: 'rgba(255,255,255,0.7)', margin: '0 0 32px' }}>{promo.label}</p>
                 {promo.description && <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 15, marginBottom: 32 }}>{promo.description}</p>}
-                <Link to="/menu" style={{ display: 'inline-block', background: '#fff', color: '#946420', padding: '14px 32px', borderRadius: 10, textDecoration: 'none', fontWeight: 700, fontSize: 13, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                <Link to="/menu" style={{ display: 'inline-block', background: '#fff', color: '#C4531A', padding: '14px 32px', borderRadius: 10, textDecoration: 'none', fontWeight: 700, fontSize: 13, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
                   Commander Maintenant
                 </Link>
               </motion.div>
@@ -276,10 +276,10 @@ export default function HomePage() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 20 }}>
               {featured.map((item, i) => (
                 <motion.div key={item._id} variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} transition={{ delay: i * 0.07 }}
-                  whileHover={{ y: -4 }} style={{ background: '#fff', borderRadius: 20, border: '1px solid #D4B896', boxShadow: '0 2px 12px rgba(59,36,16,0.1)', display: 'flex', flexDirection: 'column' }}>
+                  whileHover={{ y: -4 }} style={{ background: '#fff', borderRadius: 20, border: '1px solid #D4B896', boxShadow: '0 2px 12px rgba(139,58,15,0.1)', display: 'flex', flexDirection: 'column' }}>
                   <div style={{ height: 190, overflow: 'hidden', position: 'relative' }}>
                     <img src={item.image || '/images/opening3.jpeg'} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                    <span style={{ position: 'absolute', top: 10, left: 10, background: '#946420', color: '#fff', fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 20, textTransform: 'capitalize' }}>
+                    <span style={{ position: 'absolute', top: 10, left: 10, background: '#C4531A', color: '#fff', fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 20, textTransform: 'capitalize' }}>
                       {item.category.replace('_', ' ')}
                     </span>
                   </div>
@@ -291,15 +291,15 @@ export default function HomePage() {
                       <span>⏱ {item.preparationTime} min</span>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <span style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, color: '#946420', fontSize: 20 }}>{item.price} MAD</span>
-                      <Link to="/menu" style={{ background: '#946420', color: '#fff', padding: '8px 16px', borderRadius: 8, textDecoration: 'none', fontSize: 12, fontWeight: 700 }}>Commander</Link>
+                      <span style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, color: '#C4531A', fontSize: 20 }}>{item.price} MAD</span>
+                      <Link to="/menu" style={{ background: '#C4531A', color: '#fff', padding: '8px 16px', borderRadius: 8, textDecoration: 'none', fontSize: 12, fontWeight: 700 }}>Commander</Link>
                     </div>
                   </div>
                 </motion.div>
               ))}
             </div>
             <div style={{ textAlign: 'center', marginTop: 40 }}>
-              <Link to="/menu" style={{ border: '2px solid #946420', color: '#946420', padding: '12px 28px', borderRadius: 10, textDecoration: 'none', fontWeight: 700, fontSize: 13, display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+              <Link to="/menu" style={{ border: '2px solid #C4531A', color: '#C4531A', padding: '12px 28px', borderRadius: 10, textDecoration: 'none', fontWeight: 700, fontSize: 13, display: 'inline-flex', alignItems: 'center', gap: 8 }}>
                 Voir tout le menu <ChevronRight size={16} />
               </Link>
             </div>
@@ -311,7 +311,7 @@ export default function HomePage() {
       <section style={{ background: '#1A0F00', padding: '72px 0', overflow: 'hidden' }}>
         <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 20px' }}>
           <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} style={{ textAlign: 'center', marginBottom: 40 }}>
-            <p style={{ color: '#D9A84E', fontSize: 12, fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: 8 }}>Inauguration Officielle</p>
+            <p style={{ color: '#E8763A', fontSize: 12, fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: 8 }}>Inauguration Officielle</p>
             <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(24px,5vw,36px)', fontWeight: 700, color: '#fff', margin: '0 0 10px' }}>18 Mai 2024</h2>
             <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 15, margin: 0 }}>Le jour où Wênam a ouvert ses portes à Rabat.</p>
           </motion.div>
@@ -339,19 +339,19 @@ export default function HomePage() {
       {/* 2 ANS DE WÊNAM & FESTI AECAM 2026 */}
       <section style={{ background: '#FDF8F2', padding: '80px 20px', overflow: 'hidden', position: 'relative' }}>
         {/* Motif de fond */}
-        <div style={{ position: 'absolute', inset: 0, opacity: 0.035, backgroundImage: 'radial-gradient(circle, #946420 1px, transparent 1px)', backgroundSize: '30px 30px' }} />
-        <div style={{ position: 'absolute', top: -60, right: -60, width: 300, height: 300, borderRadius: '50%', background: 'rgba(148,100,32,0.06)', filter: 'blur(60px)' }} />
-        <div style={{ position: 'absolute', bottom: -40, left: -40, width: 200, height: 200, borderRadius: '50%', background: 'rgba(148,100,32,0.05)', filter: 'blur(40px)' }} />
+        <div style={{ position: 'absolute', inset: 0, opacity: 0.035, backgroundImage: 'radial-gradient(circle, #C4531A 1px, transparent 1px)', backgroundSize: '30px 30px' }} />
+        <div style={{ position: 'absolute', top: -60, right: -60, width: 300, height: 300, borderRadius: '50%', background: 'rgba(196,83,26,0.06)', filter: 'blur(60px)' }} />
+        <div style={{ position: 'absolute', bottom: -40, left: -40, width: 200, height: 200, borderRadius: '50%', background: 'rgba(196,83,26,0.05)', filter: 'blur(40px)' }} />
 
         <div style={{ maxWidth: 1280, margin: '0 auto', position: 'relative', zIndex: 1 }}>
           {/* En-tête de section */}
           <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} style={{ textAlign: 'center', marginBottom: 56 }}>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, background: 'rgba(148,100,32,0.1)', border: '1px solid rgba(148,100,32,0.25)', borderRadius: 999, padding: '7px 20px', marginBottom: 20 }}>
-              <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#946420', display: 'inline-block' }} />
-              <span style={{ color: '#946420', fontSize: 11, fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase' }}>Moments inoubliables</span>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, background: 'rgba(196,83,26,0.1)', border: '1px solid rgba(196,83,26,0.25)', borderRadius: 999, padding: '7px 20px', marginBottom: 20 }}>
+              <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#C4531A', display: 'inline-block' }} />
+              <span style={{ color: '#C4531A', fontSize: 11, fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase' }}>Moments inoubliables</span>
             </div>
             <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(28px,5vw,48px)', fontWeight: 700, color: '#1A0F00', margin: '0 0 12px', lineHeight: 1.1 }}>
-              2 ans de <span style={{ color: '#946420', fontStyle: 'italic' }}>Wênam</span>
+              2 ans de <span style={{ color: '#C4531A', fontStyle: 'italic' }}>Wênam</span>
             </h2>
             <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(16px,3vw,22px)', fontStyle: 'italic', color: '#8B6B3D', margin: '0 0 16px' }}>
               & Participation au Festi AECAM 2026
@@ -369,11 +369,11 @@ export default function HomePage() {
               { day: '31', month: 'Mai 2026' },
             ].map(({ day, month }) => (
               <div key={day} style={{ textAlign: 'center', minWidth: 80 }}>
-                <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(40px,7vw,64px)', fontWeight: 700, color: '#946420', margin: '0 0 2px', lineHeight: 1 }}>{day}</p>
+                <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(40px,7vw,64px)', fontWeight: 700, color: '#C4531A', margin: '0 0 2px', lineHeight: 1 }}>{day}</p>
                 <p style={{ fontSize: 12, color: '#8B6B3D', textTransform: 'uppercase', letterSpacing: '0.18em', margin: 0 }}>{month}</p>
               </div>
             ))}
-            <div style={{ width: 1, height: 60, background: 'rgba(148,100,32,0.25)', flexShrink: 0 }} />
+            <div style={{ width: 1, height: 60, background: 'rgba(196,83,26,0.25)', flexShrink: 0 }} />
             <div style={{ textAlign: 'center' }}>
               <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(18px,3vw,26px)', fontWeight: 700, color: '#1A0F00', margin: '0 0 4px' }}>Pie X</p>
               <p style={{ fontSize: 12, color: '#8B6B3D', textTransform: 'uppercase', letterSpacing: '0.15em', margin: 0 }}>Lieu du festival</p>
@@ -408,9 +408,9 @@ export default function HomePage() {
               { icon: MapPin, title: 'Adresse', lines: ['Avenue Al Majd 2', 'Rabat, Maroc'] },
             ].map(({ icon: Icon, title, lines }) => (
               <motion.div key={title} variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}
-                style={{ background: '#fff', borderRadius: 20, padding: '22px 18px', textAlign: 'center', border: '1px solid #D4B896', boxShadow: '0 2px 12px rgba(59,36,16,0.08)' }}>
-                <div style={{ width: 44, height: 44, background: 'rgba(148,100,32,0.1)', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px' }}>
-                  <Icon size={20} color="#946420" />
+                style={{ background: '#fff', borderRadius: 20, padding: '22px 18px', textAlign: 'center', border: '1px solid #D4B896', boxShadow: '0 2px 12px rgba(139,58,15,0.08)' }}>
+                <div style={{ width: 44, height: 44, background: 'rgba(196,83,26,0.1)', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px' }}>
+                  <Icon size={20} color="#C4531A" />
                 </div>
                 <h3 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 600, fontSize: 16, color: '#1A0F00', margin: '0 0 8px' }}>{title}</h3>
                 {lines.map((l, i) => <p key={i} style={{ fontSize: 13, color: '#5C3D11', margin: '2px 0' }}>{l}</p>)}
@@ -430,11 +430,11 @@ export default function HomePage() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 16 }}>
               {reviews.map((r, i) => (
                 <motion.div key={r._id || i} variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} transition={{ delay: i * 0.1 }}
-                  style={{ background: '#fff', borderRadius: 20, padding: 22, border: '1px solid #D4B896', boxShadow: '0 2px 12px rgba(59,36,16,0.08)' }}>
+                  style={{ background: '#fff', borderRadius: 20, padding: 22, border: '1px solid #D4B896', boxShadow: '0 2px 12px rgba(139,58,15,0.08)' }}>
                   <div style={{ color: '#F59E0B', fontSize: 18, marginBottom: 12 }}>{'★'.repeat(r.rating)}</div>
                   <p style={{ fontSize: 14, color: '#5C3D11', fontStyle: 'italic', marginBottom: 16, lineHeight: 1.7 }}>"{r.comment}"</p>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 10, paddingTop: 12, borderTop: '1px solid #EDE0C4' }}>
-                    <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'rgba(148,100,32,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 700, color: '#946420' }}>{r.user?.name?.[0] || '?'}</div>
+                    <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'rgba(196,83,26,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 700, color: '#C4531A' }}>{r.user?.name?.[0] || '?'}</div>
                     <div>
                       <p style={{ fontWeight: 700, fontSize: 13, color: '#1A0F00', margin: 0 }}>{r.user?.name || 'Client'}</p>
                       <p style={{ fontSize: 11, color: '#8B6B3D', margin: 0 }}>{new Date(r.createdAt).toLocaleDateString('fr-FR')}</p>

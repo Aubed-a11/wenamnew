@@ -11,7 +11,7 @@ import { fmtPrice } from '../../../components/miawezon/utils'
 import { useMzPending } from '../../../store/miawezonAdmin'
 
 const STATUS = {
-  awaiting_validation: ['Reçu à valider', 'bg-amber-100 text-amber-800'],
+  awaiting_validation: ['Reçu à valider', 'bg-orange-100 text-orange-800'],
   paid: ['Payée', 'bg-green-100 text-green-800'],
   rejected: ['Refusée', 'bg-red-100 text-red-700'],
   pending: ['En attente', 'bg-amber-100 text-amber-800'],
@@ -136,7 +136,7 @@ function DashboardTab({ config }) {
                 <XAxis dataKey="date" tickFormatter={(d) => d.slice(8, 10) + '/' + d.slice(5, 7)} tick={{ fontSize: 11, fill: '#8B6B3D' }} interval={4} />
                 <YAxis tickFormatter={(v) => (v >= 1000 ? `${Math.round(v / 1000)}k` : v)} tick={{ fontSize: 11, fill: '#8B6B3D' }} width={40} />
                 <Tooltip formatter={(v, n) => (n === 'revenue' ? [fmtPrice(v), 'Ventes'] : [v, 'Billets'])} labelFormatter={(d) => new Date(d).toLocaleDateString('fr-FR')} />
-                <Line type="monotone" dataKey="revenue" stroke="#946420" strokeWidth={2} dot={false} />
+                <Line type="monotone" dataKey="revenue" stroke="#C4531A" strokeWidth={2} dot={false} />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -191,7 +191,7 @@ function ProofPanel({ order, validationHours, busy, onApprove, onReject }) {
   const canDecide = ['awaiting_validation', 'pending'].includes(order.status)
 
   return (
-    <div className="rounded-xl border-2 border-amber-200 bg-amber-50/40 p-4 space-y-3">
+    <div className="rounded-xl border-2 border-orange-200 bg-orange-50/40 p-4 space-y-3">
       <div className="flex items-center justify-between gap-2">
         <p className="font-bold text-text-dark flex items-center gap-2"><FileCheck size={16} className="text-primary" /> Reçu de virement</p>
         {p && order.status === 'awaiting_validation' && (
@@ -895,10 +895,10 @@ export default function MiawezonAdminPage() {
       </div>
 
       {pending > 0 && tab !== 'orders' && (
-        <button onClick={() => setTab('orders')} className="w-full mb-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 flex items-center gap-3 text-left hover:bg-amber-100 transition">
-          <Bell size={18} className="text-amber-700 shrink-0" />
-          <span className="flex-1 text-sm text-amber-900"><strong>{pending} reçu{pending > 1 ? 's' : ''} de virement</strong> à valider (sous {validationHours} h).</span>
-          <span className="text-xs font-semibold text-amber-800">Voir</span>
+        <button onClick={() => setTab('orders')} className="w-full mb-4 rounded-xl border border-orange-200 bg-orange-50 px-4 py-3 flex items-center gap-3 text-left hover:bg-orange-100 transition">
+          <Bell size={18} className="text-orange-700 shrink-0" />
+          <span className="flex-1 text-sm text-orange-900"><strong>{pending} reçu{pending > 1 ? 's' : ''} de virement</strong> à valider (sous {validationHours} h).</span>
+          <span className="text-xs font-semibold text-orange-800">Voir</span>
         </button>
       )}
 
@@ -906,7 +906,7 @@ export default function MiawezonAdminPage() {
         {TABS.map(([k, l]) => (
           <button key={k} onClick={() => setTab(k)} className={`px-4 py-2.5 text-sm font-semibold whitespace-nowrap border-b-2 -mb-px inline-flex items-center gap-2 ${tab === k ? 'border-primary text-primary' : 'border-transparent text-text-light hover:text-text-dark'}`}>
             {l}
-            {k === 'orders' && pending > 0 && <span className="rounded-full bg-amber-600 text-white text-[10px] font-bold px-1.5 py-0.5 leading-none">{pending}</span>}
+            {k === 'orders' && pending > 0 && <span className="rounded-full bg-orange-600 text-white text-[10px] font-bold px-1.5 py-0.5 leading-none">{pending}</span>}
           </button>
         ))}
       </div>

@@ -28,7 +28,7 @@ const css = `
     font-family: 'Georgia', serif; color: #1A0F00;
     background: #fff; outline: none; transition: border-color 0.2s;
   }
-  .card-input:focus { border-color: #946420; }
+  .card-input:focus { border-color: #C4531A; }
   .card-input::placeholder { color: #b0a090; }
 `
 
@@ -188,7 +188,7 @@ function CardForm({ cardData, setCardData, errors }) {
             {network && (
               <span style={{
                 position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)',
-                fontSize: 11, fontWeight: 700, color: '#946420', background: '#fff',
+                fontSize: 11, fontWeight: 700, color: '#C4531A', background: '#fff',
                 padding: '2px 8px', borderRadius: 6, border: '1px solid #EDE0C4'
               }}>{network}</span>
             )}
@@ -243,7 +243,7 @@ function CardForm({ cardData, setCardData, errors }) {
 
         {/* Sécurité */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: '#8B6B3D' }}>
-          <Lock size={12} color="#946420" />
+          <Lock size={12} color="#C4531A" />
           Paiement sécurisé — vos données sont chiffrées
         </div>
       </div>
@@ -267,19 +267,19 @@ function generateOrderPDF(order, user) {
 <html lang="fr"><head><meta charset="UTF-8"/>
 <style>
   body{font-family:'Georgia',serif;color:#1A0F00;margin:0;padding:40px;background:#fff;}
-  .header{text-align:center;border-bottom:3px solid #946420;padding-bottom:24px;margin-bottom:32px;}
+  .header{text-align:center;border-bottom:3px solid #C4531A;padding-bottom:24px;margin-bottom:32px;}
   .logo-img{width:110px;height:auto;margin:20px auto 4px;display:block;mix-blend-mode:multiply;}
-  .brand{font-size:36px;font-weight:700;color:#946420;margin:0;font-family:'Georgia',serif;}
+  .brand{font-size:36px;font-weight:700;color:#C4531A;margin:0;font-family:'Georgia',serif;}
   .sub{font-size:13px;color:#8B6B3D;letter-spacing:3px;text-transform:uppercase;margin-top:4px;}
-  .order-num{font-size:22px;font-weight:700;color:#3B2410;margin:16px 0 4px;}
+  .order-num{font-size:22px;font-weight:700;color:#8B3A0F;margin:16px 0 4px;}
   .date{font-size:13px;color:#8B6B3D;}
   .section{margin-bottom:24px;}
-  .section-title{font-size:14px;font-weight:700;color:#946420;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;border-bottom:1px solid #EDE0C4;padding-bottom:6px;}
+  .section-title{font-size:14px;font-weight:700;color:#C4531A;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;border-bottom:1px solid #EDE0C4;padding-bottom:6px;}
   table{width:100%;border-collapse:collapse;font-size:14px;}
   th{background:#FAF3E8;padding:10px 12px;text-align:left;font-size:12px;color:#8B6B3D;text-transform:uppercase;letter-spacing:1px;}
   .total-row{background:#FAF3E8;}
   .total-row td{padding:12px;font-weight:700;font-size:16px;}
-  .grand-total td{background:#946420;color:#fff;padding:14px 12px;font-size:18px;}
+  .grand-total td{background:#C4531A;color:#fff;padding:14px 12px;font-size:18px;}
   .footer{margin-top:40px;text-align:center;border-top:2px solid #EDE0C4;padding-top:20px;font-size:12px;color:#8B6B3D;}
   .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
   .info-box{background:#FAF3E8;border-radius:8px;padding:14px;}
@@ -320,7 +320,7 @@ function generateOrderPDF(order, user) {
   <div class="footer">
     <p>Merci pour votre commande ! · Wênam, Avenue Al Majd 2, Rabat</p>
     <p>Instagram: @itsWênam · Tél: +212 643 389 585</p>
-    <p style="margin-top:8px;font-size:11px;color:#946420;">Wênam — Délicieuse Cuisine en Ligne</p>
+    <p style="margin-top:8px;font-size:11px;color:#C4531A;">Wênam — Délicieuse Cuisine en Ligne</p>
   </div>
 </body></html>`
 
@@ -450,12 +450,12 @@ export default function CheckoutPage() {
               <div style={{
                 width: 32, height: 32, borderRadius: '50%', display:'flex', alignItems:'center', justifyContent:'center',
                 fontSize: 13, fontWeight: 700, flexShrink: 0,
-                background: step >= Number(n) ? '#946420' : '#F5ECD7',
+                background: step >= Number(n) ? '#C4531A' : '#F5ECD7',
                 color: step >= Number(n) ? '#fff' : '#8B6B3D',
                 transition: 'background 0.3s'
               }}>{n}</div>
-              <span className="step-label" style={{ fontSize: 12, fontWeight: step >= Number(n) ? 600 : 400, color: step >= Number(n) ? '#946420' : '#8B6B3D' }}>{label}</span>
-              {i < 2 && <div style={{ height: 2, flex: 1, marginLeft: 4, background: step > Number(n) ? '#946420' : '#e5e7eb', transition: 'background 0.3s' }} />}
+              <span className="step-label" style={{ fontSize: 12, fontWeight: step >= Number(n) ? 600 : 400, color: step >= Number(n) ? '#C4531A' : '#8B6B3D' }}>{label}</span>
+              {i < 2 && <div style={{ height: 2, flex: 1, marginLeft: 4, background: step > Number(n) ? '#C4531A' : '#e5e7eb', transition: 'background 0.3s' }} />}
             </div>
           ))}
         </div>
@@ -467,7 +467,7 @@ export default function CheckoutPage() {
             <motion.div key="s1" initial={{ opacity:0, x:30 }} animate={{ opacity:1, x:0 }} exit={{ opacity:0, x:-30 }}
               className="checkout-card">
               <h2 className="font-display" style={{ fontSize:'clamp(17px,4vw,20px)', fontWeight:600, marginBottom:24, display:'flex', alignItems:'center', gap:8 }}>
-                <MapPin size={18} color="#946420" /> Adresse de livraison
+                <MapPin size={18} color="#C4531A" /> Adresse de livraison
               </h2>
               <div style={{ display:'flex', flexDirection:'column', gap:14 }}>
                 <div>
@@ -494,7 +494,7 @@ export default function CheckoutPage() {
                 </div>
               </div>
               <div style={{ marginTop:20, paddingTop:16, borderTop:'1px solid #e5e7eb' }}>
-                <p style={{ fontSize:12, color:'#8B6B3D', marginBottom:12 }}>{items.length} article(s) · Total: <strong style={{ color:'#946420' }}>{total.toFixed(2)} MAD</strong></p>
+                <p style={{ fontSize:12, color:'#8B6B3D', marginBottom:12 }}>{items.length} article(s) · Total: <strong style={{ color:'#C4531A' }}>{total.toFixed(2)} MAD</strong></p>
                 <button onClick={() => setStep(2)} className="btn-primary" style={{ width:'100%', display:'flex', alignItems:'center', justifyContent:'center', gap:8 }}>
                   Continuer <ChevronRight size={16} />
                 </button>
@@ -507,7 +507,7 @@ export default function CheckoutPage() {
             <motion.div key="s2" initial={{ opacity:0, x:30 }} animate={{ opacity:1, x:0 }} exit={{ opacity:0, x:-30 }}
               className="checkout-card">
               <h2 className="font-display" style={{ fontSize:'clamp(17px,4vw,20px)', fontWeight:600, marginBottom:24, display:'flex', alignItems:'center', gap:8 }}>
-                <CreditCard size={18} color="#946420" /> Mode de paiement
+                <CreditCard size={18} color="#C4531A" /> Mode de paiement
               </h2>
 
               <div style={{ display:'flex', flexDirection:'column', gap:12, marginBottom:24 }}>
@@ -519,12 +519,12 @@ export default function CheckoutPage() {
                   <div key={key}>
                     <label style={{
                       display:'flex', alignItems:'center', gap:14, padding:'14px 16px', borderRadius:12,
-                      border: `2px solid ${form.paymentMethod === key ? '#946420' : '#e5e7eb'}`,
-                      background: form.paymentMethod === key ? 'rgba(148,100,32,0.04)' : '#fff',
+                      border: `2px solid ${form.paymentMethod === key ? '#C4531A' : '#e5e7eb'}`,
+                      background: form.paymentMethod === key ? 'rgba(196,83,26,0.04)' : '#fff',
                       cursor:'pointer', transition:'all 0.2s'
                     }}>
-                      <input type="radio" name="paymentMethod" value={key} checked={form.paymentMethod === key} onChange={handleChange} style={{ accentColor:'#946420' }} />
-                      <Icon size={18} color={form.paymentMethod === key ? '#946420' : '#9ca3af'} />
+                      <input type="radio" name="paymentMethod" value={key} checked={form.paymentMethod === key} onChange={handleChange} style={{ accentColor:'#C4531A' }} />
+                      <Icon size={18} color={form.paymentMethod === key ? '#C4531A' : '#9ca3af'} />
                       <div style={{ flex: 1 }}>
                         <p style={{ fontWeight:600, fontSize:14, margin:0 }}>{label}</p>
                         <p style={{ fontSize:12, color:'#9ca3af', margin:0 }}>{desc}</p>
@@ -563,7 +563,7 @@ export default function CheckoutPage() {
                   </div>
                 ))}
                 <div style={{ display:'flex', justifyContent:'space-between', fontWeight:700, fontSize:16, paddingTop:10, borderTop:'1px solid #e5e7eb' }}>
-                  <span>Total</span><span style={{ color:'#946420', fontSize:18 }}>{total.toFixed(2)} MAD</span>
+                  <span>Total</span><span style={{ color:'#C4531A', fontSize:18 }}>{total.toFixed(2)} MAD</span>
                 </div>
               </div>
 
@@ -589,7 +589,7 @@ export default function CheckoutPage() {
               <img src="/images/wenam-logo.png" alt="Wenam" style={{ width:80, margin:'20px auto 4px', display:'block', mixBlendMode:'multiply' }} />
 
               <h2 className="font-display confirm-title" style={{ fontWeight:700, marginBottom:8 }}>Commande confirmée !</h2>
-              <p className="font-display confirm-order-num" style={{ color:'#946420', fontWeight:700, marginBottom:6 }}>{order.orderNumber}</p>
+              <p className="font-display confirm-order-num" style={{ color:'#C4531A', fontWeight:700, marginBottom:6 }}>{order.orderNumber}</p>
               <p style={{ fontSize:13, color:'#8B6B3D', marginBottom:4 }}>Livraison estimée: <strong style={{ color:'#1A0F00' }}>45–60 minutes</strong></p>
               <p style={{ fontSize:12, color:'#8B6B3D', marginBottom:4 }}>Wênam · Avenue Al Majd 2, Rabat</p>
               {form.paymentMethod === 'card' && (
@@ -608,7 +608,7 @@ export default function CheckoutPage() {
                 </button>
                 <button onClick={() => { generateOrderPDF(order, user); toast.success('Récapitulatif téléchargé !') }}
                   style={{ width:'100%', display:'flex', alignItems:'center', justifyContent:'center', gap:8, background:'#FAF3E8', border:'1px solid #e5e7eb', color:'#1A0F00', fontWeight:600, fontSize:13, padding:'12px 20px', borderRadius:10, cursor:'pointer' }}>
-                  <Download size={15} color="#946420" /> Télécharger le récapitulatif PDF
+                  <Download size={15} color="#C4531A" /> Télécharger le récapitulatif PDF
                 </button>
                 <button onClick={() => { sendWhatsApp(order, user); toast.success('Message WhatsApp ouvert !') }}
                   style={{ width:'100%', display:'flex', alignItems:'center', justifyContent:'center', gap:8, background:'#22c55e', color:'#fff', fontWeight:600, fontSize:13, padding:'12px 20px', borderRadius:10, border:'none', cursor:'pointer' }}>
@@ -628,7 +628,7 @@ export default function CheckoutPage() {
                   </div>
                 ))}
                 <div style={{ display:'flex', justifyContent:'space-between', fontWeight:700, fontSize:15, paddingTop:10, borderTop:'1px solid #e5e7eb', marginTop:6 }}>
-                  <span>Total</span><span style={{ color:'#946420' }}>{order.total} MAD</span>
+                  <span>Total</span><span style={{ color:'#C4531A' }}>{order.total} MAD</span>
                 </div>
               </div>
             </motion.div>

@@ -32,8 +32,8 @@ export default function ReviewsPage() {
   const sendResponse = async () => { await api.put(`/reviews/${responding}/respond`, { response }); toast.success('Réponse envoyée'); setResponding(null); setResponse(''); fetch() }
 
   const tabStyle = (t) => ({
-    padding: '7px 16px', border: `1px solid ${tab === t ? '#946420' : '#D4B896'}`, borderRadius: 20,
-    background: tab === t ? '#946420' : '#fff', color: tab === t ? '#fff' : '#5C3D11',
+    padding: '7px 16px', border: `1px solid ${tab === t ? '#C4531A' : '#D4B896'}`, borderRadius: 20,
+    background: tab === t ? '#C4531A' : '#fff', color: tab === t ? '#fff' : '#5C3D11',
     cursor: 'pointer', fontSize: 13, fontWeight: 700, whiteSpace: 'nowrap'
   })
 
@@ -59,7 +59,7 @@ export default function ReviewsPage() {
           {reviews.map(r => (
             <div key={r._id} style={{ background: '#fff', borderRadius: 14, border: '1px solid #D4B896', padding: '14px 16px' }}>
               <div className="review-card-inner" style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
-                <div style={{ width: 38, height: 38, borderRadius: '50%', background: 'rgba(148,100,32,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#946420', fontWeight: 700, fontSize: 15, flexShrink: 0 }}>{r.user?.name?.[0]}</div>
+                <div style={{ width: 38, height: 38, borderRadius: '50%', background: 'rgba(196,83,26,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#C4531A', fontWeight: 700, fontSize: 15, flexShrink: 0 }}>{r.user?.name?.[0]}</div>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4, flexWrap: 'wrap' }}>
                     <span style={{ fontWeight: 700, fontSize: 13, color: '#1A0F00' }}>{r.user?.name}</span>
@@ -94,7 +94,7 @@ export default function ReviewsPage() {
               style={{ width: '100%', padding: '10px 12px', border: '1px solid #D4B896', borderRadius: 8, fontSize: 13, resize: 'none', boxSizing: 'border-box', marginBottom: 12, outline: 'none' }} />
             <div style={{ display: 'flex', gap: 10 }}>
               <button onClick={() => setResponding(null)} style={{ flex: 1, padding: 10, border: '1px solid #D4B896', borderRadius: 8, background: 'none', cursor: 'pointer', fontSize: 13, fontWeight: 700 }}>Annuler</button>
-              <button onClick={sendResponse} style={{ flex: 1, padding: 10, border: 'none', borderRadius: 8, background: '#946420', color: '#fff', cursor: 'pointer', fontSize: 13, fontWeight: 700 }}>Envoyer</button>
+              <button onClick={sendResponse} style={{ flex: 1, padding: 10, border: 'none', borderRadius: 8, background: '#C4531A', color: '#fff', cursor: 'pointer', fontSize: 13, fontWeight: 700 }}>Envoyer</button>
             </div>
           </div>
         </div>

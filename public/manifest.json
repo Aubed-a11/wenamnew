@@ -5,7 +5,7 @@
   "start_url": "/",
   "display": "standalone",
   "background_color": "#FAF3E8",
-  "theme_color": "#946420",
+  "theme_color": "#C4531A",
   "orientation": "portrait",
   "icons": [
     { "src": "/images/wenam-logo.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },

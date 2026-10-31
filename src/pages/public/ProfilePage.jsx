@@ -8,7 +8,7 @@ import Navbar from '../../components/common/Navbar'
 import { useAuthStore } from '../../store'
 
 const STATUS_LABELS = { pending:'En attente', confirmed:'Confirmée', preparing:'En préparation', out_for_delivery:'En route', delivered:'Livré', cancelled:'Annulée' }
-const STATUS_COLORS = { pending:'bg-amber-100 text-amber-700', confirmed:'bg-blue-100 text-blue-700', preparing:'bg-amber-100 text-amber-700', out_for_delivery:'bg-purple-100 text-purple-700', delivered:'bg-green-100 text-green-700', cancelled:'bg-red-100 text-red-700' }
+const STATUS_COLORS = { pending:'bg-amber-100 text-amber-700', confirmed:'bg-blue-100 text-blue-700', preparing:'bg-orange-100 text-orange-700', out_for_delivery:'bg-purple-100 text-purple-700', delivered:'bg-green-100 text-green-700', cancelled:'bg-red-100 text-red-700' }
 
 const css = `
   /* Desktop layout */
@@ -87,7 +87,7 @@ export default function ProfilePage() {
         <div className="mobile-header">
           <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:12 }}>
             <div style={{ display:'flex', alignItems:'center', gap:10 }}>
-              <div style={{ width:38, height:38, borderRadius:'50%', background:'rgba(148,100,32,0.15)', display:'flex', alignItems:'center', justifyContent:'center', color:'#946420', fontWeight:700, fontSize:16 }}>{user?.name?.[0]}</div>
+              <div style={{ width:38, height:38, borderRadius:'50%', background:'rgba(196,83,26,0.15)', display:'flex', alignItems:'center', justifyContent:'center', color:'#C4531A', fontWeight:700, fontSize:16 }}>{user?.name?.[0]}</div>
               <div>
                 <p style={{ fontWeight:700, fontSize:13, margin:0, color:'#1A0F00' }}>{user?.name}</p>
                 <p style={{ fontSize:11, color:'#8B6B3D', margin:0 }}>{user?.email}</p>
@@ -102,7 +102,7 @@ export default function ProfilePage() {
           <div className="mobile-tabs">
             {TABS.map(([key,label,Icon])=>(
               <button key={key} onClick={()=>setTab(key)} className="mobile-tab-btn"
-                style={{ background: tab===key ? '#946420' : '#fff', color: tab===key ? '#fff' : '#5C3D11' }}>
+                style={{ background: tab===key ? '#C4531A' : '#fff', color: tab===key ? '#fff' : '#5C3D11' }}>
                 <Icon size={18} />
                 {label}
               </button>
@@ -116,7 +116,7 @@ export default function ProfilePage() {
           <div className="profile-sidebar">
             <div className="profile-card">
               <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:20 }}>
-                <div style={{ width:44, height:44, borderRadius:'50%', background:'rgba(148,100,32,0.15)', display:'flex', alignItems:'center', justifyContent:'center', color:'#946420', fontWeight:700, fontSize:18, flexShrink:0 }}>{user?.name?.[0]}</div>
+                <div style={{ width:44, height:44, borderRadius:'50%', background:'rgba(196,83,26,0.15)', display:'flex', alignItems:'center', justifyContent:'center', color:'#C4531A', fontWeight:700, fontSize:18, flexShrink:0 }}>{user?.name?.[0]}</div>
                 <div style={{ minWidth:0 }}>
                   <p style={{ fontWeight:600, fontSize:13, margin:0, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{user?.name}</p>
                   <p style={{ fontSize:11, color:'#8B6B3D', margin:0, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{user?.email}</p>
@@ -125,7 +125,7 @@ export default function ProfilePage() {
               <div style={{ display:'flex', flexDirection:'column', gap:4 }}>
                 {TABS.map(([key,label,Icon])=>(
                   <button key={key} onClick={()=>setTab(key)}
-                    style={{ display:'flex', alignItems:'center', gap:10, padding:'10px 12px', borderRadius:10, fontSize:13, fontWeight:600, border:'none', cursor:'pointer', transition:'all 0.2s', background: tab===key ? '#946420' : 'transparent', color: tab===key ? '#fff' : '#5C3D11', width:'100%', textAlign:'left' }}>
+                    style={{ display:'flex', alignItems:'center', gap:10, padding:'10px 12px', borderRadius:10, fontSize:13, fontWeight:600, border:'none', cursor:'pointer', transition:'all 0.2s', background: tab===key ? '#C4531A' : 'transparent', color: tab===key ? '#fff' : '#5C3D11', width:'100%', textAlign:'left' }}>
                     <Icon size={15} />{label}
                   </button>
                 ))}
@@ -146,7 +146,7 @@ export default function ProfilePage() {
                 <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:24, flexWrap:'wrap', gap:8 }}>
                   <h2 className="font-display" style={{ fontSize:'clamp(17px,4vw,20px)', fontWeight:600, margin:0 }}>Mon profil</h2>
                   {!editing ? (
-                    <button onClick={()=>setEditing(true)} style={{ display:'flex', alignItems:'center', gap:6, fontSize:13, color:'#946420', fontWeight:600, background:'none', border:'none', cursor:'pointer' }}>
+                    <button onClick={()=>setEditing(true)} style={{ display:'flex', alignItems:'center', gap:6, fontSize:13, color:'#C4531A', fontWeight:600, background:'none', border:'none', cursor:'pointer' }}>
                       <Edit2 size={13} />Modifier
                     </button>
                   ) : (
@@ -193,8 +193,8 @@ export default function ProfilePage() {
                           <span className={`text-xs font-semibold px-2.5 py-1 rounded-full font-body ${STATUS_COLORS[order.status]||'bg-gray-100 text-gray-600'}`}>
                             {STATUS_LABELS[order.status]||order.status}
                           </span>
-                          <p className="font-display" style={{ fontWeight:700, color:'#946420', fontSize:14, margin:0 }}>{order.total} MAD</p>
-                          <Link to={`/orders/${order._id}/track`} className="order-track" style={{ fontSize:12, color:'#946420', fontWeight:600, textDecoration:'none' }}>Suivre</Link>
+                          <p className="font-display" style={{ fontWeight:700, color:'#C4531A', fontSize:14, margin:0 }}>{order.total} MAD</p>
+                          <Link to={`/orders/${order._id}/track`} className="order-track" style={{ fontSize:12, color:'#C4531A', fontWeight:600, textDecoration:'none' }}>Suivre</Link>
                         </div>
                       </div>
                     ))}
@@ -234,7 +234,7 @@ export default function ProfilePage() {
                     />
                   </div>
                   <button onClick={submitReview} disabled={submitting}
-                    style={{ background: submitting ? '#D4B896' : '#946420', color:'#fff', border:'none', borderRadius:10, padding:'11px 24px', fontSize:13, fontWeight:700, cursor: submitting ? 'not-allowed' : 'pointer' }}>
+                    style={{ background: submitting ? '#D4B896' : '#C4531A', color:'#fff', border:'none', borderRadius:10, padding:'11px 24px', fontSize:13, fontWeight:700, cursor: submitting ? 'not-allowed' : 'pointer' }}>
                     {submitting ? 'Envoi...' : 'Envoyer mon avis'}
                   </button>
                 </div>
@@ -256,7 +256,7 @@ export default function ProfilePage() {
                           <p style={{ fontSize:13, color:'#5C3D11', margin:0, lineHeight:1.5 }}>{r.comment}</p>
                           {r.adminResponse && (
                             <div style={{ marginTop:8, paddingTop:8, borderTop:'1px solid #D4B896' }}>
-                              <p style={{ fontSize:11, fontWeight:700, color:'#946420', margin:'0 0 3px' }}>Réponse Wênam :</p>
+                              <p style={{ fontSize:11, fontWeight:700, color:'#C4531A', margin:'0 0 3px' }}>Réponse Wênam :</p>
                               <p style={{ fontSize:12, color:'#5C3D11', fontStyle:'italic', margin:0 }}>{r.adminResponse}</p>
                             </div>
                           )}

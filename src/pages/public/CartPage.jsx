@@ -72,7 +72,7 @@ export function CartPage() {
                         </button>
                         <span className="font-semibold font-body" style={{ width: 28, textAlign: 'center', fontSize: 14 }}>{item.quantity}</span>
                         <button onClick={() => updateQty(item._id, item.quantity + 1)}
-                          style={{ width: 32, height: 32, borderRadius: '50%', background: '#946420', display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'none', cursor: 'pointer' }}>
+                          style={{ width: 32, height: 32, borderRadius: '50%', background: '#C4531A', display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'none', cursor: 'pointer' }}>
                           <Plus size={13} color="#fff" />
                         </button>
                       </div>
@@ -105,7 +105,7 @@ export function CartPage() {
                 </div>
                 <div style={{ borderTop: '1px solid #e5e7eb', paddingTop: 12, display: 'flex', justifyContent: 'space-between', fontWeight: 700 }}>
                   <span>Total</span>
-                  <span className="font-display text-primary" style={{ fontSize: 20, color: '#946420' }}>{total.toFixed(2)} MAD</span>
+                  <span className="font-display text-primary" style={{ fontSize: 20, color: '#C4531A' }}>{total.toFixed(2)} MAD</span>
                 </div>
               </div>
               <button onClick={handleCheckout} className="btn-primary"

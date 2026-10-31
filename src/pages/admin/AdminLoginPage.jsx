@@ -35,7 +35,7 @@ export default function AdminLoginPage() {
 
       {/* Left panel */}
       <div
-        style={{ width: '45%', background: '#3B2410', display: 'none', alignItems: 'center', padding: '0 64px', position: 'relative', overflow: 'hidden' }}
+        style={{ width: '45%', background: '#8B3A0F', display: 'none', alignItems: 'center', padding: '0 64px', position: 'relative', overflow: 'hidden' }}
         className="admin-left-panel"
       >
         <style>{`@media(min-width:768px){.admin-left-panel{display:flex!important}}`}</style>
@@ -61,7 +61,7 @@ export default function AdminLoginPage() {
             'Notifications client automatiques',
           ].map(item => (
             <div key={item} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
-              <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#D9A84E', flexShrink: 0 }} />
+              <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#E8763A', flexShrink: 0 }} />
               <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: 14 }}>{item}</span>
             </div>
           ))}
@@ -80,8 +80,8 @@ export default function AdminLoginPage() {
             <img
               src="/images/wenam-logo.png" alt="Wenam" style={{ width: 120, height: 120, objectFit: 'contain', display: 'block', margin: '0 auto 16px', mixBlendMode: 'multiply' }}
             />
-            <div style={{ width: 60, height: 60, background: 'rgba(148,100,32,0.12)', borderRadius: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
-              <ShieldCheck size={28} color="#946420" />
+            <div style={{ width: 60, height: 60, background: 'rgba(196,83,26,0.12)', borderRadius: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
+              <ShieldCheck size={28} color="#C4531A" />
             </div>
             <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, fontWeight: 700, color: '#1A0F00', margin: '0 0 6px' }}>
               Connexion Admin
@@ -113,7 +113,7 @@ export default function AdminLoginPage() {
                 <label style={{ fontSize: 11, fontWeight: 700, color: '#5C3D11', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
                   Mot de passe
                 </label>
-                <Link to="/forgot-password" style={{ fontSize: 11, color: '#946420', fontWeight: 600, textDecoration: 'none' }}>
+                <Link to="/forgot-password" style={{ fontSize: 11, color: '#C4531A', fontWeight: 600, textDecoration: 'none' }}>
                   Mot de passe oublié ?
                 </Link>
               </div>
@@ -141,7 +141,7 @@ export default function AdminLoginPage() {
             <button
               type="submit"
               disabled={loading}
-              style={{ width: '100%', padding: '13px', background: loading ? '#D4B896' : '#946420', color: '#fff', border: 'none', borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: loading ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, fontFamily: 'Lato, sans-serif', textTransform: 'uppercase', letterSpacing: '0.08em', transition: 'background 0.2s' }}
+              style={{ width: '100%', padding: '13px', background: loading ? '#D4B896' : '#C4531A', color: '#fff', border: 'none', borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: loading ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, fontFamily: 'Lato, sans-serif', textTransform: 'uppercase', letterSpacing: '0.08em', transition: 'background 0.2s' }}
             >
               {loading && (
                 <span style={{ width: 16, height: 16, border: '2px solid rgba(255,255,255,0.3)', borderTopColor: '#fff', borderRadius: '50%', animation: 'spin 0.7s linear infinite', display: 'inline-block' }} />

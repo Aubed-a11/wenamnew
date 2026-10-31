@@ -196,7 +196,7 @@ export default function MiawezonPage() {
           </p>
 
           <div className="mt-8 grid xl:grid-cols-2 gap-6">
-            {data.categories.map((c) => <TicketOffer key={c._id} cat={c} state={state} info={info} notch="#3B2410" />)}
+            {data.categories.map((c) => <TicketOffer key={c._id} cat={c} state={state} info={info} notch="#8B3A0F" />)}
           </div>
 
           {state === 'upcoming' && (

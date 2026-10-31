@@ -54,7 +54,7 @@ export default function UsersPage() {
         <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 'clamp(18px,4vw,22px)', fontWeight: 700, color: '#1A0F00', margin: 0 }}>
           Utilisateurs
         </h1>
-        <span style={{ display: 'flex', alignItems: 'center', gap: 6, background: '#FAF3E8', border: '1px solid #D4B896', borderRadius: 20, padding: '4px 14px', fontSize: 13, fontWeight: 700, color: '#946420' }}>
+        <span style={{ display: 'flex', alignItems: 'center', gap: 6, background: '#FAF3E8', border: '1px solid #D4B896', borderRadius: 20, padding: '4px 14px', fontSize: 13, fontWeight: 700, color: '#C4531A' }}>
           <Users size={14} /> {loading ? '...' : users.length} client{users.length > 1 ? 's' : ''}
         </span>
       </div>
@@ -93,7 +93,7 @@ export default function UsersPage() {
                 : filtered.map(u => (
                     <tr key={u._id} style={{ borderBottom: '1px solid #F5ECD7' }}>
                       <td style={{ padding: '11px 14px' }}>
-                        <div style={{ width: 34, height: 34, borderRadius: '50%', background: 'rgba(148,100,32,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 700, color: '#946420' }}>
+                        <div style={{ width: 34, height: 34, borderRadius: '50%', background: 'rgba(196,83,26,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 700, color: '#C4531A' }}>
                           {u.name?.[0]?.toUpperCase() || '?'}
                         </div>
                       </td>
