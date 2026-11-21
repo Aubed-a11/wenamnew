@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { CheckCircle2, ChevronLeft, Download, Loader2, LogOut, Printer, RefreshCw, Search } from 'lucide-react'
 import toast from 'react-hot-toast'
 import api from '../../../api/axios'
+import { tierShort } from '../../../data/miawezon'
 
 const fmt = (d) => (d ? new Date(d).toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '')
 const norm = (s) => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
@@ -122,7 +123,7 @@ export default function ParticipantsPage() {
                   <td className="px-3 py-2 text-text-light">{i + 1}</td>
                   <td className="px-3 py-2 font-semibold text-text-dark">{t.holderName}{t.buyerName && t.buyerName !== t.holderName ? <span className="block text-xs font-normal text-text-light">Acheteur : {t.buyerName}</span> : null}</td>
                   <td className="px-3 py-2 font-mono text-xs">{t.number}</td>
-                  <td className="px-3 py-2"><span className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${t.categoryCode === 'AGBADJA' ? 'bg-mz-night text-mz-gold' : 'bg-cream text-text-dark border border-border'}`}>{t.categoryCode}</span></td>
+                  <td className="px-3 py-2"><span className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${t.categoryCode === 'AGBADJA' ? 'bg-mz-night text-mz-gold' : 'bg-cream text-text-dark border border-border'}`}>{tierShort(t.categoryCode)}</span></td>
                   <td className="px-3 py-2 font-mono text-xs">{t.orderNumber}</td>
                   <td className="px-3 py-2 whitespace-nowrap">{t.buyerPhone}</td>
                   <td className="px-3 py-2 whitespace-nowrap">

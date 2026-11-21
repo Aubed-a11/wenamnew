@@ -13,7 +13,7 @@ const TEMPLATE = { AGBADJA: `${IMG}/ticket-agbadja.jpg`, ZINLI: `${IMG}/ticket-z
 // Logo MIAWEZON (version doree) dans la case logo du talon
 const LOGO = `${IMG}/logo-gold.png`
 // Largeur de la partie principale (sans le talon), en pixels du modele
-const MAIN_W = 1122
+const MAIN_W = 1196 // largeur de la partie principale (sans le talon) sur les modeles 1600px
 const PAPER = '#F0E4D2'
 
 const layoutFor = (code) => LAYOUT[code] || LAYOUT.ZINLI
@@ -81,8 +81,12 @@ export function TemplateTicket({ code, values = {}, qr, main = false, stamp, lab
   const W = L.width
   const H = L.height
   const visibleW = main ? MAIN_W : W
-  const keys = main ? ['price', 'date', 'venue'] : Object.keys(L.fields)
+  const keys = main ? ['date', 'venue'] : Object.keys(L.fields)
   const g = L.logo
+  const q = L.qr
+  const qw = q.w || q.size
+  const qh = q.h || q.size || qw
+  const qSide = Math.min(qw, qh) - 2 * (q.pad || 0)
 
   return (
     <div className="relative overflow-hidden" style={{ aspectRatio: `${visibleW} / ${H}`, maxWidth: '100%' }} role="img" aria-label={label}>
@@ -91,10 +95,10 @@ export function TemplateTicket({ code, values = {}, qr, main = false, stamp, lab
         {keys.map((k) => (values[k] ? <FitText key={k} f={L.fields[k]} W={W} H={H}>{values[k]}</FitText> : null))}
         {!main && qr && (
           <div
-            className="absolute"
-            style={{ left: pct(L.qr.x, W), top: pct(L.qr.y, H), width: pct(L.qr.size, W), aspectRatio: '1 / 1', background: L.qr.bg || '#FFFFFF', borderRadius: cqw(L.qr.radius || 0, W), padding: cqw(L.qr.pad || 0, W) }}
+            className="absolute flex items-center justify-center"
+            style={{ left: pct(q.x, W), top: pct(q.y, H), width: pct(qw, W), height: pct(qh, H), background: q.bg || '#FFFFFF', borderRadius: cqw(q.radius || 0, W) }}
           >
-            <img src={qr} alt="" className="block w-full h-full" style={{ maxWidth: 'none' }} />
+            <img src={qr} alt="" className="block" style={{ width: pct(qSide, qw), height: pct(qSide, qh), maxWidth: 'none' }} />
           </div>
         )}
         {!main && g && (
@@ -125,7 +129,6 @@ export function TicketOffer({ cat, state, info }) {
   const soldOut = open && cat.available === 0
   const ratio = cat.capacity ? Math.round((cat.available / cat.capacity) * 100) : 0
   const values = {
-    price: fmtPrice(cat.price),
     date: info.time && info.time !== t('common.tbc') && info.dateShort !== t('common.tbc') ? `${info.dateShort} · ${info.time}` : info.dateShort,
     venue: info.venue,
   }

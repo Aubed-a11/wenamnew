@@ -1,7 +1,7 @@
 import { useLayoutEffect, useRef } from 'react'
 import { useT } from '../../i18n'
 import LAYOUT from '../../data/menuLayout.json'
-import { MZ_TICKET_STYLE, menuFor } from '../../data/miawezon'
+import { MZ_TICKET_STYLE, menuFor, tierName, tierShort } from '../../data/miawezon'
 import { fmtPrice } from './utils'
 
 // Carte menu dessinee sur les modeles fournis (public/images/miawezon/menu-*.jpg).
@@ -65,7 +65,7 @@ export default function MenuCard({ tier, menu, cat, info }) {
   const footerInfo = [info?.dateShort && info?.time && info.time !== t('common.tbc') && info.dateShort !== t('common.tbc') ? `${info.dateShort} · ${info.time}` : info?.dateShort, info?.venue].filter(Boolean).join('  ·  ')
 
   return (
-    <div className="relative w-full overflow-hidden rounded-2xl shadow-hover" style={{ aspectRatio: `${L.width} / ${L.height}`, containerType: 'inline-size' }} role="img" aria-label={`${t('menu.menuOf')} ${tier}`}>
+    <div className="relative w-full overflow-hidden rounded-2xl shadow-hover" style={{ aspectRatio: `${L.width} / ${L.height}`, containerType: 'inline-size' }} role="img" aria-label={`${t('menu.menuOf')} ${tierName(tier, pick)}`}>
       <img src={`${IMG}/menu-${tier.toLowerCase()}.jpg`} alt="" className="absolute inset-0 w-full h-full select-none" draggable="false" />
 
       {/* Cadre central */}
@@ -77,7 +77,7 @@ export default function MenuCard({ tier, menu, cat, info }) {
         <div ref={inner} className="text-center" style={{ '--s': 1 }}>
           <img src={LOGOS[L.logo] || LOGOS.dark} alt="MIAWÉZON by Wênam" className="mx-auto block" style={{ height: fs(84), width: 'auto', maxWidth: 'none' }} />
           <p style={{ marginTop: fs(16), fontFamily: SANS, fontWeight: 700, fontSize: fs(15), letterSpacing: fs(6), color: th.muted, lineHeight: 1.2 }}>{t('menu.menuOf').toUpperCase()}</p>
-          <p style={{ marginTop: fs(6), fontFamily: DISPLAY, fontWeight: 700, fontSize: fs(74), letterSpacing: fs(3), color: th.title, lineHeight: 1.15 }}>{tier}</p>
+          <p style={{ marginTop: fs(6), fontFamily: DISPLAY, fontWeight: 700, fontSize: fs(74), letterSpacing: fs(3), color: th.title, lineHeight: 1.15 }}>{tierShort(tier)}</p>
           {catLine && <p style={{ marginTop: fs(8), fontFamily: SANS, fontWeight: 600, fontSize: fs(16), color: th.text, lineHeight: 1.3, whiteSpace: 'pre' }}>{catLine}</p>}
 
           {/* Separateur */}

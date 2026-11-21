@@ -112,6 +112,15 @@ const d = (fr, en, dfr = '', den = '', tiers = ['ZINLI', 'AGBADJA']) => ({ name:
 export const MZ_MENU_TIERS = ['ZINLI', 'AGBADJA']
 export const MZ_MENU_SECTIONS = ['entrees', 'plats', 'desserts', 'boissons']
 
+// Noms affiches des categories (le code interne reste ZINLI / AGBADJA)
+export const MZ_TIER_NAMES = {
+  ZINLI: { fr: 'MIAWÉZON Découverte', en: 'MIAWÉZON Découverte' },
+  AGBADJA: { fr: 'MIAWÉZON Signature', en: 'MIAWÉZON Signature' },
+}
+export const MZ_TIER_SHORT = { ZINLI: 'Découverte', AGBADJA: 'Signature' }
+export const tierName = (code, pick) => (pick && MZ_TIER_NAMES[code] ? pick(MZ_TIER_NAMES[code]) : (MZ_TIER_NAMES[code] && MZ_TIER_NAMES[code].fr) || code)
+export const tierShort = (code) => MZ_TIER_SHORT[code] || code
+
 export const MZ_MENU = [
   { key: 'entrees', items: [
     d('Samoussa au bœuf', 'Beef samosa', 'Croustillant et savoureux', 'Crispy and tasty'),
@@ -173,5 +182,5 @@ export const MZ_TICKET_CONDITIONS = [
   { fr: 'Présentez votre billet (QR code) à l\'entrée.', en: 'Show your ticket (QR code) at the entrance.' },
   { fr: 'Ce billet est personnel et non transférable.', en: 'This ticket is personal and non-transferable.' },
   { fr: 'En cas de perte, aucun remplacement ne sera effectué.', en: 'Lost tickets will not be replaced.' },
-  { fr: 'L\'accès à l\'espace VIP est réservé aux détenteurs du billet AGBADJA.', en: 'The VIP area is reserved for AGBADJA ticket holders.' },
+  { fr: 'L\'accès à l\'espace VIP est réservé aux détenteurs du billet MIAWÉZON Signature.', en: 'The VIP area is reserved for MIAWÉZON Signature ticket holders.' },
 ]

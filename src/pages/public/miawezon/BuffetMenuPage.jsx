@@ -8,7 +8,7 @@ import Footer from '../../../components/common/Footer'
 import { useT } from '../../../i18n'
 import { useMiawezon, isMiawezonVisible } from '../../../store/miawezon'
 import api from '../../../api/axios'
-import { MZ_MENU_TIERS, menuFor } from '../../../data/miawezon'
+import { MZ_MENU_TIERS, menuFor, tierName, tierShort } from '../../../data/miawezon'
 import { PreviewNotice } from '../../../components/miawezon/ui'
 import { eventInfo, fmtPrice } from '../../../components/miawezon/utils'
 import MenuCard from '../../../components/miawezon/MenuCard'
@@ -100,7 +100,7 @@ export default function BuffetMenuPage() {
                 onClick={() => choose(x)}
                 className={`rounded-xl px-3 py-3 md:py-4 text-center transition ${active ? 'bg-primary text-white shadow-btn' : 'text-text-medium hover:bg-cream'}`}
               >
-                <span className="block font-display text-xl md:text-2xl font-bold tracking-wide">{x}</span>
+                <span className="block font-display text-xl md:text-2xl font-bold tracking-wide">{tierShort(x)}</span>
                 {c && <span className={`block text-xs md:text-sm ${active ? 'text-white/85' : 'text-text-light'}`}>{pick(c.label)} · {fmtPrice(c.price)}</span>}
               </button>
             )
@@ -117,7 +117,7 @@ export default function BuffetMenuPage() {
 
         <div className="mt-4 flex justify-center">
           <button type="button" onClick={download} disabled={busy} className="inline-flex items-center gap-2 rounded-xl border border-border bg-white px-5 py-2.5 text-sm font-semibold text-text-dark hover:border-primary hover:text-primary transition disabled:opacity-60">
-            {busy ? <Loader2 size={16} className="animate-spin" /> : <Download size={16} />} {t('menu.downloadPdf', { tier })}
+            {busy ? <Loader2 size={16} className="animate-spin" /> : <Download size={16} />} {t('menu.downloadPdf', { tier: tierName(tier, pick) })}
           </button>
         </div>
 
@@ -125,11 +125,11 @@ export default function BuffetMenuPage() {
         {extras.map((x) => (
           <div key={x.tier} className="mt-6 rounded-2xl bg-white border border-border p-5 md:p-6 flex flex-col md:flex-row md:items-center gap-4">
             <div className="flex-1 min-w-0">
-              <p className="font-display text-lg font-bold text-text-dark">{t('menu.moreWith', { tier: x.tier })}</p>
+              <p className="font-display text-lg font-bold text-text-dark">{t('menu.moreWith', { tier: tierName(x.tier, pick) })}</p>
               <p className="text-sm text-text-medium mt-1">{x.items.map((i) => pick(i.name)).join(', ')}</p>
             </div>
             <button type="button" onClick={() => { choose(x.tier); window.scrollTo({ top: 0, behavior: 'smooth' }) }} className="shrink-0 rounded-xl border border-primary text-primary px-5 py-2.5 text-sm font-semibold hover:bg-primary hover:text-white transition">
-              {t('menu.seeMenu', { tier: x.tier })}
+              {t('menu.seeMenu', { tier: tierName(x.tier, pick) })}
             </button>
           </div>
         ))}
@@ -137,7 +137,7 @@ export default function BuffetMenuPage() {
         <div className="mt-8 text-center">
           {open && cat && cat.available > 0 ? (
             <Link to={`/miawezon/reserver?c=${tier}`} className="inline-flex items-center gap-2 rounded-full bg-primary text-white px-8 py-3.5 font-semibold hover:bg-primary-dark shadow-btn">
-              {t('mz.book')} {tier} · {fmtPrice(cat.price)} <ChevronRight size={16} />
+              {t('mz.book')} {tierName(tier, pick)} · {fmtPrice(cat.price)} <ChevronRight size={16} />
             </Link>
           ) : (
             <Link to="/miawezon#billetterie" className="inline-flex items-center gap-2 rounded-full bg-primary text-white px-8 py-3.5 font-semibold hover:bg-primary-dark shadow-btn">

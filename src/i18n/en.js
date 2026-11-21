@@ -78,7 +78,7 @@ const en = {
   menu: {
     downloadPdf: ({ tier }) => `Download the ${tier} menu (PDF)`,
     title: 'Buffet menu',
-    subtitle: 'One menu per ticket category. The AGBADJA menu includes a few extra dishes.',
+    subtitle: 'One menu per ticket category. The MIAWÉZON Signature menu includes a few extra dishes.',
     menuOf: 'Menu',
     exclusiveOf: ({ tier }) => `${tier} only`,
     moreWith: ({ tier }) => `The ${tier} menu adds`,
