@@ -13,7 +13,7 @@ const TEMPLATE = { AGBADJA: `${IMG}/ticket-agbadja.jpg`, ZINLI: `${IMG}/ticket-z
 // Logo MIAWEZON (version doree) dans la case logo du talon
 const LOGO = `${IMG}/logo-gold.png`
 // Largeur de la partie principale (sans le talon), en pixels du modele
-const MAIN_W = 1196 // largeur de la partie principale (sans le talon) sur les modeles 1600px
+const MAIN_W = 1160 // largeur partie principale (hors talon) modeles 1536px
 const PAPER = '#F0E4D2'
 
 const layoutFor = (code) => LAYOUT[code] || LAYOUT.ZINLI
