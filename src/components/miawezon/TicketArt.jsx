@@ -9,7 +9,7 @@ import { fmtPrice } from './utils'
 // Les positions des champs sont dans src/data/ticketLayout.json, identiques au PDF du serveur.
 
 const IMG = '/images/miawezon'
-const TEMPLATE = { AGBADJA: `${IMG}/ticket-agbadja.jpg`, ZINLI: `${IMG}/ticket-zinli.jpg` }
+const TEMPLATE = { AGBADJA: `${IMG}/ticket-agbadja-v2.jpg`, ZINLI: `${IMG}/ticket-zinli-v2.jpg` }
 // Logo MIAWEZON (version doree) dans la case logo du talon
 const LOGO = `${IMG}/logo-gold.png`
 // Logo MIAWEZON (version sombre) pose au centre du QR, sur une pastille blanche
