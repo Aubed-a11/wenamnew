@@ -129,7 +129,7 @@ export function TicketOffer({ cat, state, info }) {
   const soldOut = open && cat.available === 0
   const ratio = cat.capacity ? Math.round((cat.available / cat.capacity) * 100) : 0
   const values = {
-    date: info.dateShort,
+    date: info.time && info.time !== t('common.tbc') && info.dateShort !== t('common.tbc') ? `${info.dateShort} · ${info.time}` : info.dateShort,
     venue: info.venue,
   }
 
