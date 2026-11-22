@@ -12,6 +12,8 @@ const IMG = '/images/miawezon'
 const TEMPLATE = { AGBADJA: `${IMG}/ticket-agbadja.jpg`, ZINLI: `${IMG}/ticket-zinli.jpg` }
 // Logo MIAWEZON (version doree) dans la case logo du talon
 const LOGO = `${IMG}/logo-gold.png`
+// Logo MIAWEZON (version sombre) pose au centre du QR, sur une pastille blanche
+const LOGO_DARK = `${IMG}/logo-dark.png`
 // Largeur de la partie principale (sans le talon), en pixels du modele
 const MAIN_W = 1160 // largeur partie principale (hors talon) modeles 1536px
 const PAPER = '#F0E4D2'
@@ -98,7 +100,15 @@ export function TemplateTicket({ code, values = {}, qr, main = false, stamp, lab
             className="absolute flex items-center justify-center"
             style={{ left: pct(q.x, W), top: pct(q.y, H), width: pct(qw, W), height: pct(qh, H), background: q.bg || '#FFFFFF', borderRadius: cqw(q.radius || 0, W) }}
           >
-            <img src={qr} alt="" className="block" style={{ width: pct(qSide, qw), height: pct(qSide, qh), maxWidth: 'none' }} />
+            <div className="relative flex items-center justify-center" style={{ width: pct(qSide, qw), height: pct(qSide, qh) }}>
+              <img src={qr} alt="" className="block w-full h-full" style={{ maxWidth: 'none' }} />
+              {/* Logo de l'evenement au centre du QR (QR en correction H) */}
+              <span className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <span className="flex items-center justify-center bg-white rounded-[2cqw]" style={{ width: '43%', padding: '1.5% 0' }}>
+                  <img src={LOGO_DARK} alt="MIAWÉZON" className="block w-[88%] h-auto" />
+                </span>
+              </span>
+            </div>
           </div>
         )}
         {!main && g && (
