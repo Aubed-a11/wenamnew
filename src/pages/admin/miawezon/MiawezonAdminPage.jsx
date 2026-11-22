@@ -8,6 +8,7 @@ import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YA
 import toast from 'react-hot-toast'
 import api from '../../../api/axios'
 import { fmtPrice } from '../../../components/miawezon/utils'
+import { tierName, tierShort } from '../../../data/miawezon'
 import { useMzPending } from '../../../store/miawezonAdmin'
 
 const STATUS = {
@@ -109,7 +110,7 @@ function DashboardTab({ config }) {
             <Card key={c._id}>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="font-display text-lg font-bold text-text-dark">{c.name} <span className="font-body text-xs text-text-light font-normal">{c.label?.fr}</span></p>
+                  <p className="font-display text-lg font-bold text-text-dark">{tierName(c.code) || c.name} <span className="font-body text-xs text-text-light font-normal">{c.label?.fr}</span></p>
                   <p className="text-sm text-primary font-bold">{fmtPrice(c.price)}</p>
                 </div>
                 <p className="font-display text-2xl font-bold text-text-dark">{c.sold}<span className="text-sm text-text-light font-body"> / {c.capacity}</span></p>
@@ -151,7 +152,7 @@ function DashboardTab({ config }) {
                 <li key={o._id} className="py-2.5 flex items-center justify-between gap-2 text-sm">
                   <div className="min-w-0">
                     <p className="font-bold text-text-dark truncate">{o.orderNumber}</p>
-                    <p className="text-xs text-text-light truncate">{o.buyer.name} · {o.items.map((i) => `${i.code} x${i.quantity}`).join(', ')}</p>
+                    <p className="text-xs text-text-light truncate">{o.buyer.name} · {o.items.map((i) => `${tierShort(i.code)} x${i.quantity}`).join(', ')}</p>
                   </div>
                   <div className="text-right shrink-0">
                     <p className="font-bold text-text-dark">{fmtPrice(o.total)}</p>
@@ -278,7 +279,7 @@ function OrderDrawer({ id, onClose, onChanged, validationHours = 24 }) {
             </div>
             <div>
               {o.items.map((i) => (
-                <div key={i.code} className="flex justify-between py-1"><span>{i.name} x {i.quantity}</span><span>{fmtPrice(i.unitPrice * i.quantity)}</span></div>
+                <div key={i.code} className="flex justify-between py-1"><span>{tierName(i.code) || i.name} x {i.quantity}</span><span>{fmtPrice(i.unitPrice * i.quantity)}</span></div>
               ))}
               <div className="flex justify-between py-1 font-bold border-t border-cream-warm mt-1 pt-2"><span>Total</span><span className="text-primary">{fmtPrice(o.total)}</span></div>
             </div>
@@ -306,7 +307,7 @@ function OrderDrawer({ id, onClose, onChanged, validationHours = 24 }) {
                 <ul className="space-y-1.5">
                   {o.tickets.map((t) => (
                     <li key={t._id} className="flex items-center justify-between rounded-lg border border-cream-warm px-3 py-2">
-                      <div><p className="font-semibold text-text-dark">{t.holderName}</p><p className="text-[11px] text-text-light">{t.number} · {t.categoryCode}</p></div>
+                      <div><p className="font-semibold text-text-dark">{t.holderName}</p><p className="text-[11px] text-text-light">{t.number} · {tierShort(t.categoryCode)}</p></div>
                       <span className={`text-[11px] font-bold ${t.status === 'used' ? 'text-green-700' : t.status === 'cancelled' ? 'text-red-700' : 'text-text-light'}`}>
                         {t.status === 'used' ? `Entré ${fmtDT(t.checkedInAt)}` : t.status === 'cancelled' ? 'Annulé' : 'Valide'}
                       </span>
@@ -430,7 +431,7 @@ function OrdersTab({ openRequest, validationHours, pending = 0, onChanged }) {
                   <tr key={o._id} className="hover:bg-cream/50">
                     <td className="px-4 py-3 font-bold text-text-dark whitespace-nowrap">{o.orderNumber}</td>
                     <td className="px-4 py-3"><p className="text-text-dark">{o.buyer.name}</p><p className="text-xs text-text-light">{o.buyer.phone}</p></td>
-                    <td className="px-4 py-3 text-text-medium whitespace-nowrap">{o.items.map((i) => `${i.code} x${i.quantity}`).join(', ')}</td>
+                    <td className="px-4 py-3 text-text-medium whitespace-nowrap">{o.items.map((i) => `${tierShort(i.code)} x${i.quantity}`).join(', ')}</td>
                     <td className="px-4 py-3 text-right font-bold whitespace-nowrap">{fmtPrice(o.total)}</td>
                     <td className="px-4 py-3"><Badge status={o.status} /></td>
                     <td className="px-4 py-3 text-xs text-text-light whitespace-nowrap">{fmtDT(o.paidAt || o.proofUploadedAt || o.createdAt)}</td>
@@ -486,14 +487,14 @@ function CategoryEditor({ cat, onSaved }) {
     setBusy(true)
     try {
       await api.put(`/miawezon/admin/categories/${cat._id}`, { price: Number(f.price), capacity: Number(f.capacity), label: { fr: f.labelFr, en: f.labelEn }, active: f.active })
-      toast.success(`${cat.name} enregistré`)
+      toast.success(`${tierName(cat.code) || cat.name} enregistré`)
       onSaved()
     } catch (e) { toast.error(errMsg(e)) } finally { setBusy(false) }
   }
   return (
     <div className="rounded-xl border border-cream-warm p-4 space-y-3">
       <div className="flex items-center justify-between">
-        <p className="font-display text-lg font-bold text-text-dark">{cat.name}</p>
+        <p className="font-display text-lg font-bold text-text-dark">{tierName(cat.code) || cat.name}</p>
         <span className="text-xs text-text-light">{sold} place(s) réservée(s) ou vendue(s)</span>
       </div>
       <div className="grid grid-cols-2 gap-3">
@@ -797,7 +798,7 @@ function MenuTab({ config, reload }) {
         <div className="flex-1">
           <p className="font-display text-lg font-bold text-text-dark">Menu du buffet</p>
           <p className="text-xs text-text-light mt-0.5">Cochez dans quel menu chaque plat est servi. Un plat coché dans un seul menu s'affiche comme « Exclusif ».</p>
-          <p className="text-xs text-text-medium mt-1">{tiers.map((c) => `${c} : ${count(c)} plat(s)`).join(' · ')}</p>
+          <p className="text-xs text-text-medium mt-1">{tiers.map((c) => `${tierShort(c)} : ${count(c)} plat(s)`).join(' · ')}</p>
         </div>
         <Toggle checked={menuFinal} onChange={(v) => { setMenuFinal(v); setDirty(true) }} label="Menu définitif" hint="Retire « Menu définitif bientôt disponible »" />
         <div className="flex gap-2">
@@ -831,7 +832,7 @@ function MenuTab({ config, reload }) {
                     return (
                       <button key={code} type="button" aria-pressed={on} onClick={() => toggleTier(si, ii, code)}
                         className={`rounded-full px-3 py-1 text-xs font-bold border inline-flex items-center gap-1 ${on ? 'bg-primary text-white border-primary' : 'bg-white text-text-light border-border'}`}>
-                        {on && <CheckCircle2 size={12} />} {code}
+                        {on && <CheckCircle2 size={12} />} {tierShort(code)}
                       </button>
                     )
                   })}

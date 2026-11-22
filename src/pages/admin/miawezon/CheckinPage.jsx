@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { AlertTriangle, Camera, CameraOff, CheckCircle2, ChevronLeft, CloudOff, Download, Keyboard, Loader2, LogIn, LogOut, RefreshCw, Wifi, XCircle } from 'lucide-react'
 import toast from 'react-hot-toast'
 import api from '../../../api/axios'
+import { tierName } from '../../../data/miawezon'
 
 const RESULT = {
   valid: { label: 'Valide', sub: 'Entrée autorisée', cls: 'bg-green-600', icon: CheckCircle2 },
@@ -271,7 +272,7 @@ export default function CheckinPage() {
                 {result.offline && <p className="text-[11px] font-bold uppercase tracking-wider text-white/80 mb-1 inline-flex items-center gap-1"><CloudOff size={12} /> Contrôle hors ligne</p>}
                 <p className="text-sm text-white/90 mt-1">{R.sub}{result.result === 'already_used' && result.ticket?.checkedInAt ? ` à ${fmtTime(result.ticket.checkedInAt)}` : ''}</p>
                 {result.ticket && (
-                  <p className="text-sm font-bold mt-1 truncate">{result.ticket.holderName} · {result.ticket.categoryName}{result.ticket.categoryCode === 'AGBADJA' ? ' (VIP)' : ''}</p>
+                  <p className="text-sm font-bold mt-1 truncate">{result.ticket.holderName} · {tierName(result.ticket.categoryCode) || result.ticket.categoryName}</p>
                 )}
               </div>
             </div>

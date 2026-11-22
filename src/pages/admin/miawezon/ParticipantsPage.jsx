@@ -81,7 +81,7 @@ export default function ParticipantsPage() {
         <div>
           <h2 className="font-display text-2xl font-bold text-text-dark">Liste des participants</h2>
           <p className="text-sm text-text-light mt-1">
-            {tickets.length} billet(s) payé(s){byCat.length ? ` · ${byCat.map((x) => `${x.c} ${x.n}`).join(' · ')}` : ''} · {used} entrée(s) · {inside} présent(s)
+            {tickets.length} billet(s) payé(s){byCat.length ? ` · ${byCat.map((x) => `${tierShort(x.c)} ${x.n}`).join(' · ')}` : ''} · {used} entrée(s) · {inside} présent(s)
             {data?.generatedAt ? <span className="hidden print:inline"> · liste du {fmt(data.generatedAt)}</span> : null}
           </p>
         </div>
@@ -94,7 +94,7 @@ export default function ParticipantsPage() {
         </div>
         {['ALL', ...cats].map((c) => (
           <button key={c} onClick={() => setCat(c)} className={`rounded-full px-4 py-2 text-sm font-semibold border transition ${cat === c ? 'bg-primary text-white border-primary' : 'bg-white border-border text-text-medium hover:border-primary'}`}>
-            {c === 'ALL' ? 'Toutes' : c}
+            {c === 'ALL' ? 'Toutes' : tierShort(c)}
           </button>
         ))}
       </div>

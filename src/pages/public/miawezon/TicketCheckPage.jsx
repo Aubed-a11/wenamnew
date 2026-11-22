@@ -7,6 +7,7 @@ import Footer from '../../../components/common/Footer'
 import { useT, locale } from '../../../i18n'
 import { useAuthStore } from '../../../store'
 import { TemplateTicket } from '../../../components/miawezon/TicketArt'
+import { tierName } from '../../../data/miawezon'
 
 // Page ouverte en scannant le QR code d'un billet avec n'importe quel telephone
 const STATUS = {
@@ -103,7 +104,7 @@ export default function TicketCheckPage() {
 
             <div className="mt-5 rounded-2xl bg-white border border-border px-5 py-2">
               <Row Icon={User} label={t('tickets.name')} value={tk.holderName} />
-              <Row Icon={Ticket} label={t('tickets.category')} value={`${tk.categoryName} · ${tk.number}`} />
+              <Row Icon={Ticket} label={t('tickets.category')} value={`${tierName(tk.categoryCode) || tk.categoryName} · ${tk.number}`} />
               {tk.fields?.date && <Row Icon={CalendarDays} label={t('verify.date')} value={tk.fields.date} />}
               {tk.fields?.venue && <Row Icon={MapPin} label={t('verify.venue')} value={tk.fields.venue} />}
             </div>
